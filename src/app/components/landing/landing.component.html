@@ -1,18 +1,21 @@
-<!-- landing-page.component.html -->
-<div class="bg-cover bg-center h-screen">
-  <div class="bg-gradient-to-r from-green-700 to-green-400 h-full flex flex-col justify-between">
-    <app-navbar></app-navbar> <!-- Include the Navbar Component -->
+<div class="h-screen flex flex-col justify-between">
+  <app-navbar></app-navbar> <!-- Include the Navbar Component -->
 
-    <!-- Hero Section -->
-    <main class="text-center text-white flex-grow flex flex-col justify-center px-6">
-      <h1 class="text-4xl md:text-6xl font-bold mb-6">Your Voice, Our Action</h1>
-      <p class="text-lg mb-8">Empowering citizens to engage directly with the government and ensure their concerns are heard.</p>
-      <div>
-        <button class="bg-green-500 text-white py-3 px-6 rounded-full mr-4">Get Involved</button>
-        <button class="bg-transparent border-2 border-white text-white py-3 px-6 rounded-full">Learn More</button>
+  <!-- Hero Section with Background Image and Overlay -->
+  <section class="bg-gray-700 bg-[url('https://i.ibb.co/8Dw3HDN/conference.jpg')] bg-center bg-no-repeat bg-blend-multiply h-full flex flex-col justify-center">
+    <div class="mx-auto max-w-screen-xl px-4 py-24 text-center lg:py-56">
+      <h1 class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-white md:text-5xl lg:text-6xl">Your Voice, Our Action</h1>
+      <p class="mb-8 text-lg font-normal text-gray-300 sm:px-16 lg:px-48 lg:text-xl">Empowering citizens to engage directly with the government and ensure their concerns are heard.</p>
+      <div class="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-x-4 sm:space-y-0">
+        <button class="inline-flex items-center justify-center rounded-lg bg-green-500 px-5 py-3 text-center text-base font-medium text-white hover:bg-green-600 focus:ring-4 focus:ring-green-300">
+          Get Involved
+        </button>
+        <button class="inline-flex items-center justify-center rounded-lg border border-white px-5 py-3 text-center text-base font-medium text-white hover:bg-gray-100 hover:text-gray-900 focus:ring-4 focus:ring-gray-400">
+          Learn More
+        </button>
       </div>
-    </main>
-  </div>
+    </div>
+  </section>
 </div>
 
 <section class="bg-white py-8">
