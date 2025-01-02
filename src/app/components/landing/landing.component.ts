@@ -4,7 +4,7 @@ import { NavbarComponent } from '../navbar/navbar.component';
 @Component({
   selector: 'app-landing',
   standalone: true,
-  imports: [NavbarComponent],
+  imports: [NavbarComponent,FooterComponent],
   templateUrl: './landing.component.html',
   styleUrl: './landing.component.css'
 })
