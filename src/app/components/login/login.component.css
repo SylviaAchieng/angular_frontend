@@ -1,85 +1,116 @@
+/* Ensure the container takes full screen height */
 .container {
-    display: flex;
-    height: 100vh;
-    font-family: Arial, sans-serif;
-  }
+  display: flex;
+  height: 100vh;
+  font-family: Arial, sans-serif;
+}
+
+/* Left Section Styling */
+.left-section {
+  flex: 1;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo-img {
+  width: 150px;
+  margin-bottom: 1.5rem;
+}
+
+h1 {
+  font-size: 2.5rem;
+  margin: 1rem 0;
+  color: #333;
+}
+
+p {
+  color: #666;
+  margin-bottom: 2rem;
+  font-size: 1.2rem;
+}
+
+/* Form Styling */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+  max-width: 400px;
+}
+
+input {
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 100%;
+  font-size: 1rem;
+}
+
+input:focus {
+  border-color: #28a745;
+  outline: none;
+}
+
+.btn {
+  padding: 0.75rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+  font-size: 1.1rem;
+}
+
+.btn-primary {
+  background-color: #28a745;
+  color: #fff;
+}
+
+.btn-secondary {
+  background-color: #f0f0f0;
+  color: #333;
+  border: 1px solid #ccc;
+}
+
+.alt-signin {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.forgot-password,
+.signup-link {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.forgot-password:hover,
+.signup-link:hover {
+  text-decoration: underline;
+}
+
+/* Right Section Styling */
+.right-section {
+  flex: 1;
+  position: relative;
+  background: #f9f9f9;
+}
+
+.right-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   
-  .left-section {
-    flex: 1;
-    padding: 2rem;
-  }
-  
-  .right-section {
-    flex: 1;
-    position: relative;
-    background: #f9f9f9;
-  }
-  
-  .logo-img {
-    width: 150px;
-  }
-  
-  h1 {
-    font-size: 2rem;
-    margin: 1rem 0;
-  }
-  
-  p {
-    color: #666;
-  }
-  
-  form {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-  
-  input {
-    padding: 0.5rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    width: 100%;
-  }
-  
-  .btn {
-    padding: 0.75rem;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .btn-primary {
-    background-color: #28a745;
-    color: #fff;
-  }
-  
-  .btn-secondary {
-    background-color: #f0f0f0;
-    color: #333;
-  }
-  
-  .alt-signin {
-    margin-top: 1rem;
-  }
-  
-  .forgot-password,
-  .signup-link {
-    color: #007bff;
-    text-decoration: none;
-  }
-  
-  .right-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  
-  .overlay {
-    position: absolute;
-    bottom: 10%;
-    left: 10%;
-    background-color: rgba(255, 255, 255, 0.8);
-    padding: 1rem;
-    border-radius: 10px;
-  }
-  
+}
+
+.overlay {
+  position: absolute;
+  bottom: 10%;
+  left: 10%;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  font-size: 1.1rem;
+}
