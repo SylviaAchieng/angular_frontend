@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { UpdateProjectFormComponent } from '../../pages/update-project-form/update-project-form.component';
 import { CommonModule } from '@angular/common';
@@ -14,6 +14,7 @@ import { MatIcon, MatIconModule } from '@angular/material/icon';
   styleUrl: './project-card.component.css'
 })
 export class ProjectCardComponent {
+  @Input() project: any;
 
   constructor(public dialog: MatDialog){}
 

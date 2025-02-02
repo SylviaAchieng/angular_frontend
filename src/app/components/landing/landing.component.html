@@ -95,16 +95,29 @@ class="relative bg-gray-700 bg-center bg-no-repeat bg-blend-multiply h-full flex
   </div>
 </section>
 
-
+<!--
 <section class="bg-gray-100 py-4">
     <div class="flex flex-wrap justify-center gap-6">
-      @for (item of projects; track 1) {
-          <app-project-card/>
+      @for (item of projects; track item) {
+          <app-project-card [project]="item"></app-project-card>
       }
       @empty {
         <div class="w-full text-center">No Projects found</div>
       }
     </div>
+</section>-->
+
+<section class="bg-gray-100 py-4">
+  <div class="flex flex-wrap justify-center gap-6">
+    <!-- Use *ngFor for iteration and *ngIf for the empty state -->
+    <div *ngFor="let item of projects; trackBy: trackById">
+      <app-project-card [project]="item"></app-project-card>
+    </div>
+    <!-- Display this when projects array is empty -->
+    <div *ngIf="projects.length === 0" class="w-full text-center">
+      No Projects found
+    </div>
+  </div>
 </section>
 
 

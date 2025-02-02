@@ -22,9 +22,9 @@ export class AuthService {
     user:null
   });
 
-  signin(userData:any):Observable<any>{
-    return this.http.post<any>(`http://localhost:8000/api/v1/users/auth`, userData);
-  }
+  // signin(userData:any):Observable<any>{
+  //   return this.http.post<any>(`http://localhost:8000/api/v1/users/auth`, userData);
+  // }
 
   register(userData:any):Observable<any>{
     return this.http.post(`${this.baseUrl}/api/v1/users`, userData);

@@ -27,11 +27,27 @@
             </li>
           </ul>
       </div>
-      <!-- Get Started Button -->
-      <div class="flex md:order-2">
-          <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-              Get started
-          </button>
-      </div>
+      <!-- Sign In & Register Buttons -->
+      <div class="flex md:order-1">
+      <div *ngIf="!user; else loggedInTemplate" class="flex space-x-4 md:order-2">
+        <button class="px-6 py-2 text-gray-900 font-medium border border-gray-300 rounded-full bg-gray-100 hover:bg-gray-200" routerLink="/login">
+            Sign in
+        </button>
+        <button class="px-6 py-2 text-white font-medium rounded-full bg-green-600 hover:bg-green-700" routerLink="/register">
+            Register
+        </button>
+    </div>
+
+    <!-- Show Username & Log out when LOGGED IN -->
+    <ng-template #loggedInTemplate>
+        <div class="flex items-center space-x-4">
+            <span class="text-gray-900 font-medium">Hello, {{ user.fullName }}</span>
+            <button (click)="logout()" class="px-6 py-2 text-white font-medium rounded-full bg-red-600 hover:bg-red-700">
+                Log out
+            </button>
+        </div>
+    </ng-template>
+    </div>
+
   </div>
 </nav>

@@ -1,41 +1,52 @@
 <div class="project-card">
     <div class="project-status">
         <div class="progress-bar">
-            <p>5 days remaining</p>
+            <p>{{ project.daysRemaining }} days remaining</p>
             <!-- Progress Bar -->
              <div class="progress">
-            <div class="w-60 bg-gray-200 rounded-full h-2 mt-1">
-                <div class="h-2 rounded-full bg-green-500" style="width: 50%;"></div>
+                <div class="w-60 bg-gray-200 rounded-full h-2 mt-1">
+                    <div class="h-2 rounded-full bg-green-500" style="width: 50%;"></div>
+                </div>
             </div>
-        </div>
         </div>
         <div class="progress-status">
             <button>Ongoing</button>
         </div>
     </div>
-    <img src="assests/home.jpg" alt="">
-    <h3>Project Title</h3>
-    <p>Short project description goes here. It gives a brief overview of the project.</p>
+
+    <!-- ✅ Display Base64 Image -->
+    <img *ngIf="project.base64EncodedImage; else defaultImage" 
+         [src]="'data:image/jpeg;base64,' + project.base64EncodedImage" 
+         alt="Project Image" class="w-full h-48 object-cover rounded-lg">
+
+    <!-- Fallback Image if No Base64 Image -->
+    <ng-template #defaultImage>
+        <img src="assets/home.jpg" alt="Default Image">
+    </ng-template>
+
+    <h3>{{ project.title }}</h3>
+    <p>{{ project.description }}</p>
+
     <div class="project-footer">
         <div class="avatar">
             <div class="avatarimg">
-                <img src="assests/avatar.jpg" alt="avatar">
+                <img src="assets/avatar.jpg" alt="avatar">
             </div>
             <span>+10 more</span>
         </div>
         <div class="icons">
-            <button mat-icon-button aria-label="Example icon button with a home icon">
+            <button mat-icon-button aria-label="Favorite">
                 <mat-icon>favorite</mat-icon>
-              </button>
-            <button mat-icon-button aria-label="Example icon button with a home icon">
+            </button>
+            <button mat-icon-button aria-label="Chat">
                 <mat-icon>chat</mat-icon>
-              </button>
-            <button (click)="handleOpenUpdateProjectForm()" mat-icon-button aria-label="Example icon button with a home icon">
+            </button>
+            <button (click)="handleOpenUpdateProjectForm()" mat-icon-button aria-label="Edit">
                 <mat-icon>edit</mat-icon>
-              </button>
-              <button mat-icon-button aria-label="Example icon button with a home icon">
+            </button>
+            <button mat-icon-button aria-label="Delete">
                 <mat-icon>delete</mat-icon>
-              </button>
+            </button>
         </div>
     </div>
 </div>

@@ -43,6 +43,7 @@ export class LoginComponent {
         console.log('Login successful:', response);
         localStorage.setItem('token', response._embedded.token);
         localStorage.setItem('userId', response._embedded.user.userId);
+        localStorage.setItem('username', response._embedded.user.fullName);
         const userId = response._embedded.user.userId;
         this.authService.getUserProfile(userId).subscribe();
         console.log("login successful", response)
@@ -55,16 +56,16 @@ export class LoginComponent {
     });
   }
 
-  signIn(){
-    console.log("login", this.loginForm.value)
-    this.authService.signin(this.loginForm.value).subscribe({
-      next:(response)=>{
-        localStorage.setItem('token', response.token);
-        const userId = response.userId; // Assuming the response contains userId
-        this.authService.getUserProfile(userId).subscribe();
-        console.log("login successful", response)
-      }
-    });
-  }
+  // signIn(){
+  //   console.log("login", this.loginForm.value)
+  //   this.authService.signin(this.loginForm.value).subscribe({
+  //     next:(response)=>{
+  //       localStorage.setItem('token', response.token);
+  //       const userId = response.userId; // Assuming the response contains userId
+  //       this.authService.getUserProfile(userId).subscribe();
+  //       console.log("login successful", response)
+  //     }
+  //   });
+  // }
 
 }

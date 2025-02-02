@@ -25,12 +25,23 @@ export class ProjectService {
       })
     }
 
-    getProjects():Observable<any>{
+    // getProjects():Observable<any>{
+    //   const headers = this.getHeaders();
+    //   return this.http.get<any[]>(`${this.baseUrl}/api/v1/projects`, {headers}).pipe(
+    //     tap((projects)=>{
+    //       const currentState = this.projectSubject.value;
+    //       this.projectSubject.next({...currentState, projects});
+    //     })
+    //   );
+    // }
+
+    getProjects(): Observable<any> {
       const headers = this.getHeaders();
-      return this.http.get<any>(`${this.baseUrl}/api/v1/projects`, {headers}).pipe(
-        tap((projects)=>{
+      return this.http.get<any>(`${this.baseUrl}/api/v1/projects`, { headers }).pipe(
+        tap((response: { _embedded: any[] }) => {  // Correctly type the response
           const currentState = this.projectSubject.value;
-          this.projectSubject.next({...currentState, projects});
+          const projects = response._embedded || [];  // Ensure it's an array
+          this.projectSubject.next({ ...currentState, projects });
         })
       );
     }

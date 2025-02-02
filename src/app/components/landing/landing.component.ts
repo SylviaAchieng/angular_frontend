@@ -5,20 +5,18 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { ProjectCardComponent } from "../../pages/project-card/project-card.component";
 import { AuthService } from '../../services/auth.service';
+import { ProjectService } from '../../services/project.service';
 
 @Component({
   selector: 'app-landing',
   standalone: true,
-  imports: [RouterLink,
-    NavbarComponent,
-    FooterComponent,
-    CommonModule, ProjectCardComponent],
+  imports: [RouterLink,NavbarComponent,FooterComponent,CommonModule, ProjectCardComponent],
   templateUrl: './landing.component.html',
   styleUrl: './landing.component.css'
 })
 export class LandingComponent {
 
-  projects =[1, 1,1,1,11,1]
+  projects =[];
 
   heroBackground = 'https://i.ibb.co/8Dw3HDN/conference.jpg';
   heroTitle = 'Your Voice, Our Action';
@@ -100,10 +98,14 @@ export class LandingComponent {
       color: 'bg-yellow-500',
     },
   ];
-  constructor(private router: Router, public authService: AuthService) {}
+  constructor(private router: Router, public authService: AuthService, private projectService: ProjectService) {}
 
   onScheduleDemo(): void {
     this.router.navigate(['/schedule-demo']); // Update with your actual route
+  }
+
+  trackById(index: number, item: any): any {
+    return item.projectId;  // Assuming projectId is unique for each project
   }
 
   user:any = null;
@@ -120,7 +122,22 @@ export class LandingComponent {
         console.log("auth state", auth)
         this.user = auth.user;
       }
-    )
+    );
+    // Fetch all projects from the backend
+  this.projectService.getProjects().subscribe({
+    next: () => {
+      console.log("Projects retrieved successfully");
+    },
+    error: (err) => {
+      console.error("Failed to load projects:", err);
+    }
+  });
+
+  // Subscribe to projectSubject to update component state
+  this.projectService.projectSubject.subscribe((state) => {
+    this.projects = state.projects;
+    console.log("Projects state updated:", this.projects);
+  });
   }
 
 }
