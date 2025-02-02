@@ -2,16 +2,23 @@ import { Component } from '@angular/core';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { FooterComponent } from '../footer/footer.component';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { ProjectCardComponent } from "../../pages/project-card/project-card.component";
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-landing',
   standalone: true,
-  imports: [RouterLink,NavbarComponent,FooterComponent, CommonModule],
+  imports: [RouterLink,
+    NavbarComponent,
+    FooterComponent,
+    CommonModule, ProjectCardComponent],
   templateUrl: './landing.component.html',
   styleUrl: './landing.component.css'
 })
 export class LandingComponent {
+
+  projects =[1, 1,1,1,11,1]
 
   heroBackground = 'https://i.ibb.co/8Dw3HDN/conference.jpg';
   heroTitle = 'Your Voice, Our Action';
@@ -70,46 +77,6 @@ export class LandingComponent {
     this.hoveredFeature = feature;
   }
 
-  projects = [
-    {
-      image: 'assests/idea.jpg',
-      title: '5 potential scenarios for the commercial center',
-      description:
-        'To address Vancouver’s housing crisis, we are exploring five scenarios for an empty homes tax aimed at commercial centers, called the Empty Homes Tax...',
-      daysRemaining: 2,
-      tag: 'Urgent',
-      tagColor: 'red',
-      participants: 12,
-      comments: 8,
-      likes: 40
-    },
-    {
-      image: 'assests/logo.jpg',
-      title: 'New Castle Park',
-      description:
-        'New Castle Park is under construction to provide better facilities for citizens and promote community engagement...',
-      daysRemaining: 5,
-      tag: 'On Track',
-      tagColor: 'green',
-      participants: 15,
-      comments: 12,
-      likes: 34
-    },
-    {
-      image: 'assests/logo.jpg',
-      title: 'Mobility in the Area of Mainstream',
-      description:
-        'The Mobility Project focuses on improving access and infrastructure for pedestrians and cyclists in the Mainstream area...',
-      daysRemaining: 7,
-      tag: 'Planned',
-      tagColor: 'yellow',
-      participants: 10,
-      comments: 6,
-      likes: 28
-    }
-  ];
-
-  
 
   cards = [
     {
@@ -133,15 +100,27 @@ export class LandingComponent {
       color: 'bg-yellow-500',
     },
   ];
-  
-  constructor() {}
+  constructor(private router: Router, public authService: AuthService) {}
+
+  onScheduleDemo(): void {
+    this.router.navigate(['/schedule-demo']); // Update with your actual route
+  }
+
+  user:any = null;
 
   ngOnInit(): void {
-    // Here you'd fetch data from the backend
-    // Example:
-    // this.httpClient.get('your-api-endpoint').subscribe((data: any) => {
-    //   this.projects = data;
-    // });
+    const userId = localStorage.getItem('userId');
+    this.authService.getUserProfile(userId).subscribe({
+      next: data=>console.log("req user",data),
+      error: error=>console.log("error", error)
+      
+    });
+    this.authService.authSubject.subscribe(
+      (auth)=>{
+        console.log("auth state", auth)
+        this.user = auth.user;
+      }
+    )
   }
 
 }

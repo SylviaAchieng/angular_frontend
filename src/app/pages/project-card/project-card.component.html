@@ -1,0 +1,41 @@
+<div class="project-card">
+    <div class="project-status">
+        <div class="progress-bar">
+            <p>5 days remaining</p>
+            <!-- Progress Bar -->
+             <div class="progress">
+            <div class="w-60 bg-gray-200 rounded-full h-2 mt-1">
+                <div class="h-2 rounded-full bg-green-500" style="width: 50%;"></div>
+            </div>
+        </div>
+        </div>
+        <div class="progress-status">
+            <button>Ongoing</button>
+        </div>
+    </div>
+    <img src="assests/home.jpg" alt="">
+    <h3>Project Title</h3>
+    <p>Short project description goes here. It gives a brief overview of the project.</p>
+    <div class="project-footer">
+        <div class="avatar">
+            <div class="avatarimg">
+                <img src="assests/avatar.jpg" alt="avatar">
+            </div>
+            <span>+10 more</span>
+        </div>
+        <div class="icons">
+            <button mat-icon-button aria-label="Example icon button with a home icon">
+                <mat-icon>favorite</mat-icon>
+              </button>
+            <button mat-icon-button aria-label="Example icon button with a home icon">
+                <mat-icon>chat</mat-icon>
+              </button>
+            <button (click)="handleOpenUpdateProjectForm()" mat-icon-button aria-label="Example icon button with a home icon">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button aria-label="Example icon button with a home icon">
+                <mat-icon>delete</mat-icon>
+              </button>
+        </div>
+    </div>
+</div>

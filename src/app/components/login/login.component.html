@@ -1,53 +1,84 @@
-<app-navbar class="fixed top-0 w-full z-50"></app-navbar>
-<div class="container">
-  <div class="left-section">
-    <div class="logo">
-      <img src="assests/logo.jpg" alt="Logo" class="logo-img" />
-    </div>
-    <h1>One Login</h1>
-    <p>All Government Services</p>
-    <form (ngSubmit)="onSubmit()">
-      <label for="email">Email address or ID number *</label>
+<app-navbar class="fixed top-0 w-full z-50 bg-white shadow-md"></app-navbar>
+<div class="container mx-auto flex flex-col lg:flex-row h-screen pt-16">
+  <!-- Left Section -->
+  <div class="left-section w-full lg:w-1/2 flex flex-col justify-center items-center lg:items-start px-6 lg:px-16">
+    <!-- Title -->
+    <h1 class="text-2xl lg:text-3xl font-bold text-blue-900 mb-1">One Login</h1>
+    <p class="text-gray-600 text-sm lg:text-base mb-6">All Government Services</p>
+
+    <!-- Form -->
+    <form class="w-full max-w-md" (ngSubmit)="onLogin()">
+      <!-- Email/ID Input -->
+      <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email address *</label>
       <input
         id="email"
         type="text"
         [(ngModel)]="email"
         name="email"
-        required
-        placeholder="Enter your email or ID number"
+        class="w-full p-2 border border-gray-300 rounded-md mb-4 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+        placeholder="Enter your email"
       />
 
-      <label for="password">Password *</label>
-      <input
-        id="password"
-        type="password"
-        [(ngModel)]="password"
-        name="password"
-        required
-        placeholder="Password"
-      />
-      <div class="remember-section">
-        <label>
-          <input type="checkbox" [(ngModel)]="rememberMe" name="rememberMe" />
+      <!-- Password Input -->
+      <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password *</label>
+      <div class="relative mb-4">
+        <input
+          id="password"
+          type="password"
+          [(ngModel)]="password"
+          name="password"
+          class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          placeholder="Password"
+        />
+        <button
+          type="button"
+          (click)="togglePasswordVisibility()"
+          class="absolute right-3 top-1/2 transform -translate-y-1/2 text-blue-500 text-xs font-medium"
+        >
+          Show Password
+        </button>
+      </div>
+
+      <!-- Additional Options -->
+      <div class="flex justify-between items-center mb-6">
+        <label class="flex items-center text-xs text-gray-600">
+          <input type="checkbox" class="mr-2 rounded border-gray-300" />
           Remember for 30 days
         </label>
-        <a href="#" class="forgot-password">Forgot Password</a>
+        <a href="#" class="text-blue-600 text-xs font-medium hover:underline">Forgot Password</a>
       </div>
-      <button type="submit" class="btn btn-primary">Sign In</button>
+
+      <!-- Sign In Button -->
+      <button type="submit" class="w-full py-2 bg-green-600 text-white rounded-md text-sm font-medium hover:bg-green-700">
+        Sign In
+      </button>
     </form>
-    <div class="alt-signin">
-      <p>Or continue with</p>
-      <button class="btn btn-secondary">Sign in with Digital ID</button>
+
+    <!-- Alternative Login -->
+    <div class="mt-4 text-center">
+      <p class="text-gray-600 text-sm mb-3">Or continue with</p>
+      <button class="w-full py-2 bg-gray-100 text-gray-700 border border-gray-300 rounded-md text-sm font-medium">
+        Sign in with Digital ID
+      </button>
     </div>
-    <p class="signup">
-      Don’t have an account? <a href="#" class="signup-link">Sign up</a>
+
+    <!-- Sign Up Link -->
+    <p class="mt-4 text-gray-600 text-xs">
+      Don’t have an account? <a [routerLink]="['/register']" class="text-blue-600 font-medium hover:underline">Sign up</a>
     </p>
   </div>
-  <div class="right-section">
-    <img src="assests/home.jpg" alt="Illustration" class="right-img" />
-    <div class="overlay">
-      <p>Over 8,000 Government services now available at your fingertips</p>
+
+  <!-- Right Section -->
+  <div class="right-section w-full lg:w-1/2 relative">
+    <img
+      src="assests/home.jpg"
+      alt="Illustration"
+      class="w-full h-full object-cover"
+    />
+    <div class="absolute bottom-8 left-8 bg-black bg-opacity-60 text-white p-4 rounded-md max-w-sm">
+      <p class="text-sm leading-5">
+        Over <span class="font-extrabold">8,000</span> Government services now available at your fingertips
+      </p>
     </div>
   </div>
 </div>
-

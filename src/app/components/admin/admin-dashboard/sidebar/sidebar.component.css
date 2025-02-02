@@ -1,0 +1,5 @@
+/* Ensuring full height */
+:host {
+    height: 100vh;
+  }
+  

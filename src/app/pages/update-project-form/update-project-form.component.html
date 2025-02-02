@@ -1,0 +1,70 @@
+<h2 class="text-center text-gray-200 pt-5">Update Project:</h2>
+<form (ngSubmit)="onSubmit()" class="w-[27rem] p-6 rounded-lg shadow-md">
+  <div class="mb-4">
+    <mat-form-field class="w-full">
+      <mat-label class="text-gray-200">project title</mat-label>
+      <input matInput 
+      placeholder="title..."
+      name="title"
+      [(ngModel)]="projectItems.title"
+      class="py-2 px-3 text-gray-200 mt-1 focus:shadow-outline"
+      />
+    </mat-form-field>
+  </div>
+
+  <div class="mb-4">
+    <mat-form-field class="w-full">
+      <mat-label class="text-gray-200">Description</mat-label>
+      <input matInput 
+      placeholder="Description..."
+      name="description"
+      [(ngModel)]="projectItems.description"
+      class="py-2 px-3 text-gray-200 mt-1 focus:shadow-outline"
+      />
+    </mat-form-field>
+  </div>
+
+  <div class="mb-4">
+    <mat-form-field class="w-full">
+      <mat-label class="text-gray-200">Days remaining</mat-label>
+      <input matInput 
+      placeholder="Days remaining..."
+      name="daysRemaining"
+      [(ngModel)]="projectItems.daysRemaining"
+      class="py-2 px-3 text-gray-200 mt-1 focus:shadow-outline"
+      />
+    </mat-form-field>
+  </div>
+
+  <div class="mb-4">
+    <mat-form-field class="w-full">
+      <mat-label class="text-gray-200">Image</mat-label>
+      <input matInput 
+      placeholder="image url"
+      name="image"
+      [(ngModel)]="projectItems.image"
+      class="py-2 px-3 text-gray-200 mt-1 focus:shadow-outline"
+      />
+    </mat-form-field>
+  </div>
+
+  <div class="mb-4">
+    <mat-form-field class="w-full">
+      <mat-label class="text-gray-200">Tag</mat-label>
+      <input matInput 
+      placeholder="tag..."
+      name="tag"
+      [(ngModel)]="projectItems.tag"
+      class="py-2 px-3 text-gray-200 mt-1 focus:shadow-outline"
+      />
+    </mat-form-field>
+  </div>
+
+  <div>
+    <button mat-raised-button color="primary" type="submit">
+      Create
+    </button>
+  </div>
+
+</form>
+  

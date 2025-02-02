@@ -1,0 +1,105 @@
+.project-card {
+    width: 350px;
+    height: 420px;
+    padding-top: 10px;
+    border: 1px solid gainsboro;
+    border-radius: 10px;
+    background-color: white;
+    color: black;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+    margin-left: 12px;
+}
+.progress{
+    padding-left: 10px;
+}
+.project-footer, h3, .progress-status, p{
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.project-card img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 0;
+    display: block;
+}
+
+.project-status {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.progress-bar {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.progress-bar p {
+    margin: 0;
+    font-size: 14px;
+    color: #333;
+}
+
+.progress-bar .w-60 {
+    width: 100%;
+    background-color: #e5e7eb; /* Light gray */
+    border-radius: 9999px;
+    height: 6px;
+    position: relative;
+}
+
+.progress-bar .w-60 div {
+    height: 6px;
+    border-radius: 9999px;
+    background-color: #22c55e; /* Tailwind's green-500 */
+    width: 50%;
+}
+
+.progress-status button {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: green;
+    color: white;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.project-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 10px;
+}
+
+.avatar {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.avatar img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.icons {
+    gap: 6px;
+}
+
+.icons {
+    font-size: 18px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.icons i:hover {
+    color: #e74c3c;
+}

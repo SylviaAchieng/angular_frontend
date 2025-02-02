@@ -15,7 +15,7 @@ class="relative bg-gray-700 bg-center bg-no-repeat bg-blend-multiply h-full flex
   </p>
   <div class="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-x-4 sm:space-y-0">
     <button
-      class="inline-flex items-center justify-center rounded-lg bg-green-500 px-5 py-3 text-center text-base font-medium text-white hover:bg-green-600 focus:ring-4 focus:ring-green-300"
+      class="inline-flex items-center justify-center rounded-lg bg-blue-800 px-5 py-3 text-center text-base font-medium text-white hover:bg-blue-600 focus:ring-4"
       (click)="onGetInvolved()"
     >
       {{ heroPrimaryButton }}
@@ -36,7 +36,7 @@ class="relative bg-gray-700 bg-center bg-no-repeat bg-blend-multiply h-full flex
     <!-- Header -->
     <div class="flex justify-between items-center mb-8">
       <h2 class="text-2xl font-bold text-gray-800">{{ projectsTitle }}</h2>
-      <a href="#" class="text-blue-600 hover:underline">{{ seeAllText }}</a>
+      <a class="text-blue-600 hover:underline" routerLink="/projects">{{ seeAllText }}</a>
     </div>
 
     <!-- Card Container -->
@@ -97,77 +97,16 @@ class="relative bg-gray-700 bg-center bg-no-repeat bg-blend-multiply h-full flex
 
 
 <section class="bg-gray-100 py-4">
-  <div class="max-w-screen-xl mx-auto px-8 lg:px-6">
-    <!-- Card Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <!-- Loop Through Projects -->
-      <div *ngFor="let project of projects" class="bg-white shadow-md rounded-lg overflow-hidden">
-        <!-- Days Remaining and Tag Section -->
-        <div class="p-4 bg-gray-50">
-          <div class="flex justify-between items-center mb-2">
-            <div class="w-full">
-              <span class="text-sm font-medium text-gray-800">{{ project.daysRemaining }} days remaining</span>
-              <!-- Progress Bar -->
-              <div class="w-60 bg-gray-200 rounded-full h-2 mt-1">
-                <div
-                  class="h-2 rounded-full"
-                  [class.bg-red-500]="project.daysRemaining <= 2"
-                  [class.bg-yellow-500]="project.daysRemaining > 2 && project.daysRemaining <= 5"
-                  [class.bg-green-500]="project.daysRemaining > 5"
-                  [style.width]="(100 - (project.daysRemaining * 10)) + '%'"
-                ></div>
-              </div>
-            </div>
-            <button
-              [class.bg-red-100]="project.tagColor === 'red'"
-              [class.bg-green-100]="project.tagColor === 'green'"
-              [class.bg-yellow-100]="project.tagColor === 'yellow'"
-              [class.text-red-600]="project.tagColor === 'red'"
-              [class.text-green-600]="project.tagColor === 'green'"
-              [class.text-yellow-600]="project.tagColor === 'yellow'"
-              class="text-xs px-4 py-1 rounded-full" style="border-radius: 0;"
-            >
-              {{ project.tag }}
-            </button>
-          </div>
-        </div>
-        
-        <!-- Image -->
-        <img [src]="project.image" alt="Project Image" class="h-48 w-full object-cover" />
-
-        <!-- Content Section -->
-        <div class="p-4">
-          <h3 class="text-lg font-semibold text-gray-800 mb-2">
-            {{ project.title }}
-          </h3>
-          <p class="text-gray-600 text-sm mb-4">
-            {{ project.description }}
-          </p>
-          <div class="flex justify-between items-center">
-            <!-- Participants -->
-            <div class="flex items-center space-x-2">
-              <img
-                src="https://i.ibb.co/YpHsQQr/user-avatar.jpg"
-                alt="Avatar 1"
-                class="h-6 w-6 rounded-full"
-              />
-              <span class="text-gray-600 text-xs">+{{ project.participants }} more</span>
-            </div>
-            <!-- Actions -->
-            <div class="flex space-x-4 text-gray-600 text-sm">
-              <span class="flex items-center space-x-1">
-                <i class="fas fa-heart"></i> <span>{{ project.likes }}</span>
-              </span>
-              <span class="flex items-center space-x-1">
-                <i class="fas fa-comment"></i> <span>{{ project.comments }}</span>
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div class="flex flex-wrap justify-center gap-6">
+      @for (item of projects; track 1) {
+          <app-project-card/>
+      }
+      @empty {
+        <div class="w-full text-center">No Projects found</div>
+      }
     </div>
-  </div>
 </section>
+
 
 
 <section class="bg-white py-16 px-6 lg:px-32">
@@ -244,7 +183,7 @@ class="relative bg-gray-700 bg-center bg-no-repeat bg-blend-multiply h-full flex
 
 <section>
 <div class="bg-white py-10">
-  <h2 class="text-2xl font-bold text-gray-800 text-center mb-8">Discover Go Vocal for...</h2>
+  <h2 class="text-3xl font-bold text-gray-800 text-center mb-8">Discover Go Vocal for...</h2>
   <div class="flex flex-wrap justify-center gap-6">
     <div
       *ngFor="let card of cards"
@@ -274,7 +213,23 @@ class="relative bg-gray-700 bg-center bg-no-repeat bg-blend-multiply h-full flex
 </div>
 </section>
 
-
+<!-- New Schedule a Demo Section -->
+<section class="bg-gray-500 py-16 px-6 lg:px-32 text-center">
+  <div class="container mx-auto">
+    <h2 class="text-3xl font-extrabold text-white mb-6">
+      Ready to revolutionize civic engagement?
+    </h2>
+    <p class="text-lg text-gray-300 mb-10">
+      Schedule a personalized demo today and discover how our platform can help you create lasting impact!
+    </p>
+    <button
+      class="rounded-lg bg-blue-800 hover:bg-blue-800 px-8 py-3 text-white text-lg font-bold shadow-lg focus:outline-none focus:ring-4"
+      (click)="onScheduleDemo()"
+    >
+      Sign Up
+    </button>
+  </div>
+</section>
 
 
 <app-footer></app-footer>
