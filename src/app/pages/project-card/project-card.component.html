@@ -10,7 +10,7 @@
             </div>
         </div>
         <div class="progress-status">
-            <button>Ongoing</button>
+            <button>{{project.tag}}</button>
         </div>
     </div>
 
@@ -44,7 +44,7 @@
             <button (click)="handleOpenUpdateProjectForm()" mat-icon-button aria-label="Edit">
                 <mat-icon>edit</mat-icon>
             </button>
-            <button mat-icon-button aria-label="Delete">
+            <button (click)="handleDeleteProject()" mat-icon-button aria-label="Delete">
                 <mat-icon>delete</mat-icon>
             </button>
         </div>

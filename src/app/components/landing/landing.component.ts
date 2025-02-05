@@ -18,7 +18,8 @@ export class LandingComponent {
 
   projects =[];
 
-  heroBackground = 'https://i.ibb.co/8Dw3HDN/conference.jpg';
+  //heroBackground = 'https://i.ibb.co/8Dw3HDN/conference.jpg';
+  heroBackground = 'assests/conference.jpeg';
   heroTitle = 'Your Voice, Our Action';
   heroSubtitle =
     'Empowering citizens to engage directly with the government and ensure their concerns are heard.';

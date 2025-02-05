@@ -1,27 +1,31 @@
 <div class="h-screen w-64 bg-[#0d3b50] text-white fixed flex flex-col">
     <!-- Top Section -->
-    <div class="p-4 flex items-center gap-2 bg-[#1a5d76]">
-      <i class="fas fa-plus-circle"></i>
+    <div [routerLink]="['/']" class="p-4 flex items-center gap-2 bg-[#1a5d76] cursor-pointer">
+      <i class="fa-solid fa-arrow-left"></i>
       <span class="font-semibold">To platform</span>
     </div>
   
     <!-- Navigation Links -->
     <nav class="flex-1 mt-2">
       <ul>
-        <li (click)="onSelectSection('dashboard')"class="px-4 py-2 bg-[#124559] flex items-center gap-3 cursor-pointer">
+        <li class="px-4 py-2 bg-[#124559] flex items-center gap-3 cursor-pointer">
+          <a [routerLink]="['/admin-dashboard/dashboard']" class="w-full flex items-center gap-3">
             <i class="fas fa-chart-line"></i> Dashboard
-          </li>
-        <li class="px-4 py-2 hover:bg-[#1a5d76] flex items-center gap-3 cursor-pointer">
-            <i class="fas fa-clipboard-list"></i><a (click)="onSelectSection('projects')"> Projects</a> 
+          </a>
         </li>
-        <li (click)="onSelectSection('events')" class="px-4 py-2 hover:bg-[#1a5d76] flex items-center gap-3 cursor-pointer">
-          <i class="fas fa-folder-open"></i><a (click)="onSelectSection('events')"> Events</a> 
+        <li [routerLink]="['/admin-dashboard/projects']" class="px-4 py-2 hover:bg-[#1a5d76] flex items-center gap-3 cursor-pointer">
+            <i class="fas fa-clipboard-list"></i> Projects
         </li>
         <li class="px-4 py-2 hover:bg-[#1a5d76] flex items-center gap-3 cursor-pointer">
-          <i class="fas fa-leaf"></i><a (click)="onSelectSection('proposals')"> Proposals</a> 
+          <a [routerLink]="['/admin-dashboard/events']" class="w-full flex items-center gap-3">
+            <i class="fas fa-folder-open"></i> Events
+          </a>
         </li>
-        <li class="px-4 py-2 hover:bg-[#1a5d76] flex items-center gap-3 cursor-pointer">
-          <i class="fas fa-users"></i><a (click)="onSelectSection('users')"> Users</a> 
+        <li [routerLink]="['/admin-dashboard/proposals']" class="px-4 py-2 hover:bg-[#1a5d76] flex items-center gap-3 cursor-pointer">
+          <i class="fas fa-leaf"></i> Proposals
+        </li>
+        <li [routerLink]="['/admin-dashboard/users']" class="px-4 py-2 hover:bg-[#1a5d76] flex items-center gap-3 cursor-pointer">
+          <i class="fas fa-users"></i> Users
         </li>
         <li class="px-4 py-2 hover:bg-[#1a5d76] flex items-center gap-3 cursor-pointer">
           <i class="fas fa-envelope"></i> Messaging
@@ -47,7 +51,7 @@
         <li class="px-4 py-2 hover:bg-[#1a5d76] flex items-center gap-3 cursor-pointer">
           <i class="fas fa-question-circle text-green-500"></i> Support
         </li>
-        <li class="px-4 py-2 hover:bg-[#1a5d76] flex items-center gap-3 cursor-pointer relative">
+        <li [routerLink]="['/admin-dashboard/notifications']" class="px-4 py-2 hover:bg-[#1a5d76] flex items-center gap-3 cursor-pointer relative">
           <i class="fas fa-bell"></i> Notifications
           <span class="bg-red-500 text-xs px-2 rounded-full absolute right-4">2</span>
         </li>

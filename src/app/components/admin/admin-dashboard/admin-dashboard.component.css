@@ -1,4 +1,4 @@
-
+/* 
 *{
     margin: 0;
     padding: 0;
@@ -14,4 +14,19 @@ main{
     width: 100%;
     
 height: auto;
+} */
+
+/* .dashboard-container{
+    display: flex;
+    height: 100vh;
 }
+.main-content{
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+
+} */
+
+.main-content {
+    margin-left: 250px; /* Should match the sidebar width */
+  }

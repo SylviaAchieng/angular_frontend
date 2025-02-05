@@ -1,10 +1,11 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { UpdateProjectFormComponent } from '../../pages/update-project-form/update-project-form.component';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
+import { ProjectService } from '../../services/project.service';
 
 @Component({
   selector: 'app-project-card',
@@ -15,11 +16,15 @@ import { MatIcon, MatIconModule } from '@angular/material/icon';
 })
 export class ProjectCardComponent {
   @Input() project: any;
+  @Output() deleteProjectEvent = new EventEmitter<number>();
 
-  constructor(public dialog: MatDialog){}
+  constructor(public dialog: MatDialog, private projectService: ProjectService){}
 
   handleOpenUpdateProjectForm(){
       this.dialog.open(UpdateProjectFormComponent)
     }
 
+  handleDeleteProject(){
+    this.projectService.deleteProject(this.project.projectId).subscribe()
+  }  
 }

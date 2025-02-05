@@ -1,0 +1,27 @@
+
+
+.notification-menu {
+  position: relative;
+}
+
+.notifications-dropdown.mdl-list {
+  width: 310px;
+}
+
+.notifications-dropdown.mdl-list .mdl-list__item:first-child {
+  color: yellowgreen; /* Replace with the actual color value */
+}
+
+.notifications-dropdown.mdl-list .mdl-list__item .mdl-list__item-avatar {
+  padding: 10px; /* Replace with the calculated padding value */
+  text-align: center;
+}
+
+.notifications-dropdown.mdl-list .mdl-list__item .mdl-list__item-avatar .material-icons {
+  vertical-align: top;
+}
+
+.notifications-dropdown.mdl-list .mdl-list__item:last-child {
+  padding-top: 5px; /* Replace with the calculated value */
+  padding-bottom: 0;
+}

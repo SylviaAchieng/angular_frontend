@@ -1,10 +1,7 @@
-<main>
-  <app-sidebar (selectSection)="onSectionSelected($event)"></app-sidebar>
-  <div class="dashboard-container">
-    <!-- Main content goes here -->
-     <app-dashboard *ngIf=" selectedSection === 'dashboard'"></app-dashboard>
-     <app-projects *ngIf="selectedSection === 'projects'"></app-projects>
-     <app-events *ngIf="selectedSection === 'events'"></app-events>
-     <app-users *ngIf="selectedSection === 'users'"></app-users>
+
+<div class="dashboard-container flex">
+  <app-sidebar></app-sidebar>
+  <div class="main-content flex-1 p-4">
+    <router-outlet></router-outlet>
   </div>
-</main>
+</div>
