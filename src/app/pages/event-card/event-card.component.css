@@ -1,0 +1,91 @@
+.event-card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 15px;
+    display: flex;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    margin: 40px auto; /* Center horizontally */
+    max-width: 90%;
+  }
+  
+  .event-card-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .event-image {
+    width: 120px;
+    height: 100px;
+    border-radius: 8px;
+    object-fit: cover;
+    margin-right: 15px;
+  }
+  
+  .event-details {
+    flex: 1;
+  }
+  
+  .event-meta {
+    font-size: 14px;
+    color: #666;
+    display: flex;
+    gap: 10px;
+  }
+  
+  .event-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    margin: 5px 0;
+  }
+  
+  .event-location {
+    font-size: 14px;
+    color: #777;
+  }
+  
+  .event-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .buy-ticket {
+    background-color: #007bff;
+    border: none;
+    padding: 5px 10px;
+    font-size: 14px;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+  }
+  
+  .speakers {
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+  
+  .speaker-img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-left: -8px;
+    border: 2px solid white;
+  }
+  
+  .badge-speakers {
+    background: #007bff;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    margin-left: 8px;
+  }
+  @media (min-width: 768px) {
+    .event-card {
+      max-width: 60%; /* Reduce width for larger screens */
+    }
+  }

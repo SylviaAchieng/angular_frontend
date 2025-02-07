@@ -6,17 +6,37 @@ import { Router, RouterLink } from '@angular/router';
 import { ProjectCardComponent } from "../../pages/project-card/project-card.component";
 import { AuthService } from '../../services/auth.service';
 import { ProjectService } from '../../services/project.service';
+import { EventCardComponent } from "../../pages/event-card/event-card.component";
 
 @Component({
   selector: 'app-landing',
   standalone: true,
-  imports: [RouterLink,NavbarComponent,FooterComponent,CommonModule, ProjectCardComponent],
+  imports: [RouterLink, NavbarComponent, FooterComponent, CommonModule, ProjectCardComponent, EventCardComponent],
   templateUrl: './landing.component.html',
   styleUrl: './landing.component.css'
 })
 export class LandingComponent {
 
   projects =[];
+  
+
+  eventData = {
+    imageUrl: 'assets/event1.jpg',
+    date: '24 Jan, 2024',
+    time: '10:00 AM - 2:00 PM',
+    title: 'Siempre Son Flores* Musica Cubana Salsa Jazz',
+    location: '135 W, 46nd Street, New York',
+    speakers: [
+      'assets/speaker1.jpg',
+      'assets/speaker2.jpg',
+      'assets/speaker3.jpg'
+    ]
+  };
+
+  // TrackBy function using index
+  trackByEventId(index: number, event: any): number {
+    return index; // Use the index as the unique identifier
+  }
 
   //heroBackground = 'https://i.ibb.co/8Dw3HDN/conference.jpg';
   heroBackground = 'assests/conference.jpeg';

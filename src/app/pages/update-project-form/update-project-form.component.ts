@@ -28,7 +28,7 @@ export class UpdateProjectFormComponent {
   }
 
   onSubmit(){
-    this.projectService.updateProject(this.project.projectId)
+    this.projectService.updateProject(this.project.projectId).subscribe();
     console.log("values", this.projectItems)
     this.projectItems = this.project;
   }

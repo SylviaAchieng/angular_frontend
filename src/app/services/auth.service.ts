@@ -11,6 +11,13 @@ export class AuthService {
 
   constructor(private http : HttpClient) {}
 
+  private getHeaders(): HttpHeaders{
+    const token = localStorage.getItem('token');
+    return new HttpHeaders({
+      Authorization: `Bearer ${localStorage.getItem('token')}`
+    })
+  }
+
   login(email: string, password: string): Observable<any>{
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     const body = { email, password };
@@ -39,6 +46,28 @@ export class AuthService {
         console.log("get user profile", user)
         const currentState = this.authSubject.value;
         this.authSubject.next({...currentState, user})
+      })
+    )
+  }
+
+  getAllUsers(): Observable<any> {
+    const headers = this.getHeaders();
+    return this.http.get<any>(`${this.baseUrl}/api/v1/users`, { headers }).pipe(
+      tap((response: { _embedded: any[] }) => {  // Correctly type the response
+        const currentState = this.authSubject.value;
+        const users = response._embedded || [];  // Ensure it's an array
+        this.authSubject.next({ ...currentState, users });
+      })
+    );
+  }
+
+  deleteUser(userId:any):Observable<any>{
+    const headers = this.getHeaders();
+    return this.http.delete<any>(`${this.baseUrl}/api/v1/users/${userId}`, {headers}).pipe(
+      tap((deletedUser:any)=>{
+        const currentState = this.authSubject.value;
+        const updatedUser = currentState.users.filter((item:any)=>item.userId !== userId);
+        this.authSubject.next({...currentState, users: updatedUser})
       })
     )
   }

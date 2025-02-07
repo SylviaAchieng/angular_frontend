@@ -7,11 +7,12 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import { ProjectCardComponent } from "../project-card/project-card.component";
 import { LandingComponent } from "../../components/landing/landing.component";
+import { ProjectsComponent } from '../../components/admin/admin-dashboard/projects/projects.component';
 
 @Component({
   selector: 'app-create-project',
   standalone: true,
-  imports: [MatButtonModule, ProjectCardComponent, MatDialogModule, MatIconModule, ProjectCardComponent, FormComponent, LandingComponent],
+  imports: [MatButtonModule, MatDialogModule, MatIconModule, LandingComponent, ProjectsComponent],
   templateUrl: './create-project.component.html',
   styleUrl: './create-project.component.css'
 })

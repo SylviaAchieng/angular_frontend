@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { EventService } from '../../../../services/event.service';
+import { AuthService } from '../../../../services/auth.service';
 
 @Component({
   selector: 'app-events',
@@ -13,7 +14,9 @@ import { EventService } from '../../../../services/event.service';
 })
 export class EventsComponent {
 
-  events: any[] = [];
+ // @Input() event: any;
+
+  events: any;
   paginatedEvents: any[] = [];
   selectedEvent: any = null;
   isViewing = false;
@@ -22,21 +25,40 @@ export class EventsComponent {
   vipPrice: number = 0;
   regularPrice: number=0;
   totalTickets: number=0;
-  itemsPerPage: number=0;
+  itemsPerPage: number=5;
   isDeleted: boolean=false;
+
+  eventItems: any = {
+    title: "",
+    description: "",
+    eventDate: "",
+    time: "",
+    createdAt: "",
+    base64EncodedImage: "",
+    location: " ",
+    user: null
+  };
 
 
   constructor(private eventService: EventService) {}
 
-  ngOnInit(): void {
-    this.loadEvents();
-  }
 
-  loadEvents(): void {
+   ngOnInit(): void {
+     this.loadEvents();
+   }
+
+   loadEvents(): void {
     this.eventService.getAllEvents().subscribe(events => {
-      this.events = events;
-      this.updatePagination();
+      console.log("Events received:", events); // Debugging
+      this.events = events._embedded || []; 
+      
     });
+
+    // Subscribe to projectSubject to update component state
+  this.eventService.eventSubject.subscribe((state) => {
+    this.events = state.events;
+    console.log("events state updated:", this.events);
+  });
   }
 
   updatePagination(): void {

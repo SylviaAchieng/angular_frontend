@@ -21,7 +21,7 @@
 
     <!-- Fallback Image if No Base64 Image -->
     <ng-template #defaultImage>
-        <img src="assets/home.jpg" alt="Default Image">
+        <img src="assests/home.jpg" alt="Default Image">
     </ng-template>
 
     <h3>{{ project.title }}</h3>
@@ -44,7 +44,7 @@
             <button (click)="handleOpenUpdateProjectForm()" mat-icon-button aria-label="Edit">
                 <mat-icon>edit</mat-icon>
             </button>
-            <button (click)="handleDeleteProject()" mat-icon-button aria-label="Delete">
+            <button (click)="handleDeleteProject(project.projectId)" mat-icon-button aria-label="Delete">
                 <mat-icon>delete</mat-icon>
             </button>
         </div>

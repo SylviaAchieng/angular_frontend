@@ -20,11 +20,15 @@ export class ProjectCardComponent {
 
   constructor(public dialog: MatDialog, private projectService: ProjectService){}
 
+  ngOnInit(): void {
+    console.log("project details:", this.project)
+  }
+
   handleOpenUpdateProjectForm(){
-      this.dialog.open(UpdateProjectFormComponent)
+      this.dialog.open(UpdateProjectFormComponent);
     }
 
-  handleDeleteProject(){
-    this.projectService.deleteProject(this.project.projectId).subscribe()
+  handleDeleteProject(projectId: number){
+    this.projectService.deleteProject(this.project.projectId).subscribe();
   }  
 }

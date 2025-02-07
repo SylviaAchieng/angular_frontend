@@ -41,13 +41,35 @@ export class LoginComponent {
     this.authService.login(this.email, this.password).subscribe({
       next: (response: any) => {
         console.log('Login successful:', response);
+  
+        // Store login response details
         localStorage.setItem('token', response._embedded.token);
         localStorage.setItem('userId', response._embedded.user.userId);
-        localStorage.setItem('username', response._embedded.user.fullName);
+        localStorage.setItem('userType', response._embedded.user.userType);
+        
+  
         const userId = response._embedded.user.userId;
-        this.authService.getUserProfile(userId).subscribe();
-        console.log("login successful", response)
-        this.router.navigate(['/']); // Replace with your desired route
+        const userType = response._embedded.user.userType;
+  
+        // Fetch user profile after login
+        this.authService.getUserProfile(userId).subscribe({
+          next: (profileResponse: any) => {
+            console.log('User profile retrieved:', profileResponse);
+
+            const fullName = profileResponse._embedded.fullName;
+            localStorage.setItem('fullName', fullName);
+                    
+            // Navigate based on user type
+            if (userType === 'ADMIN') {
+              this.router.navigate(['/admin-dashboard']);
+            } else {
+              this.router.navigate(['/']);
+            }
+          },
+          error: (profileError) => {
+            console.error('Failed to fetch user profile:', profileError);
+          }
+        });
       },
       error: (err) => {
         console.error('Login failed:', err);
@@ -55,6 +77,34 @@ export class LoginComponent {
       }
     });
   }
+
+  // onLogin() {
+  //   this.authService.login(this.email, this.password).subscribe({
+  //     next: (response: any) => {
+  //       console.log('Login successful:', response);
+  //       localStorage.setItem('token', response._embedded.token);
+  //       localStorage.setItem('userId', response._embedded.user.userId);
+  //       localStorage.setItem('userType', response._embedded.user.userType);
+  //       localStorage.setItem('username', response._embedded.user.fullName);
+  //       const userId = response._embedded.user.userId;
+
+  //       const userType = response._embedded.user.userType;
+  //       this.authService.getUserProfile(userId).subscribe();
+
+  //       if (userType === 'ADMIN') {
+  //         this.router.navigate(['/admin-dashboard']);
+  //       } else {
+  //         this.router.navigate(['/']);
+  //       }
+  //       console.log("login successful", response)
+  //       //this.router.navigate(['/']); // Replace with your desired route
+  //     },
+  //     error: (err) => {
+  //       console.error('Login failed:', err);
+  //       this.errorMessage = 'Invalid email or password';
+  //     }
+  //   });
+  // }
 
   // signIn(){
   //   console.log("login", this.loginForm.value)

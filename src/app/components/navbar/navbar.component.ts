@@ -15,8 +15,11 @@ export class NavbarComponent {
   constructor(private router: Router, public authService: AuthService) {}
 
   user:any = null;
+  username: any;
 
   ngOnInit(): void {
+    this.username = localStorage.getItem('fullName');
+    console.log('Retrieved Username:', this.username);
     const userId = localStorage.getItem('userId');
     this.authService.authSubject.subscribe(
       (auth)=>{
