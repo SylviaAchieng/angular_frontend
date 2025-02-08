@@ -13,6 +13,7 @@ import { SettingsComponent } from './components/admin/admin-dashboard/settings/s
 import { ProjectsComponent } from './components/admin/admin-dashboard/projects/projects.component';
 import { NotificationComponent } from './components/admin/admin-dashboard/notification/notification.component';
 
+
 export const routes: Routes = [
     { path: "", component: LandingComponent },
     { path: "login", component: LoginComponent },
@@ -20,6 +21,7 @@ export const routes: Routes = [
     { path: "projects", component: ProjectComponent },
     { path: "create-project", component: CreateProjectComponent },
     { path: "project-card", component: ProjectCardComponent },
+    
     
     { path: 'admin-dashboard', component: AdminDashboardComponent, children: [
         { path: '', redirectTo: 'dashboard', pathMatch: 'full' },

@@ -72,6 +72,17 @@ export class AuthService {
     )
   }
 
+  updateUser(userId:any, userData:any):Observable<any>{
+    const headers = this.getHeaders();
+      return this.http.put<any>(`${this.baseUrl}/api/v1/users/${userId}`,userData, {headers}).pipe(
+        tap((updatedUser:any)=>{
+          const currentState = this.authSubject.value;
+          const updatedUsers = currentState.users.map((item:any)=>item.userId === updatedUser.userId?updatedUser:item);
+          this.authSubject.next({...currentState, users: updatedUsers})
+        })
+      )
+  }
+
   logout(){
     localStorage.clear();
     this.authSubject.next({})

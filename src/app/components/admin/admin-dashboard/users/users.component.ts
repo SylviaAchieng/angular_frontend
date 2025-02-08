@@ -53,10 +53,19 @@ export class UsersComponent {
       handleDeleteUser(userId: number){
         this.authService.deleteUser(this.user.userId).subscribe();
       }
-  
-      handleOpenUpdateProjectForm(projectId: number){
-            this.dialog.open(UpdateProjectFormComponent);
+
+      handleUpdateUser() {
+        this.authService.updateUser(this.selectedUser.userId, this.selectedUser).subscribe({
+          next: (response) => {
+            alert("User updated successfully!");
+             this.closeViewEventModal();
+          },
+          error: (error) => {
+            console.error("Error updating user:", error);
+            alert("Failed to update user.");
           }
+        });
+      }    
     
       updatePagination(): void {
         const totalPages = Math.ceil(this.users.length / this.itemsPerPage);

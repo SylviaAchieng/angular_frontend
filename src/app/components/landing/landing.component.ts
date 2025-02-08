@@ -6,12 +6,12 @@ import { Router, RouterLink } from '@angular/router';
 import { ProjectCardComponent } from "../../pages/project-card/project-card.component";
 import { AuthService } from '../../services/auth.service';
 import { ProjectService } from '../../services/project.service';
-import { EventCardComponent } from "../../pages/event-card/event-card.component";
+
 
 @Component({
   selector: 'app-landing',
   standalone: true,
-  imports: [RouterLink, NavbarComponent, FooterComponent, CommonModule, ProjectCardComponent, EventCardComponent],
+  imports: [RouterLink, NavbarComponent, FooterComponent, CommonModule, ProjectCardComponent],
   templateUrl: './landing.component.html',
   styleUrl: './landing.component.css'
 })
@@ -38,8 +38,8 @@ export class LandingComponent {
     return index; // Use the index as the unique identifier
   }
 
-  //heroBackground = 'https://i.ibb.co/8Dw3HDN/conference.jpg';
-  heroBackground = 'assests/conference.jpeg';
+  heroBackground = 'https://i.ibb.co/8Dw3HDN/conference.jpg';
+  //heroBackground = 'assests/confernce.jpeg';
   heroTitle = 'Your Voice, Our Action';
   heroSubtitle =
     'Empowering citizens to engage directly with the government and ensure their concerns are heard.';
