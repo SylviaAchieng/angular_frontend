@@ -28,16 +28,28 @@ export class UsersComponent {
       totalTickets: number=0;
       itemsPerPage: number=5;
       isDeleted: boolean=false;
+      isAddUserFormVisible = false;
+
+      newUser: any = {
+        fullName: '',
+        email: '',
+        idNumber: null,
+        password: '',
+        location: { county: '' },
+        userType: ''
+      };
+
+      errorMessage: string = '';
     
     
       constructor(private authService: AuthService, public dialog: MatDialog) {}
     
     
        ngOnInit(): void {
-         this.loadEvents();
+         this.loadUsers();
        }
     
-       loadEvents(): void {
+       loadUsers(): void {
         this.authService.getAllUsers().subscribe((response) => {
           console.log("users received:", response); // Debugging
           this.users = response._embedded || [];
@@ -48,10 +60,6 @@ export class UsersComponent {
         this.users = state.users;
         console.log("users state updated:", this.users);
       });
-      }
-  
-      handleDeleteUser(userId: number){
-        this.authService.deleteUser(this.user.userId).subscribe();
       }
 
       handleUpdateUser() {
@@ -65,7 +73,50 @@ export class UsersComponent {
             alert("Failed to update user.");
           }
         });
-      }    
+      }  
+      
+      handleDeleteUser(userId: any): void {
+        if (confirm('Are you sure you want to delete this user?')) {
+          this.authService.deleteUser(this.selectedUser.userId).subscribe({
+            next: () => {
+              console.log(`User with ID ${userId} deleted successfully`);
+              alert("User deleted successfully!");
+              this.users = this.users.filter((user: any) => user.userId !== userId);
+            },
+            error: (err) => {
+              console.error('Error deleting user:', err);
+            }
+          });
+        }
+      }
+      
+      toggleAddUserForm() {
+        this.isAddUserFormVisible = !this.isAddUserFormVisible;
+      }
+
+      handleAddUser() {
+        if (!this.newUser.fullName || !this.newUser.email || !this.newUser.password || !this.newUser.nationalId) {
+          alert('All fields are required');
+          return;
+        }
+        if (isNaN(this.newUser.nationalId)) {
+          alert('National ID must be a number');
+          return;
+        }
+        this.authService.register(this.newUser).subscribe({
+          next: (response) => {
+            console.log('User registered:', response);
+            this.users.push({ ...this.newUser });
+            alert('User added successfully!');
+            this.newUser = { fullName: '', email: '', nationalId: null, password: '', location: { county: '' }, userType: '' };
+            this.toggleAddUserForm();
+          },
+          error: (error) => {
+            console.error('Error registering user:', error);
+            alert(error.error?.message || 'Registration failed');
+          }
+        });
+      }
     
       updatePagination(): void {
         const totalPages = Math.ceil(this.users.length / this.itemsPerPage);

@@ -24,11 +24,4 @@ export class ProjectCardComponent {
     console.log("project details:", this.project)
   }
 
-  handleOpenUpdateProjectForm(){
-      this.dialog.open(UpdateProjectFormComponent);
-    }
-
-  handleDeleteProject(projectId: number){
-    this.projectService.deleteProject(this.project.projectId).subscribe();
-  }  
 }

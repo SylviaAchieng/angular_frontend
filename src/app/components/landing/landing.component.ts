@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { FooterComponent } from '../footer/footer.component';
 import { CommonModule } from '@angular/common';
@@ -6,32 +6,49 @@ import { Router, RouterLink } from '@angular/router';
 import { ProjectCardComponent } from "../../pages/project-card/project-card.component";
 import { AuthService } from '../../services/auth.service';
 import { ProjectService } from '../../services/project.service';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatIcon, MatIconModule } from '@angular/material/icon';
+import { EventCardComponent } from "../../pages/event-card/event-card.component";
+import { EventService } from '../../services/event.service';
+
 
 
 @Component({
   selector: 'app-landing',
   standalone: true,
-  imports: [RouterLink, NavbarComponent, FooterComponent, CommonModule, ProjectCardComponent],
+  imports: [RouterLink, NavbarComponent, FooterComponent, CommonModule, ProjectCardComponent, EventCardComponent],
   templateUrl: './landing.component.html',
   styleUrl: './landing.component.css'
 })
 export class LandingComponent {
+  @Input() project: any;
 
   projects =[];
-  
 
-  eventData = {
-    imageUrl: 'assets/event1.jpg',
+  eventList: any[]=[];
+
+  eventLists = [1, 1, 1, 1, 11, 1].map(() => ({
+    base64EncodedImage: 'assests/event1.jpeg',
     date: '24 Jan, 2024',
     time: '10:00 AM - 2:00 PM',
     title: 'Siempre Son Flores* Musica Cubana Salsa Jazz',
-    location: '135 W, 46nd Street, New York',
-    speakers: [
-      'assets/speaker1.jpg',
-      'assets/speaker2.jpg',
-      'assets/speaker3.jpg'
-    ]
-  };
+    description: 'Join industry leaders and innovators as we explore the latest trends in technology and innovation.',
+    location: '135 W, 46nd Street, New York'
+  }));
+  
+
+  // eventData = {
+  //   base64EncodedImage: 'assests/home.jpg',
+  //   date: '24 Jan, 2024',
+  //   time: '10:00 AM - 2:00 PM',
+  //   title: 'Siempre Son Flores* Musica Cubana Salsa Jazz',
+  //   description: 'join us for a night of music and dancing with siempr son flores, a cuban band that plays salsa, jazz, and more!',
+  //   location: '135 W, 46nd Street, New York',
+  // };
+
+
+  constructor(private router: Router, public authService: AuthService, private projectService: ProjectService, private eventService: EventService) {}
 
   // TrackBy function using index
   trackByEventId(index: number, event: any): number {
@@ -96,6 +113,16 @@ export class LandingComponent {
     this.hoveredFeature = feature;
   }
 
+  loadFeaturedProject(): void {
+    this.projectService.getProjectById(1).subscribe({
+      next: (project) => {
+        this.projects = project;
+      },
+      error: (err) => console.error('Error fetching project:', err)
+    });
+  }
+  
+
 
   cards = [
     {
@@ -119,7 +146,7 @@ export class LandingComponent {
       color: 'bg-yellow-500',
     },
   ];
-  constructor(private router: Router, public authService: AuthService, private projectService: ProjectService) {}
+  
 
   onScheduleDemo(): void {
     this.router.navigate(['/schedule-demo']); // Update with your actual route
@@ -144,21 +171,66 @@ export class LandingComponent {
         this.user = auth.user;
       }
     );
-    // Fetch all projects from the backend
-  this.projectService.getProjects().subscribe({
-    next: () => {
-      console.log("Projects retrieved successfully");
-    },
-    error: (err) => {
-      console.error("Failed to load projects:", err);
-    }
-  });
-
-  // Subscribe to projectSubject to update component state
-  this.projectService.projectSubject.subscribe((state) => {
-    this.projects = state.projects;
-    console.log("Projects state updated:", this.projects);
-  });
+  this.loadFeaturedProject();
+  this.getAllEvents();
+  this.getAllProjects();
   }
+
+  getAllProjects(): void {
+    this.projectService.getProjects().subscribe({
+      next: (response: any) => {
+        console.log("Projects retrieved successfully:", response);
+  
+        if (!response || !response._embedded) {
+          console.error("Invalid response format");
+          return;
+        }
+  
+        const formattedProjects = response._embedded.map((project: any) => ({
+          ...project,
+          base64EncodedImage: project.base64EncodedImage?.startsWith("data:image/")
+            ? project.base64EncodedImage  // Already formatted correctly
+            : `data:image/jpeg;base64,${project.base64EncodedImage}`  // Add prefix only if missing
+        }));
+  
+        this.projectService.projectSubject.next({ projects: formattedProjects });
+      },
+      error: (err) => {
+        console.error("Failed to load projects:", err);
+      }
+    });
+  
+    this.projectService.projectSubject.subscribe((state: any) => {
+      this.projects = state.projects;
+      console.log("Projects state updated with images:", this.projects);
+    });
+  }
+  
+  
+
+  getAllEvents(): void {
+    this.eventService.getAllEvents().subscribe((response: any) => {
+      console.log("Events received:", response); // Debugging
+      this.eventList = response._embedded?.map((event: any) => ({
+        ...event,
+        base64EncodedImage: event.base64EncodedImage
+          ? `data:image/jpg;base64,${event.base64EncodedImage}`
+          : null
+      })) || [];
+      console.log("Formatted events:", this.eventList);
+    });
+    // Subscribe to eventSubject to update component state
+    this.eventService.eventSubject.subscribe((state: any) => {
+      this.eventList = state.events?.map((event: any) => ({
+        ...event,
+        base64EncodedImage: event.base64EncodedImage
+          ? `data:image/jpg;base64,${event.base64EncodedImage}`
+          : null
+      })) || [];
+  
+      console.log("Updated events state:", this.eventList);
+    });
+  }
+  
 
 }

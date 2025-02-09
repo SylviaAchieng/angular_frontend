@@ -39,6 +39,17 @@ export class EventsComponent {
     user: null
   };
 
+  isEventFormVisible = false;
+
+  newEvent = {
+    title: '',
+    eventDate: '',
+    time: '',
+    description: '',
+    location: { county: '' },
+    base64EncodedImage: '' // Stores encoded image
+  };
+
 
   constructor(private eventService: EventService) {}
 
@@ -48,18 +59,106 @@ export class EventsComponent {
    }
 
    loadEvents(): void {
-    this.eventService.getAllEvents().subscribe(events => {
-      console.log("Events received:", events); // Debugging
-      this.events = events._embedded || []; 
-      
+    this.eventService.getAllEvents().subscribe((response: any) => {
+      console.log("Events received:", response); // Debugging
+      this.events = response._embedded?.map((event: any) => ({
+        ...event,
+        base64EncodedImage: event.base64EncodedImage
+          ? `data:image/jpg;base64,${event.base64EncodedImage}`
+          : null
+      })) || [];
+      console.log("Formatted events:", this.events);
     });
-
-    // Subscribe to projectSubject to update component state
-  this.eventService.eventSubject.subscribe((state) => {
-    this.events = state.events;
-    console.log("events state updated:", this.events);
-  });
+    // Subscribe to eventSubject to update component state
+    this.eventService.eventSubject.subscribe((state: any) => {
+      this.events = state.events?.map((event: any) => ({
+        ...event,
+        base64EncodedImage: event.base64EncodedImage
+          ? `data:image/jpg;base64,${event.base64EncodedImage}`
+          : null
+      })) || [];
+  
+      console.log("Updated events state:", this.events);
+    });
   }
+
+
+  toggleEventForm() {
+    this.isEventFormVisible = !this.isEventFormVisible;
+  }
+
+  // Handle image upload
+  onImageUpload(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.newEvent.base64EncodedImage = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  // Clear selected image
+  clearImage() {
+    this.newEvent.base64EncodedImage = '';
+  }
+
+  // Submit Event to API
+  createEvent() {
+    // Retrieve userId from localStorage
+    const storedUser = localStorage.getItem('user');
+    if (!storedUser) {
+      alert('User not found. Please log in again.');
+      return;
+    }
+    const user = JSON.parse(storedUser);
+    if (user.userType !== 'admin') {
+      alert('Only admins can create events.');
+      return;
+    }
+  
+    // Validate required fields
+    if (!this.newEvent.title || !this.newEvent.eventDate || !this.newEvent.time || !this.newEvent.location.county) {
+      alert('All fields are required');
+      return;
+    }
+  
+    const eventPayload = {
+      user: { userId: user.userId }, // Retrieved from localStorage
+      title: this.newEvent.title,
+      description: this.newEvent.description || '',
+      createdAt: new Date().toISOString().split('T')[0],
+      eventDate: this.newEvent.eventDate,
+      time: this.newEvent.time,
+      location: { location: this.newEvent.location.county },
+      base64EncodedImage: this.newEvent.base64EncodedImage || ''
+    };
+  
+    this.eventService.createEvent(eventPayload).subscribe({
+      next: (response) => {
+        console.log('Event created:', response);
+  
+        // Add the event to the list only if it was created successfully
+        this.events.unshift(response);
+  
+        // Show success alert
+        alert('Event created successfully!');
+  
+        // Reset form fields
+        this.newEvent = { title: '', eventDate: '', time: '', description: '', location: { county: '' }, base64EncodedImage: '' };
+  
+        // Hide event form
+        this.toggleEventForm();
+      },
+      error: (error) => {
+        console.error('Error creating event:', error);
+        alert(error.error?.message || 'Failed to create event');
+      }
+    });
+  }
+  
+  
 
   updatePagination(): void {
     const totalPages = Math.ceil(this.events.length / this.itemsPerPage);

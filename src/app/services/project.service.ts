@@ -80,6 +80,19 @@ export class ProjectService {
       )
     }
 
+    getProjectById(projectId: any):Observable<any>{
+      const headers = new HttpHeaders({
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      })
+      return this.http.get<any>(`${this.baseUrl}/api/v1/projects/${projectId}`, {headers}).pipe(
+        tap((project)=>{
+          console.log("project info", project)
+          const currentState = this.projectSubject.value;
+          this.projectSubject.next({...currentState, project})
+        })
+      )
+    }
+
     likeProject(projectId:any):Observable<any>{
       const headers = this.getHeaders();
       return this.http.put<any>(`${this.baseUrl}/api/v1/projects/${projectId}/like`, {headers}).pipe(

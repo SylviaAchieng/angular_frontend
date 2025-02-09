@@ -1,11 +1,73 @@
 <div class="container mx-auto px-6 py-6">
+
+  <div class="flex justify-end mb-4">
+    <button (click)="toggleProjectForm()" class="bg-teal-600 text-white py-2 px-4 rounded-md shadow-md hover:bg-teal-700 transition">
+      <i class="pi pi-plus mr-2"></i> Create Project
+    </button>
+  </div>
+
     <!-- Navbar -->
     <nav class="flex items-center justify-between py-2 mb-4 bg-teal-500 text-white shadow-md rounded-lg">
       <div class="flex items-center text-xl font-medium px-4">
         <i class="pi pi-file-check mr-2"></i>Projects
       </div>
     </nav>
-    
+
+
+    <!-- Add Project Form -->
+  <div *ngIf="isProjectFormVisible" class="bg-white p-6 rounded-md shadow-md mb-4 border border-gray-300 transition-all">
+    <h2 class="text-lg font-semibold mb-4 text-primary">Create New Project</h2>
+    <form (ngSubmit)="createProject()">
+      <!-- Title -->
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-700">Title:</label>
+        <input type="text" [(ngModel)]="newProject.title" name="title" required class="w-full p-2 border rounded-md">
+      </div>
+      <!-- Location 
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-700">Location:</label>
+        <input type="text" [(ngModel)]="newEvent.location.county" name="county" required class="w-full p-2 border rounded-md">
+      </div>-->
+      <!-- Description -->
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-700">Description:</label>
+        <textarea [(ngModel)]="newProject.description" name="description" required class="w-full p-2 border rounded-md"></textarea>
+      </div>
+      <!-- time -->
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-700">Days Remaining:</label>
+        <input type="number" [(ngModel)]="newProject.daysRemaining" name="daysRemaining" required class="w-full p-2 border rounded-md">
+      </div>
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-700">Tag:</label>
+        <input type="text" [(ngModel)]="newProject.tag" name="tag" required class="w-full p-2 border rounded-md">
+      </div>
+      <!-- Image Upload -->
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-700">Project Banner:</label>
+        <input type="file" (change)="onImageUpload($event)" accept="image/*" class="w-full p-2 border rounded-md">
+      </div>
+      <!-- Image Preview -->
+      <div *ngIf="newProject.base64EncodedImage" class="mb-4">
+        <img [src]="newProject.base64EncodedImage" class="w-full max-h-48 rounded-md shadow-md object-cover" />
+        <button type="button" (click)="clearImage()" class="mt-2 bg-red-500 text-white py-1 px-3 rounded-md hover:bg-red-600">
+          <i class="pi pi-trash"></i> Remove Image
+        </button>
+      </div>
+
+      <!-- Buttons -->
+      <div class="flex justify-end gap-4">
+        <button type="button" (click)="toggleProjectForm()" class="bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-gray-600 transition-all">
+          <i class="pi pi-times mr-2"></i> Cancel
+        </button>
+        <button type="submit" class="bg-teal-600 text-white py-2 px-4 rounded-md hover:bg-success-dark transition-all">
+          <i class="pi pi-check mr-2"></i> Submit
+        </button>
+      </div>
+    </form>
+  </div>
+
+    <!--project table-->
     <div class="font-[sans-serif] overflow-x-auto">
       <table value="events" class="min-w-full bg-white">
         <thead class="bg-teal-900 text-white">
@@ -31,14 +93,14 @@
           <tr *ngFor="let project of projects">
             <td class="p-4 text-sm">
               <div class="flex items-center">
-                <img [src]="project?.base64EncodedImage || 'assests/home.jpg'" class="w-30 h-30 p-1.5 shrink-0 bg-gray-100" />
+                <img [src]="project?.base64EncodedImage || 'assests/home.jpg'" class="w-24 h-24 p-1.5 shrink-0 bg-gray-100" />
               </div>
             </td>
             <td class="p-4 text-sm text-black">
               {{ project?.title }}
             </td>
             <td class="p-4 text-sm text-black">
-              {{ project?.description }}
+              {{ project?.description?.slice(0, 50) }}
             </td>
             <td class="p-4 text-sm text-black">
               {{ project?.daysRemaining}}
@@ -88,42 +150,35 @@
               <i class="pi pi-tag mr-2"></i>
               <div>
                 <label class="text-sm font-medium">Title:</label>
-                <p>{{ selectedEvent?.title }}</p>
+                <input type="text" [(ngModel)]="selectedProject.title" class="border rounded p-2 w-full" />
               </div>
             </div>
             <div class="mb-4 flex items-center">
-              <i class="pi pi-map-marker mr-2"></i>
+              <i class="pi pi-align-left mr-2"></i>
               <div>
-                <label class="text-sm font-medium">Location:</label>
-                <p>{{ selectedEvent?.description }}</p>
-              </div>
-            </div>
-            <div class="mb-4 flex items-center">
-              <i class="pi pi-calendar mr-2"></i>
-              <div>
-                <label class="text-sm font-medium">Date:</label>
-                <p>{{ selectedEvent?.daysRemaining}}</p>
+                <label class="text-sm font-medium">Description:</label>
+                <textarea type="text" [(ngModel)]="selectedProject.description" class="border rounded p-2 w-full" ></textarea>
               </div>
             </div>
             <div class="mb-4 flex items-center">
                 <i class="pi pi-wallet mr-2"></i>
                 <div>
                   <label class="text-sm font-medium">Tag:</label>
-                  <p>{{ vipPrice }}</p>
+                  <input type="text" [(ngModel)]="selectedProject.tag" class="border rounded p-2 w-full" />
                 </div>
               </div>
-            <div class="mb-4 flex items-center">
-              <i class="pi pi-align-left mr-2"></i>
-              <div>
-                <label class="text-sm font-medium">Description:</label>
-                <p>{{ selectedEvent?.description }}</p>
-              </div>
+          </div>
+          <div class="mb-4 flex items-center">
+            <i class="pi pi-calendar mr-2"></i>
+            <div>
+              <label class="text-sm font-medium">Days Remaining:</label>
+              <input type="number" [(ngModel)]="selectedProject.daysRemaining" class="border rounded p-2 w-full" />
             </div>
           </div>
           <div class="w-1/3">
             <div class="mb-4">
               <label class="text-sm font-medium mb-2">Banner Image:</label>
-              <img [src]="selectedEvent?.base64EncodedImage || 'assests/home.png'" alt="Event Banner" class="w-full h-auto rounded-md" />
+              <img [src]="selectedProject?.base64EncodedImage || 'assests/home.png'" alt="Project Banner" class="w-full h-auto rounded-md" />
             </div>
           </div>
         </div>
@@ -131,10 +186,10 @@
           <button (click)="closeViewEventModal()" class="bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-gray-500">
             <i class="pi pi-check mr-2"></i> Close
           </button>
-          <button (click)="handleOpenUpdateProjectForm(project.projectId)" class="bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-gray-500">
+          <button (click)="updateProject()" class="bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-gray-500">
             <i class="pi pi-check mr-2"></i> Update
           </button>
-          <button (click)="handleDeleteProject(project.projectId)" class="bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-gray-500">
+          <button (click)="deleteProject(project.projectId)" class="bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-gray-500">
             <i class="pi pi-check mr-2"></i> Delete
           </button>
         </div>

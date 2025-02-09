@@ -34,39 +34,52 @@ export class EventService {
             );
           }
 
+          createEvent(event:any):Observable<any>{
+            const headers = this.getHeaders();
+            return this.http.post<any>(`${this.baseUrl}/api/v1/events`,event, {headers}).pipe(
+              tap((newEvent)=>{
+                const currentState = this.eventSubject.value;
+                this.eventSubject.next({...currentState, events:
+                  [newEvent, ...currentState.events]
+                });
+              })
+            );
+          }    
+
+          updateEvent(event:any):Observable<any>{
+            const headers = this.getHeaders();
+            return this.http.put<any>(`${this.baseUrl}/api/v1/events/${event.eventId}`,event, {headers}).pipe(
+              tap((updatedEvent:any)=>{
+                const currentState = this.eventSubject.value;
+                const updatedEvents = currentState.events.map((item:any)=>item.eventId === updatedEvent.eventId?updatedEvent:item);
+                this.eventSubject.next({...currentState, events: updatedEvents})
+              })
+            )
+          }
+      
+          deleteEvent(eventId:any):Observable<any>{
+            const headers = this.getHeaders();
+            return this.http.delete<any>(`${this.baseUrl}/api/v1/events/${eventId}`, {headers}).pipe(
+              tap((deletedEvent:any)=>{
+                const currentState = this.eventSubject.value;
+                const updatedEvents = currentState.events.filter((item:any)=>item.eventId !== eventId);
+                this.eventSubject.next({...currentState, events: updatedEvents})
+              })
+            )
+          }
+      
+          getEventById(eventId: any):Observable<any>{
+            const headers = new HttpHeaders({
+              Authorization: `Bearer ${localStorage.getItem('token')}`
+            })
+            return this.http.get<any>(`${this.baseUrl}/api/v1/events/${eventId}`, {headers}).pipe(
+              tap((event)=>{
+                console.log("event info", event)
+                const currentState = this.eventSubject.value;
+                this.eventSubject.next({...currentState, event})
+              })
+            )
+          }  
 
 
-  // getAllEvents(): Observable<Event[]> {
-  //   return this.http.get<Event[]>(`${this.baseUrl}/events`);
-  // }
-
-  // getEventById(id: string): Observable<Event> {
-  //   return this.http.get<Event>(`${this.baseUrl}/events/${id}`);
-  // }
-
-  
-
-  // // getUniqueLocations(): Observable<string[]> {
-  // //   return this.getAllEvents().pipe(
-  // //     map(events => Array.from(new Set(events.map(event => event.location))))
-  // //   );
-  // // }
-
-  
-  // getEventsByManager(managerId: string): Observable<Event[]> {
-  //   return this.http.get<Event[]>(`${this.baseUrl}/events/manager/${managerId}`, { headers: this.getAuthHeaders() });
-  // }
-
-  // createEvent(event: Event): Observable<Event> {
-  //   return this.http.post<Event>(`${this.baseUrl}/events`, event, { headers: this.getAuthHeaders() });
-  // }
-
-  // updateEvent(id: string, event: Event): Observable<Event> {
-  //   console.log('Update Event Payload:', event); 
-  //   return this.http.put<Event>(`${this.baseUrl}/events/${id}`, event, { headers: this.getAuthHeaders() });
-  // }
-
-  // deleteEvent(id: string): Observable<void> {
-  //   return this.http.delete<void>(`${this.baseUrl}/events/${id}`, { headers: this.getAuthHeaders() });
-  // }
 }

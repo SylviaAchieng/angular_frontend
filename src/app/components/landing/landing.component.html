@@ -15,7 +15,7 @@ class="relative bg-gray-700 bg-center bg-no-repeat bg-blend-multiply h-full flex
   </p>
   <div class="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-x-4 sm:space-y-0">
     <button
-      class="inline-flex items-center justify-center rounded-lg bg-blue-800 px-5 py-3 text-center text-base font-medium text-white hover:bg-blue-600 focus:ring-4"
+      class="inline-flex items-center justify-center rounded-lg bg-blue-900 px-5 py-3 text-center text-base font-medium text-white hover:bg-blue-600 focus:ring-4"
       (click)="onGetInvolved()"
     >
       {{ heroPrimaryButton }}
@@ -36,7 +36,7 @@ class="relative bg-gray-700 bg-center bg-no-repeat bg-blend-multiply h-full flex
     <!-- Header -->
     <div class="flex justify-between items-center mb-8">
       <h2 class="text-2xl font-bold text-gray-800">{{ projectsTitle }}</h2>
-      <a class="text-blue-600 hover:underline" routerLink="/projects">{{ seeAllText }}</a>
+      <a class="text-blue-800 hover:underline" routerLink="/projects">{{ seeAllText }}</a>
     </div>
 
     <!-- Card Container -->
@@ -194,9 +194,20 @@ class="relative bg-gray-700 bg-center bg-no-repeat bg-blend-multiply h-full flex
   </div>
 </section>
 
+<div class="bg-gray-100 py-10 px-8 rounded-xl shadow-md max-w-12xl mx-auto mb-6">
+  <h2 class="text-3xl font-bold text-blue-900 text-center mb-6">Go Vocal’s Upcoming Events</h2>
+
+  <div *ngIf="eventList.length > 0; else noEvents">
+    <app-event-card *ngFor="let event of eventList" [event]="event"></app-event-card>
+  </div>
+  <ng-template #noEvents>
+    <p class="text-center text-gray-500">No upcoming events.</p>
+  </ng-template>
+</div>
+
 <section>
 <div class="bg-white py-10">
-  <h2 class="text-3xl font-bold text-gray-800 text-center mb-8">Discover Go Vocal for...</h2>
+  <h2 class="text-3xl font-bold text-blue-900 text-center mb-8">Discover Go Vocal for...</h2>
   <div class="flex flex-wrap justify-center gap-6">
     <div
       *ngFor="let card of cards"
@@ -226,6 +237,9 @@ class="relative bg-gray-700 bg-center bg-no-repeat bg-blend-multiply h-full flex
 </div>
 </section>
 
+
+
+
 <!-- New Schedule a Demo Section -->
 <section class="bg-gray-500 py-16 px-6 lg:px-32 text-center">
   <div class="container mx-auto">
@@ -236,7 +250,7 @@ class="relative bg-gray-700 bg-center bg-no-repeat bg-blend-multiply h-full flex
       Schedule a personalized demo today and discover how our platform can help you create lasting impact!
     </p>
     <button
-      class="rounded-lg bg-blue-800 hover:bg-blue-800 px-8 py-3 text-white text-lg font-bold shadow-lg focus:outline-none focus:ring-4"
+      class="rounded-lg bg-blue-900 hover:bg-blue-800 px-8 py-3 text-white text-lg font-bold shadow-lg focus:outline-none focus:ring-4"
       (click)="onScheduleDemo()"
     >
       Sign Up
