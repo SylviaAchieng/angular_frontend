@@ -1,0 +1,55 @@
+<app-navbar></app-navbar>
+
+<div class="max-w-5xl mx-auto p-6">
+  <!-- Back Button -->
+  <button (click)="goBack()" class="text-blue-600 hover:underline mb-4">
+    ← Back to Discussions
+  </button>
+
+  <!-- Discussion Details -->
+  <div class="bg-white shadow-md rounded-lg p-6">
+    <h1 class="text-2xl font-bold text-gray-900">{{ discussion?.title }}</h1>
+    <p class="text-gray-600 mt-1">
+      Started by <span class="font-semibold">{{ discussion?.user?.fullName }}</span> 
+      on {{ discussion?.createdAt | date:'medium' }} in 
+      <span class="text-blue-600">{{ discussion?.category }}</span>
+    </p>
+    <p class="mt-4 text-gray-800">{{ discussion?.description }}</p>
+  </div>
+
+  <!-- Replies Section -->
+<div class="mt-6">
+  <h2 class="text-xl font-semibold">Replies ({{ replies.length }})</h2>
+
+  <div *ngFor="let reply of replies" class="bg-gray-100 p-4 rounded-lg mt-4">
+    <p class="text-gray-700">Reply by:
+      <span class="font-semibold text-blue-600">{{ reply.user?.fullName }}</span> 
+      <span class="text-sm text-gray-500"> • {{ reply.createdAt | date:'medium' }}</span>
+    </p>
+    <p class="mt-2 text-gray-800">{{ reply.comment }}</p>
+
+    <!-- Show delete button only if the reply belongs to the logged-in user -->
+    <button *ngIf="reply.user?.userId === loggedInUserId" 
+            (click)="deleteReply(reply.id)" 
+            class="mt-2 text-red-600 hover:underline">
+      Delete
+    </button>
+  </div>
+
+  <!-- Reply Form -->
+  <div class="mt-6">
+    <h3 class="text-lg font-semibold mb-2">Leave a Reply</h3>
+    <textarea [(ngModel)]="newReply" 
+              class="w-full border rounded-md p-3 focus:ring focus:ring-blue-300" 
+              rows="4"
+              placeholder="Write your reply..."></textarea>
+    <button (click)="submitReply()" 
+            class="mt-2 bg-blue-600 text-white py-2 px-4 rounded-md shadow-md hover:bg-blue-500 transition">
+      Reply
+    </button>
+  </div>
+</div>
+
+</div>
+
+<app-footer></app-footer>

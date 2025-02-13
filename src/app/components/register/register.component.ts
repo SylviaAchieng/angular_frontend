@@ -3,24 +3,29 @@ import { NavbarComponent } from '../navbar/navbar.component';
 import { Router, RouterLink } from '@angular/router';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
+import { LocationService } from '../../services/location.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [NavbarComponent, RouterLink, ReactiveFormsModule, FormsModule],
+  imports: [NavbarComponent, RouterLink, ReactiveFormsModule, FormsModule, CommonModule],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
 })
 export class RegisterComponent {
 
-  constructor(private authService: AuthService, private router: Router){}
+  constructor(private authService: AuthService, private router: Router, private locationService: LocationService){}
 
   registrationForm=new FormGroup({
     fullName: new FormControl('', [Validators.required]),
-    identificationNumber: new FormControl('', [Validators.required]),
+    nationalId: new FormControl('', [Validators.required]),
     email: new FormControl('',[Validators.required, Validators.email]),
-    location: new FormControl('', [Validators.required]),
-    password: new FormControl('',[Validators.required, Validators.minLength(8)])
+    userType: new FormControl('', [Validators.required]),
+    password: new FormControl('',[Validators.required, Validators.minLength(8)]),
+    location: new FormGroup({
+      locationId: new FormControl(null, [Validators.required])
+    })
   });
 
   fullName: string = '';
@@ -28,6 +33,8 @@ export class RegisterComponent {
   email: string = '';
   password: string = '';
   location: string = '';
+
+  locations: any[] = [];
 
 
   handleRegister(){
@@ -37,9 +44,34 @@ export class RegisterComponent {
         localStorage.setItem('token', response.token);
         const userId = response.userId;
         this.authService.getUserProfile(userId).subscribe();
+        // Show success alert
+      window.alert("Registration successful! Please log in.");
+      this.router.navigate(['/login']);
         console.log("Signup successful", response)
-      }
+      },
+    error: (err) => {
+      console.error("Registration failed", err);
+      window.alert("Registration failed. Please try again.");
+    }
     });
   }
+
+  ngOnInit(): void {
+    this.fetchLocations();
+  }
+
+  
+  fetchLocations(): void {
+    this.locationService.getAllLocations().subscribe((response) => {
+      console.log("locations received:", response); // Debugging
+      this.locations = response._embedded || [];
+    });
+    // Subscribe to projectSubject to update component state
+  this.locationService.locationSubject.subscribe((state) => {
+    this.locations = state.locations;
+    console.log("location state updated:", this.locations);
+  });
+  }
+
 
 }

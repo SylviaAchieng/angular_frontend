@@ -36,8 +36,8 @@ export class ProjectService {
     // }
 
     getProjects(): Observable<any> {
-      const headers = this.getHeaders();
-      return this.http.get<any>(`${this.baseUrl}/api/v1/projects`, { headers }).pipe(
+      //const headers = this.getHeaders();
+      return this.http.get<any>(`${this.baseUrl}/api/v1/projects`).pipe(
         tap((response: { _embedded: any[] }) => {  // Correctly type the response
           const currentState = this.projectSubject.value;
           const projects = response._embedded || [];  // Ensure it's an array

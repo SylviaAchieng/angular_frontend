@@ -105,59 +105,146 @@ export class EventsComponent {
   }
 
   // Submit Event to API
+  // createEvent() {
+  //   // Retrieve userId from localStorage
+  //   const storedUser = localStorage.getItem('user');
+  //   if (!storedUser) {
+  //     alert('User not found. Please log in again.');
+  //     return;
+  //   }
+  //   const user = JSON.parse(storedUser);
+  //   if (user.userType !== 'admin') {
+  //     alert('Only admins can create events.');
+  //     return;
+  //   }
+  
+  //   // Validate required fields
+  //   if (!this.newEvent.title || !this.newEvent.eventDate || !this.newEvent.time || !this.newEvent.location.county) {
+  //     alert('All fields are required');
+  //     return;
+  //   }
+  
+  //   const eventPayload = {
+  //     user: { userId: user.userId }, // Retrieved from localStorage
+  //     title: this.newEvent.title,
+  //     description: this.newEvent.description || '',
+  //     createdAt: new Date().toISOString().split('T')[0],
+  //     eventDate: this.newEvent.eventDate,
+  //     time: this.newEvent.time,
+  //     location: { location: this.newEvent.location.county },
+  //     base64EncodedImage: this.newEvent.base64EncodedImage || ''
+  //   };
+  
+  //   this.eventService.createEvent(eventPayload).subscribe({
+  //     next: (response) => {
+  //       console.log('Event created:', response);
+  
+  //       // Add the event to the list only if it was created successfully
+  //       this.events.unshift(response);
+  
+  //       // Show success alert
+  //       alert('Event created successfully!');
+  
+  //       // Reset form fields
+  //       this.newEvent = { title: '', eventDate: '', time: '', description: '', location: { county: '' }, base64EncodedImage: '' };
+  
+  //       // Hide event form
+  //       this.toggleEventForm();
+  //     },
+  //     error: (error) => {
+  //       console.error('Error creating event:', error);
+  //       alert(error.error?.message || 'Failed to create event');
+  //     }
+  //   });
+  // }
+
+
   createEvent() {
-    // Retrieve userId from localStorage
-    const storedUser = localStorage.getItem('user');
-    if (!storedUser) {
-      alert('User not found. Please log in again.');
+    if (!this.newEvent.title || !this.newEvent.description || !this.newEvent.base64EncodedImage) {
+      alert('Please fill in all required fields, including an image.');
       return;
     }
-    const user = JSON.parse(storedUser);
-    if (user.userType !== 'admin') {
-      alert('Only admins can create events.');
-      return;
-    }
+    const imageData = this.newEvent.base64EncodedImage.startsWith("data:image/")
+      ? this.newEvent.base64EncodedImage.split(",")[1]
+      : this.newEvent.base64EncodedImage;
   
-    // Validate required fields
-    if (!this.newEvent.title || !this.newEvent.eventDate || !this.newEvent.time || !this.newEvent.location.county) {
-      alert('All fields are required');
-      return;
-    }
-  
-    const eventPayload = {
-      user: { userId: user.userId }, // Retrieved from localStorage
-      title: this.newEvent.title,
-      description: this.newEvent.description || '',
-      createdAt: new Date().toISOString().split('T')[0],
-      eventDate: this.newEvent.eventDate,
-      time: this.newEvent.time,
-      location: { location: this.newEvent.location.county },
-      base64EncodedImage: this.newEvent.base64EncodedImage || ''
+    const eventData = {
+      ...this.newEvent,
+      base64EncodedImage: imageData  // Send only the Base64 string
     };
-  
-    this.eventService.createEvent(eventPayload).subscribe({
-      next: (response) => {
-        console.log('Event created:', response);
-  
-        // Add the event to the list only if it was created successfully
-        this.events.unshift(response);
-  
-        // Show success alert
+    this.eventService.createEvent(eventData).subscribe({
+      next: (newEvent) => {
+        console.log('Event created successfully', newEvent);
         alert('Event created successfully!');
-  
-        // Reset form fields
-        this.newEvent = { title: '', eventDate: '', time: '', description: '', location: { county: '' }, base64EncodedImage: '' };
-  
-        // Hide event form
-        this.toggleEventForm();
+        this.isEventFormVisible = false;
+        // Reset the form
+        this.newEvent = {  
+          title: '',
+          description: '',
+          eventDate:'',
+          time: '',
+          location: { county: '' },
+          base64EncodedImage: ''
+        };
       },
       error: (error) => {
-        console.error('Error creating event:', error);
-        alert(error.error?.message || 'Failed to create event');
+        console.error('Error creating project:', error);
       }
     });
   }
+
+
+
+  updateEvent() {
+    if (!this.selectedEvent || !this.selectedEvent.projectId) {
+      alert('Please select an event to update.');
+      return;
+    }
+    const imageData = this.selectedEvent.base64EncodedImage.startsWith("data:image/")
+      ? this.selectedEvent.base64EncodedImage.split(",")[1]
+      : this.selectedEvent.base64EncodedImage;
   
+    const updatedEventData = {
+      ...this.selectedEvent,
+      base64EncodedImage: imageData  // Send only the Base64 string
+    };
+    this.eventService.updateEvent(updatedEventData).subscribe({
+      next: (updatedEvent) => {
+        console.log('event updated successfully:', updatedEvent);        
+        this.events = this.events.map((event: any) =>
+          event.eventId === updatedEvent.eventId ? updatedEvent : event
+        );
+
+        alert('Project updated successfully!');
+      },
+      error: (error) => {
+        console.error('Error updating project:', error);
+      }
+    });
+  }
+
+
+  deleteEvent(eventId: any) {
+    if (!eventId) {
+      console.error("Event ID is undefined, cannot delete.");
+      return;
+    }
+  
+    if (!confirm("Are you sure you want to delete this event?")) {
+      return;
+    }
+  
+    this.eventService.deleteEvent(eventId).subscribe({
+      next: () => {
+        console.log("Event deleted successfully:", eventId);
+        alert("Event deleted successfully!");
+      },
+      error: (error) => {
+        console.error("Error deleting event:", error);
+        alert("Failed to delete event.");
+      }
+    });
+  }
   
 
   updatePagination(): void {

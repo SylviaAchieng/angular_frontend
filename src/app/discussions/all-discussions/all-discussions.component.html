@@ -1,0 +1,124 @@
+<app-navbar class="fixed top-0 left-0 w-full z-50 bg-white shadow-md"></app-navbar>
+
+<div class="max-w-7xl mx-auto p-6 pt-20">
+  <div class="grid grid-cols-12 gap-6">
+    
+    <!-- Left: Discussions Table -->
+    <div class="col-span-9">
+      <!-- Page Title -->
+      <h2 class="text-2xl font-semibold mb-4">Discussions</h2>
+
+      <!-- New Discussion Button -->
+      <button
+        (click)="toggleDiscussionForm()"
+        class="bg-gray-900 text-white py-2 px-4 rounded-md shadow-md hover:bg-gray-700 transition"
+      >
+        + New Discussion
+      </button>
+
+      <!-- Table Header -->
+      <div class="grid grid-cols-5 bg-gray-100 py-4 px-6 font-semibold text-gray-700 mt-4">
+        <div class="col-span-2">Discussion</div>
+        <div class="text-center">Replies</div>
+        <div class="text-center">Views</div>
+        <div class="text-right">Most Recent</div>
+      </div>
+
+      <!-- Discussion Items -->
+      <div *ngFor="let discussion of discussions; let i = index" 
+           class="grid grid-cols-5 py-4 px-6 border-b transition"
+           [ngClass]="{'bg-gray-50': i % 2 === 0}">
+        
+        <!-- Title & Author -->
+        <div class="col-span-2">
+          <a [routerLink]="['/discussion-details', discussion.discussionId]"  class="text-blue-600 font-medium hover:underline">{{ discussion.title }}</a>
+          <p class="text-sm text-gray-500">
+            Started by <span class="text-gray-700 font-medium">{{ discussion.user?.fullName }}  on {{discussion.createdAt | date:'medium'}}</span> in {{ discussion?.category }}
+          </p>
+          <p>{{discussion.description.slice(0, 150)}}</p>
+        </div>
+
+        <!-- Replies -->
+        <div class="text-center font-medium text-gray-700">
+          {{ discussion.replyCount }}
+        </div>
+
+        <!-- Views -->
+        <div class="text-center font-medium text-gray-700">
+          {{ discussion.viewCount }}
+        </div>
+
+        <!-- Most Recent -->
+        <div class="text-right text-sm text-gray-500">
+          <span class="text-blue-600 font-medium hover:underline">{{ discussion.lastReplyBy }}</span>
+          <p>{{ discussion.lastReplyTime }}</p>
+        </div>
+      </div>
+
+      <!-- Pagination -->
+      <div class="flex justify-center items-center gap-2 mt-6">
+        <button class="px-3 py-1 border rounded bg-gray-200 hover:bg-gray-300">1</button>
+        <button class="px-3 py-1 border rounded hover:bg-gray-100">2</button>
+        <button class="px-3 py-1 border rounded hover:bg-gray-100">3</button>
+        <span class="text-gray-600">...</span>
+        <button class="px-3 py-1 border rounded hover:bg-gray-100">100</button>
+      </div>
+    </div>
+
+    <!-- Right: Sidebar (Styled to Match Image) -->
+    <div class="col-span-3">
+      <!-- Search Bar -->
+      <div class="relative mb-6">
+        <input
+          type="text"
+          [(ngModel)]="searchQuery"
+          (input)="onSearch()"
+          placeholder="Search"
+          class="w-full bg-gray-200 py-2 pl-4 pr-10 rounded-md focus:ring focus:ring-gray-400"
+        />
+        <button class="absolute right-3 top-2 text-gray-500">
+          <i class="pi pi-search"></i>
+        </button>
+      </div>
+
+      <!-- Sidebar Categories Section -->
+      <h3 class="text-lg font-semibold mb-3 uppercase">Categories</h3>
+
+      <ul class="space-y-1 text-gray-700">
+        <li class="flex justify-between font-semibold border-b py-2">
+          <span>All Categories</span>
+          <span class="text-gray-500">87.9K</span>
+        </li>
+
+        <!-- Collapsible Category Section -->
+        <li>
+          <button (click)="toggleCategory('fifa17')" class="flex justify-between w-full font-semibold py-2">
+            <span>HEALTH CARE</span>
+            <i [ngClass]="{'pi pi-chevron-down': !categoryOpen['fifa17'], 'pi pi-chevron-up': categoryOpen['fifa17']}"></i>
+          </button>
+          <ul *ngIf="categoryOpen['fifa17']" class="ml-4 text-gray-600 space-y-1">
+            <li class="flex justify-between hover:text-blue-600"><a href="#">General Health</a></li>
+            <li class="flex justify-between hover:text-blue-600"><a href="#">One Community Centre</a></li>
+            <li class="flex justify-between hover:text-blue-600"><a href="#">Community Cancer Fight</a></li>
+            <li class="flex justify-between hover:text-blue-600"><a href="#">Free Medicine Community Centre</a></li>
+          </ul>
+        </li>
+
+        <!-- Another Collapsible Category -->
+        <li>
+          <button (click)="toggleCategory('community')" class="flex justify-between w-full font-semibold py-2">
+            <span>Community</span>
+            <i [ngClass]="{'pi pi-chevron-down': !categoryOpen['community'], 'pi pi-chevron-up': categoryOpen['community']}"></i>
+          </button>
+          <ul *ngIf="categoryOpen['community']" class="ml-4 text-gray-600 space-y-1">
+            <li class="flex justify-between hover:text-blue-600"><a href="#">Young Generations</a></li>
+            <li class="flex justify-between hover:text-blue-600"><a href="#">GENZ</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+<app-footer></app-footer>

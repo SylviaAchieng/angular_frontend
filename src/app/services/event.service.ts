@@ -13,7 +13,7 @@ export class EventService {
   eventSubject = new BehaviorSubject<any>({
         events: [],
         loading: false,
-        newProject: null
+        newEvent: null
       });
   
       private getHeaders(): HttpHeaders{
@@ -24,8 +24,8 @@ export class EventService {
       }
 
       getAllEvents(): Observable<any> {
-            const headers = this.getHeaders();
-            return this.http.get<any>(`${this.baseUrl}/api/v1/events`, { headers }).pipe(
+            //const headers = this.getHeaders();
+            return this.http.get<any>(`${this.baseUrl}/api/v1/events`).pipe(
               tap((response: { _embedded: any[] }) => {  // Correctly type the response
                 const currentState = this.eventSubject.value;
                 const events = response._embedded || [];  // Ensure it's an array

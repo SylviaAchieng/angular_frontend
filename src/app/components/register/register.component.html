@@ -37,7 +37,7 @@
       <input
         id="identification-number"
         type="text"
-        formControlName="identificationNumber"
+        formControlName="nationalId"
         class="w-full p-2 border border-gray-300 rounded-md mb-4 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
         placeholder="Enter your phone number"
       />
@@ -52,18 +52,29 @@
         placeholder="Enter your email address"
       />
 
+      <!-- user role -->
+      <label for="role" class="block text-sm font-medium text-gray-700 mb-1">UserType *</label>
+      <input
+        id="role"
+        type="text"
+        formControlName="userType"
+        class="w-full p-2 border border-gray-300 rounded-md mb-4 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+        placeholder="Enter your role"
+      />
+      
+
       <!-- Location Selection -->
 <label for="location" class="block text-sm font-medium text-gray-700 mb-1">Location *</label>
 <select
   id="location"
-  formControlName="location"
+  formControlName="locationId"
+  [formGroupName]="'location'"
   class="w-full p-2 border border-gray-300 rounded-md mb-4 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
 >
-  <option value="" disabled selected>Select your location</option>
-  <option value="nairobi">Nairobi</option>
-  <option value="mombasa">Mombasa</option>
-  <option value="kisumu">Kisumu</option>
-  <option value="nakuru">Nakuru</option>
+<option value="" disabled selected>Select your location</option>
+<option *ngFor="let location of locations" [value]="location.locationId">
+ {{ location.county }}
+</option>
 </select>
 
       <!-- Password Input -->
@@ -77,7 +88,7 @@
       />
 
       <!-- Sign Up Button -->
-      <button type="submit" class="w-full py-2 bg-green-600 text-white rounded-md text-sm font-medium hover:bg-green-700">
+      <button type="submit" class="w-full py-2 bg-blue-900 text-white rounded-md text-sm font-medium hover:bg-blue-800">
         Sign Up
       </button>
     </form>

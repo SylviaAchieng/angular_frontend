@@ -1,0 +1,57 @@
+<app-navbar></app-navbar>
+
+<div class="max-w-3xl mx-auto bg-white shadow-lg rounded-lg p-6 mt-4 mb-4">
+  <h2 class="text-2xl font-semibold mb-4">Create New Discussion</h2>
+
+  <form [formGroup]="discussionForm" (ngSubmit)="onSubmit()" class="space-y-4">
+    <!-- Title -->
+    <div>
+      <label class="block font-medium">Title:</label>
+      <input
+        type="text"
+        formControlName="title"
+        class="w-full border rounded-lg p-2 focus:ring focus:ring-blue-400"
+      />
+    </div>
+
+    <!-- Description -->
+    <div>
+      <label class="block font-medium">Description:</label>
+      <textarea
+        formControlName="description"
+        class="w-full border rounded-lg p-2 focus:ring focus:ring-blue-400"
+      ></textarea>
+    </div>
+
+    <!-- User ID -->
+    <div formGroupName="user">
+      <label class="block font-medium">Created By:</label>
+      <input
+        type="text"
+        formControlName="fullName"
+        class="w-full border rounded-lg p-2 focus:ring focus:ring-blue-400"
+      />
+    </div>
+
+    <!-- Tags -->
+    <div>
+      <label class="block font-medium">Category:</label>
+      <textarea
+        formControlName="category"
+        class="w-full border rounded-lg p-2 focus:ring focus:ring-blue-400"
+      ></textarea>
+    </div>
+
+    <!-- Buttons -->
+    <div class="flex justify-end space-x-4 mt-4">
+      <button type="button" class="px-4 py-2 bg-gray-500 text-white rounded-lg">
+        ✖ Cancel
+      </button>
+      <button type="submit" class="px-4 py-2 bg-blue-900 text-white rounded-lg">
+        ✔ Submit
+      </button>
+    </div>
+  </form>
+</div>
+
+<app-footer></app-footer>

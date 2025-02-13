@@ -12,6 +12,10 @@ import { UsersComponent } from './components/admin/admin-dashboard/users/users.c
 import { SettingsComponent } from './components/admin/admin-dashboard/settings/settings.component';
 import { ProjectsComponent } from './components/admin/admin-dashboard/projects/projects.component';
 import { NotificationComponent } from './components/admin/admin-dashboard/notification/notification.component';
+import { AllDiscussionsComponent } from './discussions/all-discussions/all-discussions.component';
+import { CreateDiscussionComponent } from './discussions/create-discussion/create-discussion.component';
+import { DiscussionDetailsComponent } from './discussions/discussion-details/discussion-details.component';
+
 
 
 export const routes: Routes = [
@@ -21,7 +25,9 @@ export const routes: Routes = [
     { path: "projects", component: ProjectComponent },
     { path: "create-project", component: CreateProjectComponent },
     { path: "project-card", component: ProjectCardComponent },
-    
+    {path:"discussion", component: AllDiscussionsComponent},
+    {path: "create-discussion", component: CreateDiscussionComponent},
+    {path:"discussion-details/:id", component:DiscussionDetailsComponent}, 
     
     { path: 'admin-dashboard', component: AdminDashboardComponent, children: [
         { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
