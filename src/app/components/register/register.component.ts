@@ -5,6 +5,7 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { AuthService } from '../../services/auth.service';
 import { LocationService } from '../../services/location.service';
 import { CommonModule } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-register',
@@ -15,7 +16,7 @@ import { CommonModule } from '@angular/common';
 })
 export class RegisterComponent {
 
-  constructor(private authService: AuthService, private router: Router, private locationService: LocationService){}
+  constructor(private authService: AuthService, private router: Router, private locationService: LocationService, private toastr: ToastrService){}
 
   registrationForm=new FormGroup({
     fullName: new FormControl('', [Validators.required]),
@@ -45,13 +46,12 @@ export class RegisterComponent {
         const userId = response.userId;
         this.authService.getUserProfile(userId).subscribe();
         // Show success alert
-      window.alert("Registration successful! Please log in.");
+      this.toastr.success("Registration successful! Please log in.", 'Success');
       this.router.navigate(['/login']);
-        console.log("Signup successful", response)
       },
     error: (err) => {
       console.error("Registration failed", err);
-      window.alert("Registration failed. Please try again.");
+      this.toastr.error("Registration failed. Please try again.", 'Error');
     }
     });
   }

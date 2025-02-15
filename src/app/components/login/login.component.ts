@@ -4,6 +4,7 @@ import { NavbarComponent } from '../navbar/navbar.component';
 import { Router, RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../../services/auth.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login',
@@ -14,7 +15,7 @@ import { AuthService } from '../../services/auth.service';
 })
 export class LoginComponent {
 
-  constructor(private authService: AuthService, private router: Router){}
+  constructor(private authService: AuthService, private router: Router, private toastr: ToastrService){}
 
   loginForm = new FormGroup({
       email: new FormControl('',[Validators.required, Validators.email]),
@@ -41,6 +42,7 @@ export class LoginComponent {
     this.authService.login(this.email, this.password).subscribe({
       next: (response: any) => {
         console.log('Login successful:', response);
+        this.toastr.success("Login successful!", "Success");
   
         // Store login response details
         localStorage.setItem('token', response._embedded.token);
@@ -74,48 +76,9 @@ export class LoginComponent {
       error: (err) => {
         console.error('Login failed:', err);
         this.errorMessage = 'Invalid email or password';
+        this.toastr.error("Invalid email or password. Please try again.", "Error"); 
       }
     });
   }
-
-  // onLogin() {
-  //   this.authService.login(this.email, this.password).subscribe({
-  //     next: (response: any) => {
-  //       console.log('Login successful:', response);
-  //       localStorage.setItem('token', response._embedded.token);
-  //       localStorage.setItem('userId', response._embedded.user.userId);
-  //       localStorage.setItem('userType', response._embedded.user.userType);
-  //       localStorage.setItem('username', response._embedded.user.fullName);
-  //       const userId = response._embedded.user.userId;
-
-  //       const userType = response._embedded.user.userType;
-  //       this.authService.getUserProfile(userId).subscribe();
-
-  //       if (userType === 'ADMIN') {
-  //         this.router.navigate(['/admin-dashboard']);
-  //       } else {
-  //         this.router.navigate(['/']);
-  //       }
-  //       console.log("login successful", response)
-  //       //this.router.navigate(['/']); // Replace with your desired route
-  //     },
-  //     error: (err) => {
-  //       console.error('Login failed:', err);
-  //       this.errorMessage = 'Invalid email or password';
-  //     }
-  //   });
-  // }
-
-  // signIn(){
-  //   console.log("login", this.loginForm.value)
-  //   this.authService.signin(this.loginForm.value).subscribe({
-  //     next:(response)=>{
-  //       localStorage.setItem('token', response.token);
-  //       const userId = response.userId; // Assuming the response contains userId
-  //       this.authService.getUserProfile(userId).subscribe();
-  //       console.log("login successful", response)
-  //     }
-  //   });
-  // }
 
 }

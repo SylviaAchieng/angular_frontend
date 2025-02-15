@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { UpdateProjectFormComponent } from '../../../../pages/update-project-form/update-project-form.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-users',
@@ -42,7 +43,7 @@ export class UsersComponent {
       errorMessage: string = '';
     
     
-      constructor(private authService: AuthService, public dialog: MatDialog) {}
+      constructor(private authService: AuthService, public dialog: MatDialog, private toastr: ToastrService) {}
     
     
        ngOnInit(): void {
@@ -65,12 +66,12 @@ export class UsersComponent {
       handleUpdateUser() {
         this.authService.updateUser(this.selectedUser.userId, this.selectedUser).subscribe({
           next: (response) => {
-            alert("User updated successfully!");
+            this.toastr.success("User updated successfully!", 'Success');
              this.closeViewEventModal();
           },
           error: (error) => {
             console.error("Error updating user:", error);
-            alert("Failed to update user.");
+            this.toastr.error("Failed to update user.", 'Error');
           }
         });
       }  
@@ -80,11 +81,12 @@ export class UsersComponent {
           this.authService.deleteUser(this.selectedUser.userId).subscribe({
             next: () => {
               console.log(`User with ID ${userId} deleted successfully`);
-              alert("User deleted successfully!");
+              this.toastr.success("User deleted successfully!", 'Success');
               this.users = this.users.filter((user: any) => user.userId !== userId);
             },
             error: (err) => {
               console.error('Error deleting user:', err);
+              this.toastr.error("Failed to delete user. Please try again.", "Error"); 
             }
           });
         }
@@ -96,24 +98,24 @@ export class UsersComponent {
 
       handleAddUser() {
         if (!this.newUser.fullName || !this.newUser.email || !this.newUser.password || !this.newUser.nationalId) {
-          alert('All fields are required');
+          this.toastr.info('All fields are required', 'Info');
           return;
         }
         if (isNaN(this.newUser.nationalId)) {
-          alert('National ID must be a number');
+          this.toastr.info('National ID must be a number', 'Info');
           return;
         }
         this.authService.register(this.newUser).subscribe({
           next: (response) => {
             console.log('User registered:', response);
             this.users.push({ ...this.newUser });
-            alert('User added successfully!');
+            this.toastr.success('User added successfully!', 'Success');
             this.newUser = { fullName: '', email: '', nationalId: null, password: '', location: { county: '' }, userType: '' };
             this.toggleAddUserForm();
           },
           error: (error) => {
             console.error('Error registering user:', error);
-            alert(error.error?.message || 'Registration failed');
+            this.toastr.error("Failed to create user. Please try again.", "Error"); 
           }
         });
       }

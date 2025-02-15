@@ -6,6 +6,7 @@ import { ProjectService } from '../../../../services/project.service';
 import { EventService } from '../../../../services/event.service';
 import { UpdateProjectFormComponent } from '../../../../pages/update-project-form/update-project-form.component';
 import { MatDialog } from '@angular/material/dialog';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-projects',
@@ -42,7 +43,7 @@ export class ProjectsComponent {
     };
   
   
-    constructor(private projectService: ProjectService, public dialog: MatDialog) {}
+    constructor(private projectService: ProjectService, public dialog: MatDialog, private toastr: ToastrService) {}
   
   
      ngOnInit(): void {
@@ -107,7 +108,7 @@ export class ProjectsComponent {
 
   createProject() {
     if (!this.newProject.title || !this.newProject.description || this.newProject.daysRemaining === null || !this.newProject.tag || !this.newProject.base64EncodedImage) {
-      alert('Please fill in all required fields, including an image.');
+      this.toastr.info('Please fill in all required fields, including an image.', 'Info');
       return;
     }
     const imageData = this.newProject.base64EncodedImage.startsWith("data:image/")
@@ -120,8 +121,7 @@ export class ProjectsComponent {
     };
     this.projectService.createProject(projectData).subscribe({
       next: (newProject) => {
-        console.log('Project created successfully', newProject);
-        alert('Project created successfully!');
+        this.toastr.success("Project created successfully!", "Success");
         this.isProjectFormVisible = false;
         // Reset the form
         this.newProject = {  
@@ -135,13 +135,14 @@ export class ProjectsComponent {
       },
       error: (error) => {
         console.error('Error creating project:', error);
+        this.toastr.error("Failed to create a project. Please try again.", "Error"); 
       }
     });
   }
   
   updateProject() {
     if (!this.selectedProject || !this.selectedProject.projectId) {
-      alert('Please select a project to update.');
+      this.toastr.info('Please select a project to update.', 'Info');
       return;
     }
     const imageData = this.selectedProject.base64EncodedImage.startsWith("data:image/")
@@ -159,10 +160,11 @@ export class ProjectsComponent {
           project.projectId === updatedProject.projectId ? updatedProject : project
         );
 
-        alert('Project updated successfully!');
+        this.toastr.success("Project created successfully!", "Success");
       },
       error: (error) => {
         console.error('Error updating project:', error);
+        this.toastr.error("Failed to create a project. Please try again.", "Error"); 
       }
     });
   }
@@ -179,11 +181,11 @@ export class ProjectsComponent {
         // Remove the deleted project from the local projects list
         this.projects = this.projects.filter((project: any) => project.projectId !== projectId);
   
-        alert('Project deleted successfully!');
+        this.toastr.success("Project deleted successfully!", "Success"); // Show success message
       },
       error: (error) => {
         console.error('Error deleting project:', error);
-        alert('Failed to delete project. Please try again.');
+        this.toastr.error("Failed to delete project. Please try again.", "Error"); 
       }
     });
   }

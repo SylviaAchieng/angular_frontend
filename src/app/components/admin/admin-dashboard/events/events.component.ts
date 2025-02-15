@@ -4,6 +4,7 @@ import { Component, Input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { EventService } from '../../../../services/event.service';
 import { AuthService } from '../../../../services/auth.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-events',
@@ -51,7 +52,7 @@ export class EventsComponent {
   };
 
 
-  constructor(private eventService: EventService) {}
+  constructor(private eventService: EventService, private toastr: ToastrService) {}
 
 
    ngOnInit(): void {
@@ -104,64 +105,10 @@ export class EventsComponent {
     this.newEvent.base64EncodedImage = '';
   }
 
-  // Submit Event to API
-  // createEvent() {
-  //   // Retrieve userId from localStorage
-  //   const storedUser = localStorage.getItem('user');
-  //   if (!storedUser) {
-  //     alert('User not found. Please log in again.');
-  //     return;
-  //   }
-  //   const user = JSON.parse(storedUser);
-  //   if (user.userType !== 'admin') {
-  //     alert('Only admins can create events.');
-  //     return;
-  //   }
-  
-  //   // Validate required fields
-  //   if (!this.newEvent.title || !this.newEvent.eventDate || !this.newEvent.time || !this.newEvent.location.county) {
-  //     alert('All fields are required');
-  //     return;
-  //   }
-  
-  //   const eventPayload = {
-  //     user: { userId: user.userId }, // Retrieved from localStorage
-  //     title: this.newEvent.title,
-  //     description: this.newEvent.description || '',
-  //     createdAt: new Date().toISOString().split('T')[0],
-  //     eventDate: this.newEvent.eventDate,
-  //     time: this.newEvent.time,
-  //     location: { location: this.newEvent.location.county },
-  //     base64EncodedImage: this.newEvent.base64EncodedImage || ''
-  //   };
-  
-  //   this.eventService.createEvent(eventPayload).subscribe({
-  //     next: (response) => {
-  //       console.log('Event created:', response);
-  
-  //       // Add the event to the list only if it was created successfully
-  //       this.events.unshift(response);
-  
-  //       // Show success alert
-  //       alert('Event created successfully!');
-  
-  //       // Reset form fields
-  //       this.newEvent = { title: '', eventDate: '', time: '', description: '', location: { county: '' }, base64EncodedImage: '' };
-  
-  //       // Hide event form
-  //       this.toggleEventForm();
-  //     },
-  //     error: (error) => {
-  //       console.error('Error creating event:', error);
-  //       alert(error.error?.message || 'Failed to create event');
-  //     }
-  //   });
-  // }
-
 
   createEvent() {
     if (!this.newEvent.title || !this.newEvent.description || !this.newEvent.base64EncodedImage) {
-      alert('Please fill in all required fields, including an image.');
+      this.toastr.info('Please fill in all required fields, including an image.', 'Info');
       return;
     }
     const imageData = this.newEvent.base64EncodedImage.startsWith("data:image/")
@@ -175,7 +122,7 @@ export class EventsComponent {
     this.eventService.createEvent(eventData).subscribe({
       next: (newEvent) => {
         console.log('Event created successfully', newEvent);
-        alert('Event created successfully!');
+        this.toastr.success('Event created successfully!', 'Success');
         this.isEventFormVisible = false;
         // Reset the form
         this.newEvent = {  
@@ -189,6 +136,7 @@ export class EventsComponent {
       },
       error: (error) => {
         console.error('Error creating project:', error);
+        this.toastr.error("Failed to create event. Please try again.", "Error"); 
       }
     });
   }
@@ -197,7 +145,7 @@ export class EventsComponent {
 
   updateEvent() {
     if (!this.selectedEvent || !this.selectedEvent.projectId) {
-      alert('Please select an event to update.');
+      this.toastr.info('Please select an event to update.', 'Info');
       return;
     }
     const imageData = this.selectedEvent.base64EncodedImage.startsWith("data:image/")
@@ -215,10 +163,11 @@ export class EventsComponent {
           event.eventId === updatedEvent.eventId ? updatedEvent : event
         );
 
-        alert('Project updated successfully!');
+        this.toastr.success('Project updated successfully!', 'Success');
       },
       error: (error) => {
         console.error('Error updating project:', error);
+        this.toastr.error("Failed to update an event. Please try again.", "Error"); 
       }
     });
   }
@@ -237,11 +186,11 @@ export class EventsComponent {
     this.eventService.deleteEvent(eventId).subscribe({
       next: () => {
         console.log("Event deleted successfully:", eventId);
-        alert("Event deleted successfully!");
+        this.toastr.success("Event deleted successfully!", 'Success');
       },
       error: (error) => {
         console.error("Error deleting event:", error);
-        alert("Failed to delete event.");
+        this.toastr.error("Failed to delete event.", 'Error');
       }
     });
   }

@@ -15,6 +15,7 @@ import { NotificationComponent } from './components/admin/admin-dashboard/notifi
 import { AllDiscussionsComponent } from './discussions/all-discussions/all-discussions.component';
 import { CreateDiscussionComponent } from './discussions/create-discussion/create-discussion.component';
 import { DiscussionDetailsComponent } from './discussions/discussion-details/discussion-details.component';
+import { EventDetailsComponent } from './pages/event-details/event-details.component';
 
 
 
@@ -27,7 +28,8 @@ export const routes: Routes = [
     { path: "project-card", component: ProjectCardComponent },
     {path:"discussion", component: AllDiscussionsComponent},
     {path: "create-discussion", component: CreateDiscussionComponent},
-    {path:"discussion-details/:id", component:DiscussionDetailsComponent}, 
+    {path:"discussion-details/:id", component:DiscussionDetailsComponent},
+    { path: 'event-details/:id', component: EventDetailsComponent },
     
     { path: 'admin-dashboard', component: AdminDashboardComponent, children: [
         { path: '', redirectTo: 'dashboard', pathMatch: 'full' },

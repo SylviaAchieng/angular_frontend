@@ -2,17 +2,15 @@
 
 <div class="max-w-7xl mx-auto p-6 pt-20">
   <div class="grid grid-cols-12 gap-6">
-    
+
     <!-- Left: Discussions Table -->
     <div class="col-span-9">
       <!-- Page Title -->
       <h2 class="text-2xl font-semibold mb-4">Discussions</h2>
 
       <!-- New Discussion Button -->
-      <button
-        (click)="toggleDiscussionForm()"
-        class="bg-gray-900 text-white py-2 px-4 rounded-md shadow-md hover:bg-gray-700 transition"
-      >
+      <button (click)="toggleDiscussionForm()"
+        class="bg-gray-900 text-white py-2 px-4 rounded-md shadow-md hover:bg-gray-700 transition">
         + New Discussion
       </button>
 
@@ -25,15 +23,16 @@
       </div>
 
       <!-- Discussion Items -->
-      <div *ngFor="let discussion of discussions; let i = index" 
-           class="grid grid-cols-5 py-4 px-6 border-b transition"
-           [ngClass]="{'bg-gray-50': i % 2 === 0}">
-        
+      <div *ngFor="let discussion of filteredDiscussions; let i = index"
+        class="grid grid-cols-5 py-4 px-6 border-b transition" [ngClass]="{'bg-gray-50': i % 2 === 0}">
+
         <!-- Title & Author -->
         <div class="col-span-2">
-          <a [routerLink]="['/discussion-details', discussion.discussionId]"  class="text-blue-600 font-medium hover:underline">{{ discussion.title }}</a>
+          <a [routerLink]="['/discussion-details', discussion.discussionId]"
+            class="text-blue-600 font-medium hover:underline">{{ discussion.title }}</a>
           <p class="text-sm text-gray-500">
-            Started by <span class="text-gray-700 font-medium">{{ discussion.user?.fullName }}  on {{discussion.createdAt | date:'medium'}}</span> in {{ discussion?.category }}
+            Started by <span class="text-gray-700 font-medium">{{ discussion.user?.fullName }} on {{discussion.createdAt
+              | date:'medium' : 'UTC'}}</span> in {{ discussion?.category }}
           </p>
           <p>{{discussion.description.slice(0, 150)}}</p>
         </div>
@@ -69,13 +68,8 @@
     <div class="col-span-3">
       <!-- Search Bar -->
       <div class="relative mb-6">
-        <input
-          type="text"
-          [(ngModel)]="searchQuery"
-          (input)="onSearch()"
-          placeholder="Search"
-          class="w-full bg-gray-200 py-2 pl-4 pr-10 rounded-md focus:ring focus:ring-gray-400"
-        />
+        <input type="text" [(ngModel)]="searchQuery" (input)="onSearch()" placeholder="Search"
+          class="w-full bg-gray-200 py-2 pl-4 pr-10 rounded-md focus:ring focus:ring-gray-400" />
         <button class="absolute right-3 top-2 text-gray-500">
           <i class="pi pi-search"></i>
         </button>
@@ -90,32 +84,21 @@
           <span class="text-gray-500">87.9K</span>
         </li>
 
-        <!-- Collapsible Category Section -->
-        <li>
-          <button (click)="toggleCategory('fifa17')" class="flex justify-between w-full font-semibold py-2">
-            <span>HEALTH CARE</span>
-            <i [ngClass]="{'pi pi-chevron-down': !categoryOpen['fifa17'], 'pi pi-chevron-up': categoryOpen['fifa17']}"></i>
+        <!-- Loop through hardcoded categories -->
+        <li *ngFor="let category of categories">
+          <button (click)="toggleCategory(category.name)" class="flex justify-between w-full font-semibold py-2">
+            <span>{{ category.name.replace('_', ' ') }}</span>
+            <i
+              [ngClass]="{'pi pi-chevron-down': !categoryOpen[category.name], 'pi pi-chevron-up': categoryOpen[category.name]}"></i>
           </button>
-          <ul *ngIf="categoryOpen['fifa17']" class="ml-4 text-gray-600 space-y-1">
-            <li class="flex justify-between hover:text-blue-600"><a href="#">General Health</a></li>
-            <li class="flex justify-between hover:text-blue-600"><a href="#">One Community Centre</a></li>
-            <li class="flex justify-between hover:text-blue-600"><a href="#">Community Cancer Fight</a></li>
-            <li class="flex justify-between hover:text-blue-600"><a href="#">Free Medicine Community Centre</a></li>
-          </ul>
-        </li>
-
-        <!-- Another Collapsible Category -->
-        <li>
-          <button (click)="toggleCategory('community')" class="flex justify-between w-full font-semibold py-2">
-            <span>Community</span>
-            <i [ngClass]="{'pi pi-chevron-down': !categoryOpen['community'], 'pi pi-chevron-up': categoryOpen['community']}"></i>
-          </button>
-          <ul *ngIf="categoryOpen['community']" class="ml-4 text-gray-600 space-y-1">
-            <li class="flex justify-between hover:text-blue-600"><a href="#">Young Generations</a></li>
-            <li class="flex justify-between hover:text-blue-600"><a href="#">GENZ</a></li>
+          <ul *ngIf="categoryOpen[category.name]" class="ml-4 text-gray-600 space-y-1">
+            <li *ngFor="let subcategory of category.subcategories" class="flex justify-between hover:text-blue-600">
+              <a href="#">{{ subcategory }}</a>
+            </li>
           </ul>
         </li>
       </ul>
+
     </div>
 
   </div>

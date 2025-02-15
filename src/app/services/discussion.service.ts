@@ -47,19 +47,6 @@ export class DiscussionService {
             );
           }    
 
-          // getDiscussionById(discussionId: any):Observable<any>{
-          //   const headers = new HttpHeaders({
-          //     Authorization: `Bearer ${localStorage.getItem('token')}`
-          //   })
-          //   return this.http.get<any>(`${this.baseUrl}/api/v1/discussions/${discussionId}`, {headers}).pipe(
-          //     tap((discussion)=>{
-          //       console.log("discuss info", discussion)
-          //       const currentState = this.discussionSubject.value;
-          //       this.discussionSubject.next({...currentState, discussion})
-          //     })
-          //   )
-          // }
-
           getDiscussionById(discussionId: any): Observable<any> {
             const headers = new HttpHeaders({
               Authorization: `Bearer ${localStorage.getItem('token')}`
@@ -76,6 +63,18 @@ export class DiscussionService {
               })
             );
         }
+
+        getDiscussionsByCategory(category: string): Observable<any> {
+          const headers = this.getHeaders();
+          return this.http.get<any>(`${this.baseUrl}/api/v1/discussions/category/${category}`, {headers}).pipe(
+            tap((response: { _embedded: any[] }) => {
+              const currentState = this.discussionSubject.value;
+              const discussions = response._embedded || [];
+              this.discussionSubject.next({ ...currentState, discussions });
+            })
+          );
+        }
+        
         
 
 }

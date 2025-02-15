@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { FooterComponent } from "../../components/footer/footer.component";
 import { DiscussionService } from '../../services/discussion.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-create-discussion',
@@ -15,7 +16,7 @@ import { DiscussionService } from '../../services/discussion.service';
 })
 export class CreateDiscussionComponent {
 
-  constructor(private discussionService: DiscussionService, private router: Router){}
+  constructor(private discussionService: DiscussionService, private router: Router, private toastr: ToastrService){}
 
   discussionForm=new FormGroup({
       title: new FormControl('', [Validators.required]),
@@ -29,12 +30,12 @@ export class CreateDiscussionComponent {
     onSubmit(){
       this.discussionService.createDiscussion(this.discussionForm.value).subscribe({
         next:(response)=>{
-          // Show success alert
-        window.alert("Discussion created successful!");
+          this.toastr.success("Discussion created successfully!", "Success");
+          this.router.navigate(['/discussion']);
         },
       error: (err) => {
         console.error("failed", err);
-        window.alert("Failed to create a discussion. Please try again.");
+        this.toastr.error("Failed to create a discussion. Please try again.", "Error"); 
       }
       });
     }

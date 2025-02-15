@@ -6,6 +6,7 @@ import { FooterComponent } from '../../components/footer/footer.component';
 import { FormsModule } from '@angular/forms';
 import { DiscussionService } from '../../services/discussion.service';
 import { ReplyService } from '../../services/reply.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-discussion-details',
@@ -24,7 +25,7 @@ export class DiscussionDetailsComponent {
 
 
 
-  constructor(private route: ActivatedRoute, private router: Router, private discussionService: DiscussionService, private replyService: ReplyService) {}
+  constructor(private route: ActivatedRoute, private router: Router, private discussionService: DiscussionService, private replyService: ReplyService, private toastr: ToastrService) {}
 
   ngOnInit() {
     const discussionId = Number(this.route.snapshot.paramMap.get('id'));
@@ -52,7 +53,7 @@ export class DiscussionDetailsComponent {
   
     const userId = localStorage.getItem('userId'); // Assuming you store user ID in localStorage
     if (!userId || !this.discussion?.discussionId) {
-      alert('User or discussion information is missing.');
+      this.toastr.info("Discussion not found. Please try again.", "Info"); 
       return;
     }
     const replyData = {
@@ -68,12 +69,11 @@ export class DiscussionDetailsComponent {
         this.discussion.replies.unshift(newReply);
         this.discussion.replyCount++; 
         this.newReply = ''; 
-  
-        alert('Reply sent successfully!');
+        this.toastr.success("Reply sent successfully!", "Success");
       },
       error: (err) => {
         console.error('Error sending reply:', err);
-        alert('Failed to send reply. Please try again.');
+        this.toastr.error("Failed to send a reply. Please try again.", "Error"); 
       }
     });
   }
@@ -106,11 +106,11 @@ export class DiscussionDetailsComponent {
       next: () => {
         this.discussion.replies = this.discussion.replies.filter((r: any) => r.id !== commentId);
         this.discussion.replyCount--; 
-        alert("Reply deleted successfully!");
+        this.toastr.success("Reply deleted successfully!", 'Success');
       },
       error: (err) => {
         console.error("Error deleting reply:", err);
-        alert("Failed to delete reply. You can only delete your own replies.");
+        this.toastr.error("Failed to delete reply. You can only delete your own replies.", 'Error');
       }
     });
   }
