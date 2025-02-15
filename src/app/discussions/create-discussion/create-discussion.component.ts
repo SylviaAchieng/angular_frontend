@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NavbarComponent } from "../../components/navbar/navbar.component";
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { FooterComponent } from "../../components/footer/footer.component";
 import { DiscussionService } from '../../services/discussion.service';
 
@@ -15,7 +15,7 @@ import { DiscussionService } from '../../services/discussion.service';
 })
 export class CreateDiscussionComponent {
 
-  constructor(private discussionService: DiscussionService){}
+  constructor(private discussionService: DiscussionService, private router: Router){}
 
   discussionForm=new FormGroup({
       title: new FormControl('', [Validators.required]),
@@ -37,6 +37,10 @@ export class CreateDiscussionComponent {
         window.alert("Failed to create a discussion. Please try again.");
       }
       });
+    }
+
+    handleCancel(){
+      this.router.navigate(['/discussion']);
     }
 
     

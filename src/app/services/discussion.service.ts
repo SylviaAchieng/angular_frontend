@@ -47,17 +47,35 @@ export class DiscussionService {
             );
           }    
 
-          getDiscussionById(discussionId: any):Observable<any>{
+          // getDiscussionById(discussionId: any):Observable<any>{
+          //   const headers = new HttpHeaders({
+          //     Authorization: `Bearer ${localStorage.getItem('token')}`
+          //   })
+          //   return this.http.get<any>(`${this.baseUrl}/api/v1/discussions/${discussionId}`, {headers}).pipe(
+          //     tap((discussion)=>{
+          //       console.log("discuss info", discussion)
+          //       const currentState = this.discussionSubject.value;
+          //       this.discussionSubject.next({...currentState, discussion})
+          //     })
+          //   )
+          // }
+
+          getDiscussionById(discussionId: any): Observable<any> {
             const headers = new HttpHeaders({
               Authorization: `Bearer ${localStorage.getItem('token')}`
-            })
-            return this.http.get<any>(`${this.baseUrl}/api/v1/discussions/${discussionId}`, {headers}).pipe(
-              tap((discussion)=>{
-                console.log("discuss info", discussion)
+            });
+        
+            const userId = localStorage.getItem('userId'); // Retrieve userId from localStorage
+            const url = `${this.baseUrl}/api/v1/discussions/${discussionId}?userId=${userId}`; // Include userId in request
+        
+            return this.http.get<any>(url, { headers }).pipe(
+              tap((discussion) => {
+                console.log("Discussion info", discussion);
                 const currentState = this.discussionSubject.value;
-                this.discussionSubject.next({...currentState, discussion})
+                this.discussionSubject.next({ ...currentState, discussion });
               })
-            )
-          }
+            );
+        }
+        
 
 }

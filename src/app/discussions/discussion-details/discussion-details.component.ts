@@ -27,16 +27,17 @@ export class DiscussionDetailsComponent {
   constructor(private route: ActivatedRoute, private router: Router, private discussionService: DiscussionService, private replyService: ReplyService) {}
 
   ngOnInit() {
+    const discussionId = Number(this.route.snapshot.paramMap.get('id'));
     this.loadDiscussionDetails();
-    this.loadReplies();
+    this.loadReplies(discussionId);
   }
 
   goBack() {
     this.router.navigate(['/discussion']);
   }
 
-  loadReplies() {
-    this.replyService.getAllReplys().subscribe({
+  loadReplies(discussionId: number) {
+    this.replyService.getAllReplys(discussionId).subscribe({
       next: (response) => {
         this.replies = response._embedded || []; // Ensure it’s an array
       },
@@ -77,29 +78,26 @@ export class DiscussionDetailsComponent {
     });
   }
   
-  
-  
 
   loadDiscussionDetails(): void {
     const discussionId = this.route.snapshot.paramMap.get('id');
-    if (discussionId) {
+    const userId = localStorage.getItem('userId'); // Retrieve userId from localStorage
+
+    if (discussionId && userId) {
       this.discussionService.getDiscussionById(discussionId).subscribe({
         next: (response) => {
           console.log('Discussion Details:', response);
-          
-          // Extract the discussion from _embedded
-          if (response && response._embedded) {
-            this.discussion = response._embedded;
-          } else {
-            this.discussion = response; // Fallback in case response isn't wrapped
-          }
+          this.discussion = response?._embedded ?? response; // Simplified null check
         },
         error: (error) => {
           console.error('Error fetching discussion details', error);
         }
       });
+    } else {
+      console.error('Missing discussion ID or user ID.');
     }
-  }
+}
+
 
   deleteReply(commentId: number) {
     if (!confirm("Are you sure you want to delete this reply?")) return;

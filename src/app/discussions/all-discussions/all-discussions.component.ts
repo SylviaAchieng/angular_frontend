@@ -9,18 +9,6 @@ import { ViewChild } from '@angular/core';
 import { DiscussionService } from '../../services/discussion.service';
 import { FooterComponent } from "../../components/footer/footer.component";
 
-interface PeriodicElement {
-  position: number;
-  name: string;
-  weight: number;
-  symbol: string;
-}
-
-const ELEMENT_DATA: PeriodicElement[] = [
-  {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
-  {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He'},
-  // Add more elements as needed
-];
 
 @Component({
   selector: 'app-all-discussions',
@@ -35,7 +23,10 @@ export class AllDiscussionsComponent {
 
   searchQuery: string = '';
   discussions: any[]=[];
-  
+  paginatedDiscussions: any[] = [];
+  currentPage: number = 1;
+  itemsPerPage: number = 10;
+  totalPages: number = 1;
 
   onSearch() {
     console.log("Searching for:", this.searchQuery);
@@ -70,6 +61,18 @@ export class AllDiscussionsComponent {
     })
   }
 
+
+  updatePaginatedDiscussions() {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    this.paginatedDiscussions = this.discussions.slice(startIndex, startIndex + this.itemsPerPage);
+  }
+
+  goToPage(page: number) {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.updatePaginatedDiscussions();
+    }
+  }
   
 }
 

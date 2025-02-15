@@ -36,9 +36,9 @@ export class ReplyService {
               );
             }
 
-            getAllReplys(): Observable<any> {
+            getAllReplys(discussionId: number): Observable<any> {
               const headers = this.getHeaders();
-              return this.http.get<any>(`${this.baseUrl}/api/v1/comment`, {headers}).pipe(
+              return this.http.get<any>(`${this.baseUrl}/api/v1/comment/discussion/${discussionId}`, {headers}).pipe(
                 tap((response: { _embedded: any[] }) => {  // Correctly type the response
                   const currentState = this.replySubject.value;
                   const replys = response._embedded || [];  // Ensure it's an array
