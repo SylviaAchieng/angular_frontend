@@ -11,44 +11,34 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { EventCardComponent } from "../../pages/event-card/event-card.component";
 import { EventService } from '../../services/event.service';
+import { ToastrService } from 'ngx-toastr';
+import { ProjectDetailsComponent } from "../../pages/project-details/project-details.component";
 
 
 
 @Component({
   selector: 'app-landing',
   standalone: true,
-  imports: [RouterLink, NavbarComponent, FooterComponent, CommonModule, ProjectCardComponent, EventCardComponent],
+  imports: [RouterLink, NavbarComponent, FooterComponent, CommonModule, ProjectCardComponent, EventCardComponent, ProjectDetailsComponent],
   templateUrl: './landing.component.html',
   styleUrl: './landing.component.css'
 })
 export class LandingComponent {
   @Input() project: any;
 
+  projectWithLeastDays: any;
+
   projects =[];
 
   eventList: any[]=[];
-
-  eventLists = [1, 1, 1, 1, 11, 1].map(() => ({
-    base64EncodedImage: 'assests/event1.jpeg',
-    date: '24 Jan, 2024',
-    time: '10:00 AM - 2:00 PM',
-    title: 'Siempre Son Flores* Musica Cubana Salsa Jazz',
-    description: 'Join industry leaders and innovators as we explore the latest trends in technology and innovation.',
-    location: '135 W, 46nd Street, New York'
-  }));
   
 
-  // eventData = {
-  //   base64EncodedImage: 'assests/home.jpg',
-  //   date: '24 Jan, 2024',
-  //   time: '10:00 AM - 2:00 PM',
-  //   title: 'Siempre Son Flores* Musica Cubana Salsa Jazz',
-  //   description: 'join us for a night of music and dancing with siempr son flores, a cuban band that plays salsa, jazz, and more!',
-  //   location: '135 W, 46nd Street, New York',
-  // };
-
-
-  constructor(private router: Router, public authService: AuthService, private projectService: ProjectService, private eventService: EventService) {}
+  constructor(private router: Router, 
+    public authService: AuthService, 
+    private projectService: ProjectService, 
+    private eventService: EventService,
+    private toastr: ToastrService
+  ) {}
 
   // TrackBy function using index
   trackByEventId(index: number, event: any): number {
@@ -72,30 +62,6 @@ export class LandingComponent {
     // Navigate to the Learn More page or trigger functionality
     console.log('Learn More button clicked');
   }
-
-  projectsTitle = 'Go Vocal is currently working on';
-  seeAllText = 'See all projects';
-
-  // Card Content
-  projectImage = 'assests/idea.jpg';
-  projectAlt = 'Empty Homes Taxes';
-  projectDeadline = '2 days remaining';
-  urgencyLabel = 'Urgent';
-  projectTitle = '5 potential scenarios for the commercial center';
-  projectDescription =
-    'To address the City’s housing crisis, we are exploring five scenarios for an empty homes tax aimed at commercial centers, called the Empty Homes Tax...';
-
-  // Participants
-  participants = [
-    { avatar: 'https://i.ibb.co/YpHsQQr/user-avatar.jpg' },
-    { avatar: 'https://i.ibb.co/YpHsQQr/user-avatar.jpg' },
-    { avatar: 'https://i.ibb.co/YpHsQQr/user-avatar.jpg' },
-  ];
-  additionalParticipants = '+12 more';
-
-  // Actions
-  likes = 40;
-  comments = 8;
 
 
   activeFeature: string = 'toolbox';
@@ -176,6 +142,32 @@ export class LandingComponent {
   this.getAllProjects();
   }
 
+  // getAllProjects(): void {
+  //   this.projectService.getProjects().subscribe({
+  //     next: (response: any) => {
+  //       if (!response || !response._embedded) {
+  //         console.error("Invalid response format");
+  //         return;
+  //       }
+  //       const formattedProjects = response._embedded.map((project: any) => ({
+  //         ...project,
+  //         base64EncodedImage: project.base64EncodedImage?.startsWith("data:image/")
+  //           ? project.base64EncodedImage  // Already formatted correctly
+  //           : `data:image/jpeg;base64,${project.base64EncodedImage}`  // Add prefix only if missing
+  //       }));
+  //       this.projectService.projectSubject.next({ projects: formattedProjects });
+  //     },
+  //     error: (err) => {
+  //       console.error("Failed to load projects:", err);
+  //     }
+  //   });
+  
+  //   this.projectService.projectSubject.subscribe((state: any) => {
+  //     this.projects = state.projects;
+  //     console.log("Projects state updated with images:", this.projects);
+  //   });
+  // }
+
   getAllProjects(): void {
     this.projectService.getProjects().subscribe({
       next: (response: any) => {
@@ -183,22 +175,15 @@ export class LandingComponent {
           console.error("Invalid response format");
           return;
         }
-        const formattedProjects = response._embedded.map((project: any) => ({
+        this.projects = response._embedded.map((project: any) => ({
           ...project,
           base64EncodedImage: project.base64EncodedImage?.startsWith("data:image/")
-            ? project.base64EncodedImage  // Already formatted correctly
-            : `data:image/jpeg;base64,${project.base64EncodedImage}`  // Add prefix only if missing
+            ? project.base64EncodedImage
+            : `data:image/jpeg;base64,${project.base64EncodedImage}`
         }));
-        this.projectService.projectSubject.next({ projects: formattedProjects });
+        console.log("All Projects:", this.projects);
       },
-      error: (err) => {
-        console.error("Failed to load projects:", err);
-      }
-    });
-  
-    this.projectService.projectSubject.subscribe((state: any) => {
-      this.projects = state.projects;
-      console.log("Projects state updated with images:", this.projects);
+      error: (err) => console.error("Failed to load projects:", err)
     });
   }
   
@@ -239,6 +224,97 @@ export class LandingComponent {
       })) || [];
   
       console.log("Updated filtered events state:", this.eventList);
+    });
+  }
+
+
+  // loadProjectDetails(): void {
+  //   this.projectService.getProjects().subscribe({
+  //     next: (response: any) => {
+  //       if (response && response._embedded) {
+  //         const projects = response._embedded;
+  
+  //         if (Array.isArray(projects) && projects.length > 0) {
+  //           // Ensure all projects have 'daysRemaining' before sorting
+  //           const validProjects = projects.filter(proj => proj.daysRemaining !== undefined && proj.daysRemaining !== null);
+  
+  //           if (validProjects.length > 0) {
+  //             // Find the project with the least number of days remaining
+  //             this.project = validProjects.reduce((minProject, currentProject) => 
+  //               currentProject.daysRemaining < minProject.daysRemaining ? currentProject : minProject
+  //             );
+  
+  //             // Ensure image format
+  //             if (this.project.base64EncodedImage) {
+  //               this.project.base64EncodedImage = `data:image/jpg;base64,${this.project.base64EncodedImage}`;
+  //             }
+  
+  //             console.log("Selected Project (Least Days Remaining):", this.project);
+  //           } else {
+  //             console.warn("No valid projects with 'daysRemaining' found");
+  //             this.project = null;
+  //           }
+  //         } else {
+  //           console.warn("No projects available");
+  //           this.project = null;
+  //         }
+  //       } else {
+  //         console.warn("Invalid API response format");
+  //         this.project = null;
+  //       }
+  //     },
+  //     error: (error) => {
+  //       console.error("Failed to load projects:", error);
+  //       this.toastr.error("Failed to fetch projects", "Error");
+  //       this.project = null;
+  //     }
+  //   });
+  // }
+  
+
+  loadProjectDetails(): void {
+    this.projectService.getProjects().subscribe({
+      next: (response: any) => {
+        if (response && response._embedded) {
+          const projects: any[] = response._embedded;
+  
+          // Filter out projects that have a valid `daysRemaining` property
+          const validProjects = projects.filter(
+            (proj: any) =>
+              proj.daysRemaining !== undefined && proj.daysRemaining !== null
+          );
+  
+          if (validProjects.length > 0) {
+            this.projectWithLeastDays = validProjects.reduce(
+              (minProject: any, currentProject: any) =>
+                currentProject.daysRemaining < minProject.daysRemaining
+                  ? currentProject
+                  : minProject
+            );
+  
+            // Ensure the base64 image format is correct
+            if (this.projectWithLeastDays.base64EncodedImage) {
+              this.projectWithLeastDays.base64EncodedImage = `data:image/jpg;base64,${this.projectWithLeastDays.base64EncodedImage}`;
+            }
+  
+            console.log(
+              "Selected Project (Least Days Remaining):",
+              this.projectWithLeastDays
+            );
+          } else {
+            console.warn("No valid projects with 'daysRemaining' found");
+            this.projectWithLeastDays = null;
+          }
+        } else {
+          console.warn("Invalid API response format");
+          this.projectWithLeastDays = null;
+        }
+      },
+      error: (error) => {
+        console.error("Failed to load projects:", error);
+        this.toastr.error("Failed to fetch projects", "Error");
+        this.projectWithLeastDays = null;
+      },
     });
   }
   

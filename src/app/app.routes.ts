@@ -16,6 +16,7 @@ import { AllDiscussionsComponent } from './discussions/all-discussions/all-discu
 import { CreateDiscussionComponent } from './discussions/create-discussion/create-discussion.component';
 import { DiscussionDetailsComponent } from './discussions/discussion-details/discussion-details.component';
 import { EventDetailsComponent } from './pages/event-details/event-details.component';
+import { ProjectDetailsComponent } from './pages/project-details/project-details.component';
 
 
 
@@ -30,6 +31,7 @@ export const routes: Routes = [
     {path: "create-discussion", component: CreateDiscussionComponent},
     {path:"discussion-details/:id", component:DiscussionDetailsComponent},
     { path: 'event-details/:id', component: EventDetailsComponent },
+    {path: 'project-details', component:ProjectDetailsComponent},
     
     { path: 'admin-dashboard', component: AdminDashboardComponent, children: [
         { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
