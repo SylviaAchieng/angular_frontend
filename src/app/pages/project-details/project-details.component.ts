@@ -3,12 +3,16 @@ import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ProjectService } from '../../services/project.service';
 import { CommonModule } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
+import { ProjectLikesService } from '../../services/project-likes.service';
 
 @Component({
   selector: 'app-project-details',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, MatIcon, MatCardModule, MatButtonModule, MatIconModule],
   templateUrl: './project-details.component.html',
   styleUrl: './project-details.component.css'
 })
@@ -18,10 +22,13 @@ export class ProjectDetailsComponent {
 
   projects: any;
 
+  likes: any[] = [];
+
   constructor(
     private route: ActivatedRoute,
     private projectService: ProjectService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private likeService: ProjectLikesService
   ) {}
 
   projectsTitle = 'Go Vocal is currently working on';
@@ -44,15 +51,11 @@ export class ProjectDetailsComponent {
   ];
   additionalParticipants = '+12 more';
 
-  // Actions
-  likes = 40;
-  comments = 8;
-
-
-  activeFeature: string = 'toolbox';
+  
 
   ngOnInit(): void {
     this.loadProjectDetails();
+    
   }
 
 
@@ -125,13 +128,21 @@ export class ProjectDetailsComponent {
   }
   
 
-
+  submitLike() {
+    const userId = localStorage.getItem('userId'); // Assuming you store user ID in localStorage
+    if (!userId || !this.project?.projectId) {
+      this.toastr.info("Project not found. Please try again.", "Info"); 
+      return;
+    }
   
-  
-  
-  
-  
-
-
+    const likePayload = {
+      project: { projectId: this.project.projectId },
+      user: { userId: parseInt(userId) }
+    };
+    this.likeService.createLikes(likePayload).subscribe({
+      next: (response) => console.log('Like submitted:', response),
+      error: (error) => console.error('Error:', error)
+    });
+  }
 
 }

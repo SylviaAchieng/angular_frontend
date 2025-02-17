@@ -30,13 +30,14 @@
             </div>
             <span>+10 more</span>
         </div>
-        <div class="icons">
-            <button mat-icon-button aria-label="Favorite">
-                <mat-icon>favorite</mat-icon>
-            </button>
-            <button mat-icon-button aria-label="Chat">
-                <mat-icon>chat</mat-icon>
-            </button>
-        </div>
+            <div class="icons flex items-center space-x-0.5">
+                <span>{{ likes.length }}</span>
+                <button (click)="submitLike()" type="button" mat-icon-button aria-label="Favorite">
+                    <mat-icon>favorite</mat-icon>
+                </button>
+                <button type="submit" mat-icon-button aria-label="Chat">
+                    <mat-icon>chat</mat-icon>
+                </button>
+            </div>
     </div>
 </div>

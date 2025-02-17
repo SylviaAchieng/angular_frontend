@@ -19,7 +19,7 @@ import { ProjectDetailsComponent } from "../../pages/project-details/project-det
 @Component({
   selector: 'app-landing',
   standalone: true,
-  imports: [RouterLink, NavbarComponent, FooterComponent, CommonModule, ProjectCardComponent, EventCardComponent, ProjectDetailsComponent],
+  imports: [NavbarComponent, FooterComponent, CommonModule, ProjectCardComponent, EventCardComponent, ProjectDetailsComponent],
   templateUrl: './landing.component.html',
   styleUrl: './landing.component.css'
 })
