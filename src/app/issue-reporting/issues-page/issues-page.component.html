@@ -1,0 +1,93 @@
+<app-navbar></app-navbar>
+
+<section class="bg-[#0A1B52] text-white flex justify-center items-center py-16 mt-16">
+  <div class="max-w-5xl w-full px-6 flex flex-col lg:flex-row items-center gap-10">
+    
+    <!-- Left Content -->
+    <div class="lg:w-1/2 text-center lg:text-left">
+      <p class="text-lg text-gray-300">COMMUNITY CONCERNS</p>
+      <h1 class="text-4xl lg:text-5xl font-bold mt-2 leading-tight">
+        Centralize engagement and foster an insightful, constructive dialogue
+      </h1>
+      <p class="mt-4 text-gray-300">
+        Hear from a diverse and representative share of community voices, 
+        understand faster which changes matter, and streamline your workflows.
+      </p>
+      <button class="mt-5 flex items-center gap-1 px-4 py-1 border-2 border-red-400 rounded-full text-white font-semibold hover:border-red-500 transition">
+        Talk to us
+        <span class="bg-green-500 text-white rounded-full p-2">➡️</span>
+      </button>
+    </div>
+
+    <!-- Right Image -->
+    <div class="lg:w-1/2">
+      <img src="assests/event.jpeg" alt="Engagement" class="rounded-lg shadow-lg w-full max-h-96 object-cover">
+    </div>
+
+  </div>
+</section>
+
+<section class="bg-gray-100 py-16">
+    <div class="max-w-4xl mx-auto bg-white shadow-lg rounded-lg p-8">
+      
+      <!-- Section Header -->
+      <h2 class="text-3xl font-bold text-center text-[#0A1B52]">
+        Voice Out Your Concerns...
+      </h2>
+      <p class="text-gray-600 text-center mt-2">
+        Share your issues, and let your voice be heard in the community.
+      </p>
+  
+      <!-- Form -->
+      <form class="mt-6 space-y-5" (ngSubmit)="submitIssue()">
+        
+        <!-- Title Input -->
+        <div>
+          <label class="block text-gray-700 font-medium">Title:</label>
+          <input type="text" [(ngModel)]="newIssue.title" name="title" 
+                 class="w-full bg-white border border-gray-400 rounded-lg p-3 focus:ring-2 focus:ring-[#0A1B52] focus:border-[#0A1B52]" required>
+        </div>
+  
+        <!-- Description Input -->
+        <div>
+          <label class="block text-gray-700 font-medium">Description:</label>
+          <textarea [(ngModel)]="newIssue.description" name="description"
+                    rows="4" class="w-full bg-white border border-gray-400 rounded-lg p-3 focus:ring-2 focus:ring-[#0A1B52] focus:border-[#0A1B52]" required></textarea>
+        </div>
+  
+        <!-- Location Dropdown -->
+        <div>
+          <label class="block text-gray-700 font-medium">Location:</label>
+          <select [(ngModel)]="newIssue.location.locationId" name="locationId"
+                  class="w-full bg-white border border-gray-400 rounded-lg p-3 focus:ring-2 focus:ring-[#0A1B52] focus:border-[#0A1B52]" required>
+            <option value="" disabled selected>Select Location</option>
+            <option *ngFor="let location of locations" [value]="location.locationId">{{ location.county }}</option>
+          </select>
+        </div>
+
+        <!-- Image Upload -->
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-700">Upload Image:</label>
+        <input type="file" (change)="onImageUpload($event)" accept="image/*" class="w-full bg-white p-2 border rounded-lg border-gray-400">
+      </div>
+      <!-- Image Preview -->
+      <div *ngIf="newIssue.base64EncodedImage" class="mb-4">
+        <img [src]="newIssue.base64EncodedImage" class="mt-2 h-32 rounded-lg shadow object-cover" />
+        <button type="button" (click)="clearImage()" class="mt-2 bg-red-500 text-white py-1 px-3 rounded-md hover:bg-red-600">
+          <i class="pi pi-trash"></i> Remove Image
+        </button>
+      </div>
+  
+        <!-- Submit Button -->
+        <button type="submit" 
+                class="w-full bg-[#0A1B52] text-white py-3 rounded-lg font-semibold hover:bg-[#091A40] transition">
+          Submit Concern
+        </button>
+  
+      </form>
+  
+    </div>
+  </section>
+  
+<app-footer></app-footer>  
+  

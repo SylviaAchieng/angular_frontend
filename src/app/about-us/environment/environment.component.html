@@ -1,0 +1,102 @@
+<app-navbar></app-navbar>
+
+<section class="bg-[#0A1B52] text-white flex justify-center items-center py-16 mt-16">
+  <div class="max-w-5xl w-full px-6 flex flex-col lg:flex-row items-center gap-10">
+    
+    <!-- Left Content -->
+    <div class="lg:w-1/2 text-center lg:text-left">
+      <p class="text-lg text-gray-300">ENVIRONMENT & SUSTAINABILITY</p>
+      <h1 class="text-4xl lg:text-5xl font-bold mt-2 leading-tight">
+        Bring your community with you on the journey to a green and sustainable future
+      </h1>
+      <p class="mt-4 text-gray-300">
+        Go Vocal empowers you and your community to drive sustainable change, 
+        promote climate justice, and improve the quality of life.
+      </p>
+      <button routerLink="/contact-us" class="mt-5 flex items-center gap-1 px-4 py-1 border-2 border-red-400 rounded-full text-white font-semibold hover:border-red-500 transition">
+        Get In Touch
+        <span class="bg-green-500 text-white rounded-full p-2"><i class="fa-solid fa-right-to-bracket"></i></span>
+      </button>
+    </div>
+
+    <!-- Right Image -->
+    <div class="lg:w-1/2">
+      <img src="assests/event.jpeg" alt="Engagement" class="rounded-lg shadow-lg w-full max-h-96 object-cover">
+    </div>
+
+  </div>
+</section>
+
+<div class="flex justify-center py-12 bg-white">
+    <div class="flex flex-col md:flex-row items-center max-w-6xl w-full px-8 md:px-16">
+      
+      <!-- Left Section: Image inside a partially overflowing card -->
+      <div class="relative md:w-[45%]">
+        <div class="bg-gray-200 p-4 rounded-xl shadow-md w-full h-[450px] flex justify-center overflow-hidden">
+          <img src="assests/event.jpeg" alt="Community Engagement" 
+            class="rounded-lg w-[120%] h-[450px] object-cover absolute -right-10 top-4">
+        </div>
+      </div>
+  
+      <!-- Right Section: Centered Text Content -->
+      <div class="md:w-[40%] text-left md:ml-16 mt-8 md:mt-4">
+        <p class="text-gray-700 leading-relaxed">
+            Climate change and population growth are placing unprecedented pressure on 
+            cities and ecosystems. To effectively address these challenges, cities must 
+            place people and their needs at the center of decision-making by engaging across a 
+            broad range of topics such as housing, mobility, waste management, energy, 
+            natural systems, food, land use, and green spaces. 
+        </p>
+  
+        <p class="text-gray-700 leading-relaxed mt-4">
+            Go Vocal's engagement platform plays a crucial role in enhancing the health 
+            and well-being of residents, ensuring climate justice, and building resilience for a sustainable future by:
+        </p>
+  
+        <ul class="list-disc pl-6 mt-4 text-gray-800 leading-loose">
+            <li>Promoting equitable, inclusive engagement.</li>
+            <li>Streamlining multi-stakeholder engagement.</li>
+            <li>Maintain engagement throughout extended processes.</li>
+            <li>Making hybrid engagement efficient by combining offline and online responses.</li>
+        </ul>
+      </div>
+  
+    </div>
+  </div>
+  
+<!-- What People Say Section -->
+  <section class="py-16 bg-gray-60 flex justify-center text-center">
+    <div class="max-w-4xl mx-auto px-6">
+        <h1 class="text-3xl font-bold text-blue-900 text-center mb-8">What People Say...</h1>
+      <!-- Large Opening Quotation Mark -->
+      <div class="text-8xl text-gray-300">“</div>
+  
+      <!-- Quote Text -->
+      <p class="text-2xl text-gray-700 font-light leading-relaxed">
+        "{{ testimonials[currentIndex].quote }}"
+      </p>
+  
+      <!-- Large Closing Quotation Mark -->
+      <div class="text-8xl text-gray-300 mt-2">”</div>
+  
+      <!-- Author Name -->
+      <div class="mt-6 text-lg font-semibold text-indigo-600">
+        - {{ testimonials[currentIndex].name }}
+      </div>
+  
+      <!-- Carousel Navigation -->
+      <div class="flex justify-center mt-6 space-x-3">
+        <button (click)="prevQuote()" class="p-2 bg-gray-300 rounded-full hover:bg-gray-400">❮</button>
+        <button (click)="nextQuote()" class="p-2 bg-gray-300 rounded-full hover:bg-gray-400">❯</button>
+      </div>
+    </div>
+  </section>
+
+<app-footer></app-footer>  
+
+
+
+
+  
+  
+

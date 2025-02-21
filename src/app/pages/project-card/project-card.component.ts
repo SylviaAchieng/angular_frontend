@@ -9,12 +9,14 @@ import { ProjectService } from '../../services/project.service';
 import { ProjectLikesService } from '../../services/project-likes.service';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../../services/auth.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ProjectCommentsService } from '../../services/project-comments.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-project-card',
   standalone: true,
-  imports: [CommonModule, MatIcon, MatCardModule, MatButtonModule, MatIconModule],
+  imports: [CommonModule, MatIcon, MatCardModule, MatButtonModule, MatIconModule, FormsModule, RouterLink],
   templateUrl: './project-card.component.html',
   styleUrl: './project-card.component.css'
 })
@@ -25,6 +27,15 @@ export class ProjectCardComponent {
   newLike: string = ''; 
   likes: any[] = [];
 
+  comments: any[]=[];
+  newComment: string = '';
+
+  showCommentDialog = false;
+
+  toggleCommentDialog() {
+    this.showCommentDialog = !this.showCommentDialog;
+  }
+
 
   constructor(public dialog: MatDialog, 
     private projectService: ProjectService, 
@@ -32,7 +43,8 @@ export class ProjectCardComponent {
     private toastr: ToastrService,
     private cdr: ChangeDetectorRef,
     private route: ActivatedRoute,
-    private authService: AuthService
+    private authService: AuthService,
+    private commentService: ProjectCommentsService
   
   ){}
 
@@ -42,6 +54,7 @@ export class ProjectCardComponent {
     });
     const projectId = this.project?.projectId;
     this.loadlikes(projectId);
+    this.loadComments(projectId);
   }
 
   submitLike() {
@@ -50,12 +63,10 @@ export class ProjectCardComponent {
       this.toastr.info("Project not found. Please try again.", "Info"); 
       return;
     }
-  
     const likePayload = {
       project: { projectId: this.project.projectId },
       user: { userId: parseInt(userId) }
     };
-  
     this.likeService.createLikes(likePayload).subscribe({
       next: (response) => {
         console.log('Like submitted:', response);
@@ -78,6 +89,39 @@ export class ProjectCardComponent {
     });
   }
   
+  createComment(){
+    const userId = localStorage.getItem('userId');
+    if (!userId || !this.project?.projectId) {
+      this.toastr.info("Project not found. Please try again.", "Info"); 
+      return;
+    }
+    const commentPayload = {
+      project: { projectId: this.project.projectId },
+      user: { userId: parseInt(userId) },
+      comment: this.newComment
+    };
+    this.commentService.createComment(commentPayload).subscribe({
+      next: (response) => {
+        console.log('Comment submitted:', response);
+        this.newComment = ''; // Clear input field
+        this.showCommentDialog = false;
+        this.loadComments(this.project.projectId);
+      },
+      error: (error) => console.error('Error:', error)
+    });
+  }
   
+  loadComments(projectId: number){
+    this.commentService.getCommentsByProjectId(projectId).subscribe({
+      next: (response) => {
+        this.comments = response._embedded || []; // Ensure it’s an array
+        console.log('comments', response);
+      },
+      error: (err) => {
+        console.error('Error fetching comments:', err);
+      }
+    });
+
+  }
 
 }

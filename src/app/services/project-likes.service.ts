@@ -37,8 +37,8 @@ export class ProjectLikesService {
               }
   
               getLikesByProjectId(projectId: number): Observable<any> {
-                const headers = this.getHeaders();
-                return this.http.get<any>(`${this.baseUrl}/api/v1/likes/${projectId}`, {headers}).pipe(
+                //const headers = this.getHeaders();
+                return this.http.get<any>(`${this.baseUrl}/api/v1/likes/${projectId}`).pipe(
                   tap((response: { _embedded: any[] }) => {  // Correctly type the response
                     const currentState = this.likesSubject.value;
                     const likes = response._embedded || [];  // Ensure it's an array

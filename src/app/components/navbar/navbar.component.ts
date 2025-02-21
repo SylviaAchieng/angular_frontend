@@ -16,6 +16,11 @@ export class NavbarComponent {
 
   user:any = null;
   username: any;
+  isMenuOpen = false;
+
+  toggleMenu() {
+    this.isMenuOpen = !this.isMenuOpen;
+  }
 
   ngOnInit(): void {
     this.username = localStorage.getItem('fullName');

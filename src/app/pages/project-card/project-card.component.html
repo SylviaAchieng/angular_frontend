@@ -1,9 +1,8 @@
-<div class="project-card">
+<div class="project-card relative">
     <div class="project-status">
         <div class="progress-bar">
             <p>{{ project.daysRemaining }} days remaining</p>
-            <!-- Progress Bar -->
-             <div class="progress">
+            <div class="progress">
                 <div class="w-60 bg-gray-200 rounded-full h-2 mt-1">
                     <div class="h-2 rounded-full bg-green-500" style="width: 50%;"></div>
                 </div>
@@ -14,30 +13,42 @@
         </div>
     </div>
 
-    <!-- ✅ Display Base64 Image 
-    <img [src]="project.base64EncodedImage" alt="Project Image" class="w-full h-48 object-cover rounded-lg">-->
     <img *ngIf="project.base64EncodedImage" [src]="project.base64EncodedImage" alt="Project Image" class="w-full h-48 object-cover rounded-lg">
 
-
-
-    <h3>{{ project.title }}</h3>
+    <h3 class="text-lg font-semibold text-blue-900 cursor-pointer hover:underline">
+        <a [routerLink]="['/project-details', project.projectId]">{{ project.title }}</a>
+    </h3>
     <p>{{ project.description }}</p>
 
     <div class="project-footer">
         <div class="avatar">
             <div class="avatarimg">
-                <img src="assets/avatar.jpg" alt="avatar">
+                <img src="assests/avatar.jpg" alt="avatar">
             </div>
             <span>+10 more</span>
         </div>
-            <div class="icons flex items-center space-x-0.5">
-                <span>{{ likes.length }}</span>
-                <button (click)="submitLike()" type="button" mat-icon-button aria-label="Favorite">
-                    <mat-icon>favorite</mat-icon>
-                </button>
-                <button type="submit" mat-icon-button aria-label="Chat">
-                    <mat-icon>chat</mat-icon>
-                </button>
-            </div>
+        <div class="icons flex items-center space-x-0.5">
+            <span>{{ likes.length }}</span>
+            <button (click)="submitLike()" type="button" mat-icon-button aria-label="Favorite">
+                <mat-icon>favorite</mat-icon>
+            </button>
+            <span>{{ comments.length }}</span>
+            <button type="button" mat-icon-button aria-label="Chat" (click)="toggleCommentDialog()">
+                <mat-icon>chat</mat-icon>
+            </button>
+        </div>
     </div>
+
+    <!-- Comment Dialog on top of the card -->
+    <div *ngIf="showCommentDialog" class="absolute top-2 right-2 bg-gray-100 p-3 rounded-lg shadow-lg w-72">
+        <h3 class="text-sm font-semibold text-gray-800">Add a Comment</h3>
+        <textarea [(ngModel)]="newComment" placeholder="Write here..." 
+                  class="w-full p-1 border border-gray-300 rounded-lg text-sm mt-1"></textarea>
+        <div class="flex justify-end space-x-1 mt-2">
+          <button (click)="showCommentDialog = false" class="px-2 py-1 bg-gray-300 rounded-md text-xs">Cancel</button>
+          <button (click)="createComment()" class="px-2 py-1 bg-blue-900 text-white rounded-md text-xs hover:bg-blue-700">
+            Submit
+          </button>
+        </div>
+      </div>
 </div>

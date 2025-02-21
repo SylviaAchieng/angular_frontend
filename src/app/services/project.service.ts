@@ -115,6 +115,17 @@ export class ProjectService {
       )
     }
 
+    getIssueByLocationId(locationId: number): Observable<any> {
+      //const headers = this.getHeaders();
+      return this.http.get<any>(`${this.baseUrl}/api/v1/projects/location/${locationId}`).pipe(
+        tap((response: { _embedded: any[] }) => {
+          const currentState = this.projectSubject.value;
+          const projects = response._embedded || [];
+          this.projectSubject.next({ ...currentState, projects });
+        })
+      );
+    }
+
 
 
 }

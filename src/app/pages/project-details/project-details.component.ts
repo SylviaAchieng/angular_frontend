@@ -8,6 +8,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
 import { ProjectLikesService } from '../../services/project-likes.service';
+import { ProjectCommentsService } from '../../services/project-comments.service';
 
 @Component({
   selector: 'app-project-details',
@@ -24,11 +25,16 @@ export class ProjectDetailsComponent {
 
   likes: any[] = [];
 
+  comments: any[] = [];
+  newComment: string = '';
+  showCommentDialog: boolean = false;
+
   constructor(
     private route: ActivatedRoute,
     private projectService: ProjectService,
     private toastr: ToastrService,
-    private likeService: ProjectLikesService
+    private likeService: ProjectLikesService,
+    private commentService: ProjectCommentsService
   ) {}
 
   projectsTitle = 'Go Vocal is currently working on';
@@ -55,6 +61,9 @@ export class ProjectDetailsComponent {
 
   ngOnInit(): void {
     this.loadProjectDetails();
+    const projectId = this.project?.projectId;
+    this.loadlikes(projectId);
+    this.loadComments(projectId);
     
   }
 
@@ -143,6 +152,62 @@ export class ProjectDetailsComponent {
       next: (response) => console.log('Like submitted:', response),
       error: (error) => console.error('Error:', error)
     });
+  }
+
+  createComment(): void {
+    const userId = localStorage.getItem('userId');
+    if (!userId || !this.project?.projectId) {
+      this.toastr.info('Project not found. Please try again.', 'Info');
+      return;
+    }
+
+    const commentPayload = {
+      project: { projectId: this.project.projectId },
+      user: { userId: parseInt(userId) },
+      comment: this.newComment
+    };
+
+    this.commentService.createComment(commentPayload).subscribe({
+      next: (response) => {
+        this.comments.push(response);
+        this.newComment = '';
+        this.showCommentDialog = false;
+        this.toastr.success('Comment added successfully!', 'Success');
+      },
+      error: (error) => {
+        console.error('Error submitting comment:', error);
+        this.toastr.error('Failed to submit comment.', 'Error');
+      }
+    });
+  }
+
+  toggleCommentDialog(): void {
+    this.showCommentDialog = !this.showCommentDialog;
+  }
+
+  loadlikes(projectId: number) {
+    this.likeService.getLikesByProjectId(projectId).subscribe({
+      next: (response) => {
+        this.likes = response._embedded || []; // Ensure it’s an array
+        console.log('likes', response);
+      },
+      error: (err) => {
+        console.error('Error fetching replies:', err);
+      }
+    });
+  }
+
+  loadComments(projectId: number): void {
+    this.commentService.getCommentsByProjectId(projectId).subscribe({
+      next: (response) => {
+        this.comments = response._embedded || []; // Ensure it’s an array
+        console.log('comments', response);
+      },
+      error: (err) => {
+        console.error('Error fetching comments:', err);
+      }
+    });
+
   }
 
 }

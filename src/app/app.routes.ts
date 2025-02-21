@@ -17,6 +17,18 @@ import { CreateDiscussionComponent } from './discussions/create-discussion/creat
 import { DiscussionDetailsComponent } from './discussions/discussion-details/discussion-details.component';
 import { EventDetailsComponent } from './pages/event-details/event-details.component';
 import { ProjectDetailsComponent } from './pages/project-details/project-details.component';
+import { ProjectCardDetailsComponent } from './pages/project-card-details/project-card-details.component';
+import { IssuesPageComponent } from './issue-reporting/issues-page/issues-page.component';
+import { CommunicationComponent } from './about-us/communication/communication.component';
+import { EnvironmentComponent } from './about-us/environment/environment.component';
+import { NeighbourhoodComponent } from './about-us/neighbourhood/neighbourhood.component';
+import { PlanningComponent } from './about-us/planning/planning.component';
+import { ContactUsComponent } from './contact-us/contact-us/contact-us.component';
+import { PublicServantComponent } from './public-servant/public-servant/public-servant.component';
+import { PublicServantDashboardComponent } from './public-servant/public-servant/public-servant-dashboard/public-servant-dashboard.component';
+import { AllEventsComponent } from './public-servant/public-servant/all-events/all-events.component';
+import { AllProjectsComponent } from './public-servant/public-servant/all-projects/all-projects.component';
+import { AllIssuesComponent } from './issue-reporting/all-issues/all-issues.component';
 
 
 
@@ -31,7 +43,15 @@ export const routes: Routes = [
     {path: "create-discussion", component: CreateDiscussionComponent},
     {path:"discussion-details/:id", component:DiscussionDetailsComponent},
     { path: 'event-details/:id', component: EventDetailsComponent },
+    { path: 'project-details/:id', component: ProjectCardDetailsComponent },
     {path: 'project-details', component:ProjectDetailsComponent},
+    {path: 'issue-page', component: IssuesPageComponent},
+    {path: 'communication', component: CommunicationComponent},
+    {path: 'environment', component: EnvironmentComponent},
+    {path: 'neighbourhood', component: NeighbourhoodComponent},
+    {path: 'planning', component: PlanningComponent},
+    {path: 'contact-us', component: ContactUsComponent},
+
     
     { path: 'admin-dashboard', component: AdminDashboardComponent, children: [
         { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
@@ -39,6 +59,16 @@ export const routes: Routes = [
         { path: 'events', component: EventsComponent },
         {path: 'projects', component: ProjectsComponent},
         {path: 'users', component:UsersComponent},
+        {path:'settings', component: SettingsComponent},
+        {path:'notifications', component:NotificationComponent}
+    ]},
+
+    { path: 'public-servant', component: PublicServantComponent, children: [
+        { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+        { path: 'dashboard', component: PublicServantDashboardComponent },
+        { path: 'events', component: AllEventsComponent },
+        {path: 'projects', component: AllProjectsComponent},
+        {path: 'issues', component:AllIssuesComponent},
         {path:'settings', component: SettingsComponent},
         {path:'notifications', component:NotificationComponent}
     ]}

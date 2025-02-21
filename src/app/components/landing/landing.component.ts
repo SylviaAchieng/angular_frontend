@@ -19,7 +19,7 @@ import { ProjectDetailsComponent } from "../../pages/project-details/project-det
 @Component({
   selector: 'app-landing',
   standalone: true,
-  imports: [NavbarComponent, FooterComponent, CommonModule, ProjectCardComponent, EventCardComponent, ProjectDetailsComponent],
+  imports: [NavbarComponent, FooterComponent, CommonModule, ProjectCardComponent, EventCardComponent, ProjectDetailsComponent, RouterLink],
   templateUrl: './landing.component.html',
   styleUrl: './landing.component.css'
 })
@@ -37,7 +37,8 @@ export class LandingComponent {
     public authService: AuthService, 
     private projectService: ProjectService, 
     private eventService: EventService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private route: Router
   ) {}
 
   // TrackBy function using index
@@ -95,21 +96,25 @@ export class LandingComponent {
       title: 'Communications & Engagement',
       image: 'assests/home.jpg',
       color: 'bg-green-800',
+      route: '/communication'
     },
     {
       title: 'Planning & Placemaking',
       image: 'assests/home.jpg',
       color: 'bg-blue-800',
+      route: '/planning'
     },
     {
       title: 'Neighborhoods & Public Safety',
       image: 'assests/home.jpg',
       color: 'bg-red-600',
+      route: '/neighbourhood'
     },
     {
       title: 'Environment & Sustainability',
       image: 'assests/home.jpg',
       color: 'bg-yellow-500',
+      route: '/environment'
     },
   ];
   

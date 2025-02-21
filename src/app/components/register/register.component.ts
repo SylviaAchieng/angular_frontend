@@ -63,10 +63,8 @@ export class RegisterComponent {
   
   fetchLocations(): void {
     this.locationService.getAllLocations().subscribe((response) => {
-      console.log("locations received:", response); // Debugging
       this.locations = response._embedded || [];
     });
-    // Subscribe to projectSubject to update component state
   this.locationService.locationSubject.subscribe((state) => {
     this.locations = state.locations;
     console.log("location state updated:", this.locations);

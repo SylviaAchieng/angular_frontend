@@ -1,0 +1,30 @@
+section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .bg-indigo-500 {
+    background-color: #6366F1;
+  }
+  
+  .shadow-lg {
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
+  }
+  
+  .rounded-xl {
+    border-radius: 1rem;
+  }
+  
+  .leading-relaxed {
+    line-height: 1.6;
+  }
+  
+  .text-5xl {
+    font-size: 3rem;
+  }
+  
+  .text-gray-300 {
+    color: #D1D5DB;
+  }
+  

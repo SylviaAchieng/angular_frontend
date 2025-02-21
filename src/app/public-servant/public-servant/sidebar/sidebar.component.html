@@ -1,0 +1,70 @@
+<div class="h-screen w-64 bg-[#0d3b50] text-white fixed flex flex-col">
+    <!-- Top Section -->
+    <div [routerLink]="['/']" class="p-4 flex items-center gap-2 bg-[#1a5d76] cursor-pointer">
+      <i class="fa-solid fa-arrow-left"></i>
+      <span class="font-semibold">To platform</span>
+    </div>
+  
+    <!-- Navigation Links -->
+    <nav class="flex-1 mt-2">
+      <ul>
+        <li class="px-4 py-2 bg-[#124559] flex items-center gap-3 cursor-pointer">
+          <a [routerLink]="['/public-servant/dashboard']" class="w-full flex items-center gap-3">
+            <i class="fas fa-chart-line"></i> Dashboard
+          </a>
+        </li>
+        <li [routerLink]="['/public-servant/projects']" class="px-4 py-2 hover:bg-[#1a5d76] flex items-center gap-3 cursor-pointer">
+            <i class="fas fa-clipboard-list"></i> Projects
+        </li>
+        <li class="px-4 py-2 hover:bg-[#1a5d76] flex items-center gap-3 cursor-pointer">
+          <a [routerLink]="['/public-servant/events']" class="w-full flex items-center gap-3">
+            <i class="fas fa-folder-open"></i> Events
+          </a>
+        </li>
+        <li [routerLink]="['/public-servant/proposals']" class="px-4 py-2 hover:bg-[#1a5d76] flex items-center gap-3 cursor-pointer">
+          <i class="fas fa-leaf"></i> Proposals
+        </li>
+        <li [routerLink]="['/public-servant/issues']" class="px-4 py-2 hover:bg-[#1a5d76] flex items-center gap-3 cursor-pointer">
+          <i class="fas fa-users"></i> Issues
+        </li>
+        <li class="px-4 py-2 hover:bg-[#1a5d76] flex items-center gap-3 cursor-pointer">
+          <i class="fas fa-envelope"></i> Messaging
+        </li>
+        <li class="px-4 py-2 hover:bg-[#1a5d76] flex items-center gap-3 cursor-pointer">
+          <i class="fas fa-chart-bar"></i> Reporting
+        </li>
+        <li class="px-4 py-2 hover:bg-[#1a5d76] flex items-center gap-3 cursor-pointer">
+          <i class="fas fa-th-large"></i> Tools
+        </li>
+      </ul>
+    </nav>
+  
+    <!-- Bottom Section -->
+    <div class="border-t border-gray-600">
+      <ul>
+        <li class="px-4 py-2 hover:bg-[#1a5d76] flex items-center gap-3 cursor-pointer">
+          <i class="fas fa-sitemap"></i> Pages & menu
+        </li>
+        <li class="px-4 py-2 hover:bg-[#1a5d76] flex items-center gap-3 cursor-pointer">
+          <i class="fas fa-cog"></i> Settings
+        </li>
+        <li class="px-4 py-2 hover:bg-[#1a5d76] flex items-center gap-3 cursor-pointer">
+          <i class="fas fa-question-circle text-green-500"></i> Support
+        </li>
+        <li [routerLink]="['/public-servant/notifications']" class="px-4 py-2 hover:bg-[#1a5d76] flex items-center gap-3 cursor-pointer relative">
+          <i class="fas fa-bell"></i> Notifications
+          <span class="bg-red-500 text-xs px-2 rounded-full absolute right-4">2</span>
+        </li>
+      </ul>
+    </div>
+  
+    <!-- User Profile -->
+    <div class="mt-auto p-4 flex items-center gap-3 cursor-pointer hover:bg-[#1a5d76]">
+      <div class="w-8 h-8 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full"></div>
+      <div>
+        <p class="text-sm font-semibold">{{username}}</p>
+        <p class="text-xs text-gray-300">Public Servant</p>
+      </div>
+    </div>
+  </div>
+  

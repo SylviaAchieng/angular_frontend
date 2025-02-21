@@ -48,6 +48,7 @@ export class LoginComponent {
         localStorage.setItem('token', response._embedded.token);
         localStorage.setItem('userId', response._embedded.user.userId);
         localStorage.setItem('userType', response._embedded.user.userType);
+        localStorage.setItem('user', JSON.stringify(response._embedded.user))
         
   
         const userId = response._embedded.user.userId;
@@ -64,8 +65,10 @@ export class LoginComponent {
             // Navigate based on user type
             if (userType === 'ADMIN') {
               this.router.navigate(['/admin-dashboard']);
+            } else if (userType === 'PUBLIC_SERVANT') {
+              this.router.navigate(['/public-servant']);
             } else {
-              this.router.navigate(['/']);
+              this.router.navigate(['/']); // Default home page for all users
             }
           },
           error: (profileError) => {

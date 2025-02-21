@@ -6,11 +6,12 @@ import { RsvpService } from '../../services/rsvp.service';
 import { CommonModule } from '@angular/common';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { ToastrService } from 'ngx-toastr';
+import { FooterComponent } from "../../components/footer/footer.component";
 
 @Component({
   selector: 'app-event-details',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule,NavbarComponent],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, NavbarComponent, FooterComponent],
   templateUrl: './event-details.component.html',
   styleUrl: './event-details.component.css'
 })

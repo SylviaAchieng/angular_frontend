@@ -1,0 +1,97 @@
+<app-navbar></app-navbar>
+
+<section class="bg-[#0A1B52] text-white flex justify-center items-center py-16 mt-16">
+  <div class="max-w-5xl w-full px-6 flex flex-col lg:flex-row items-center gap-10">
+    
+    <!-- Left Content -->
+    <div class="lg:w-1/2 text-center lg:text-left">
+      <p class="text-lg text-gray-300">COMMUNICATION & ENGAGEMENTS</p>
+      <h1 class="text-4xl lg:text-5xl font-bold mt-2 leading-tight">
+        Centralize engagement and foster an insightful, constructive dialogue
+      </h1>
+      <p class="mt-4 text-gray-300">
+        Hear from a diverse and representative share of community voices, 
+        understand faster which changes matter, and streamline your workflows.
+      </p>
+      <button routerLink="/contact-us" class="mt-5 flex items-center gap-1 px-4 py-1 border-2 border-red-400 rounded-full text-white font-semibold hover:border-red-500 transition">
+        Get In Touch
+        <span class="bg-green-500 text-white rounded-full p-2"><i class="fa-solid fa-right-to-bracket"></i></span>
+      </button>
+    </div>
+
+    <!-- Right Image -->
+    <div class="lg:w-1/2">
+      <img src="assests/event.jpeg" alt="Engagement" class="rounded-lg shadow-lg w-full max-h-96 object-cover">
+    </div>
+
+  </div>
+</section>
+
+<div class="flex justify-center py-12 bg-white">
+    <div class="flex flex-col md:flex-row items-center max-w-6xl w-full px-8 md:px-16">
+      
+      <!-- Left Section: Image inside a partially overflowing card -->
+      <div class="relative md:w-[45%]">
+        <div class="bg-gray-200 p-4 rounded-xl shadow-md w-full h-[450px] flex justify-center overflow-hidden">
+          <img src="assests/event.jpeg" alt="Community Engagement" 
+            class="rounded-lg w-[120%] h-[450px] object-cover absolute -right-10 top-6">
+        </div>
+      </div>
+  
+      <!-- Right Section: Centered Text Content -->
+      <div class="md:w-[40%] text-left md:ml-16 mt-8 md:mt-4">
+        <p class="text-gray-700 leading-relaxed">
+          Tailor your engagement strategies using <span class="font-semibold">Go Vocal’s</span> engagement platform, 
+          a complete toolbox for insightful engagement across the whole contry. No matter where you are 
+          on your engagement journey, we're with you every step of the way, ensuring you build meaningful 
+          connections with your community.
+        </p>
+  
+        <p class="text-gray-700 leading-relaxed mt-4">
+          From a comprehensive plan to a neighborhood revitalization project, our comunity should
+          count on <span class="font-semibold">Go Vocal</span> to:
+        </p>
+  
+        <ul class="list-disc pl-6 mt-4 text-gray-800 leading-loose">
+          <li>Adapt visually to your brand, building trust across all channels.</li>
+          <li>Foster inclusive and equitable participation by embracing diverse languages and abilities.</li>
+          <li>Centralize communications and engagement tools for multiple departments.</li>
+          <li>Keep residents informed and continuously engaged in projects.</li>
+        </ul>
+      </div>
+  
+    </div>
+  </div>
+  
+<!-- What People Say Section -->
+  <section class="py-16 bg-gray-60 flex justify-center text-center">
+    <div class="max-w-4xl mx-auto px-6">
+        <h1 class="text-3xl font-bold text-blue-900 text-center mb-8">What People Say...</h1>
+      <!-- Large Opening Quotation Mark -->
+      <div class="text-8xl text-gray-300">“</div>
+  
+      <!-- Quote Text -->
+      <p class="text-2xl text-gray-700 font-light leading-relaxed">
+        "{{ testimonials[currentIndex].quote }}"
+      </p>
+  
+      <!-- Large Closing Quotation Mark -->
+      <div class="text-8xl text-gray-300 mt-2">”</div>
+  
+      <!-- Author Name -->
+      <div class="mt-6 text-lg font-semibold text-indigo-600">
+        - {{ testimonials[currentIndex].name }}
+      </div>
+  
+      <!-- Carousel Navigation -->
+      <div class="flex justify-center mt-6 space-x-3">
+        <button (click)="prevQuote()" class="p-2 bg-gray-300 rounded-full hover:bg-gray-400">❮</button>
+        <button (click)="nextQuote()" class="p-2 bg-gray-300 rounded-full hover:bg-gray-400">❯</button>
+      </div>
+    </div>
+  </section>
+
+<app-footer></app-footer>  
+    
+  
+  

@@ -81,5 +81,16 @@ export class EventService {
             )
           }  
 
+          getEventByLocationId(eventId: number): Observable<any> {
+            const headers = this.getHeaders();
+            return this.http.get<any>(`${this.baseUrl}/api/v1/events/location/${eventId}`, {headers}).pipe(
+              tap((response: { _embedded: any[] }) => {
+                const currentState = this.eventSubject.value;
+                const events = response._embedded || [];
+                this.eventSubject.next({ ...currentState, events });
+              })
+            );
+          }
+
 
 }

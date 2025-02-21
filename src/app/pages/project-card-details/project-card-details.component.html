@@ -1,0 +1,57 @@
+<app-navbar class="fixed top-0 left-0 w-full z-50 bg-white shadow-md"></app-navbar>
+
+<div class="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-lg mt-20">
+    <h2 class="text-2xl font-semibold text-gray-800">{{ project?.title }}</h2>
+
+    <img *ngIf="project?.base64EncodedImage" [src]="project?.base64EncodedImage" 
+         alt="Project Image" class="w-full h-64 object-cover rounded-lg mt-4">
+
+    <p class="text-gray-600 mt-4"><i class="pi pi-calendar"></i> {{ project?.daysRemaining }} days remaining</p>
+    <p class="text-gray-600 mt-4"><i class="pi pi-map-marker"></i> {{ project?.location?.county }}</p>
+
+    <p class="mt-4 text-gray-700">{{ project?.description }}</p>
+    <p class="mt-4 text-gray-700"><strong>Approximate Cost:</strong> ${{ project?.approximateCost }}</p>
+    <p class="mt-2 text-gray-700"><strong>Actual Cost:</strong> ${{ project?.actualCost }}</p>
+
+    <!-- Project Engagement Section -->
+    <div class="mt-6 flex justify-between items-center">
+        <div class="flex items-center space-x-2">
+            <span>{{ likes.length }}</span>
+            <button (click)="submitLike()" type="button" mat-icon-button aria-label="Favorite">
+                <mat-icon>favorite</mat-icon>
+            </button>
+            <span>{{ comments.length }}</span>
+            <button type="button" mat-icon-button aria-label="Chat" (click)="toggleCommentDialog()">
+                <mat-icon>chat</mat-icon>
+            </button>
+        </div>
+        <button class="px-4 py-2 bg-blue-900 text-white rounded-lg hover:bg-blue-700 transition" (click)="goBack()">
+            Back
+        </button>
+    </div>
+
+    <!-- Comment Form -->
+    <div *ngIf="showCommentDialog" class="mt-6 bg-gray-100 p-4 rounded-lg">
+        <h3 class="text-lg font-semibold text-gray-800">Add a Comment</h3>
+        <textarea [(ngModel)]="newComment" placeholder="Write your comment..." 
+                  class="w-full p-2 border border-gray-300 rounded-lg mt-2"></textarea>
+        <div class="flex justify-end space-x-2 mt-2">
+            <button (click)="showCommentDialog = false" class="px-4 py-2 bg-gray-300 rounded-lg">Cancel</button>
+            <button (click)="createComment()" class="px-4 py-2 bg-blue-900 text-white rounded-lg hover:bg-blue-700 transition">
+                Submit
+            </button>
+        </div>
+    </div>
+
+    <!-- Display Comments -->
+    <div class="mt-6 bg-gray-50 p-4 rounded-lg">
+        <h3 class="text-lg font-semibold text-gray-800"> View All Comments</h3>
+        <div *ngFor="let comment of comments" class="mt-4 p-4 bg-white border border-gray-200 rounded-lg">
+            <p class="text-gray-700">Message: {{ comment.comment }}</p>
+            <!--<p class="text-gray-500 text-sm">{{ comment.userId }}</p>-->
+            <p class="text-gray-400 text-sm">Created at: {{ comment.createdAt | date: 'short' }}</p>
+        </div>
+    </div>
+</div>
+
+<app-footer></app-footer>
