@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ProjectService } from '../../services/project.service';
 import { CommonModule } from '@angular/common';
@@ -13,7 +13,7 @@ import { ProjectCommentsService } from '../../services/project-comments.service'
 @Component({
   selector: 'app-project-details',
   standalone: true,
-  imports: [CommonModule, FormsModule, MatIcon, MatCardModule, MatButtonModule, MatIconModule],
+  imports: [CommonModule, FormsModule, MatIcon, MatCardModule, MatButtonModule, MatIconModule, RouterLink],
   templateUrl: './project-details.component.html',
   styleUrl: './project-details.component.css'
 })
@@ -24,6 +24,9 @@ export class ProjectDetailsComponent {
   projects: any;
 
   likes: any[] = [];
+  selectedProject: any = null;
+  isViewing = false;
+  
 
   comments: any[] = [];
   newComment: string = '';
@@ -208,6 +211,16 @@ export class ProjectDetailsComponent {
       }
     });
 
+  }
+
+  showViewIssueModal(event: any): void {
+    this.selectedProject = event;
+    this.isViewing = true;
+  }
+
+  closeViewIssueModal(): void {
+    this.isViewing = false;
+    this.selectedProject = null;
   }
 
 }

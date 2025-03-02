@@ -65,8 +65,8 @@ export class AuthService {
   
 
   getAllUsers(): Observable<any> {
-    const headers = this.getHeaders();
-    return this.http.get<any>(`${this.baseUrl}/api/v1/users`, { headers }).pipe(
+    //const headers = this.getHeaders();
+    return this.http.get<any>(`${this.baseUrl}/api/v1/users`).pipe(
       tap((response: { _embedded: any[] }) => {  // Correctly type the response
         const currentState = this.authSubject.value;
         const users = response._embedded || [];  // Ensure it's an array

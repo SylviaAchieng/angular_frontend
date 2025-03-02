@@ -190,6 +190,33 @@ export class ProjectsComponent {
     });
   }
   
+
+  getProjectById(projectId: number): void {
+    this.projectService.getProjectById(projectId).subscribe({
+      next: (response: any) => {
+        console.log("Projects retrieved successfully:", response);
+  
+        if (!response || !response._embedded) {
+          console.error("Invalid response format");
+          return;
+        }
+        const formattedProjects = response._embedded.map((project: any) => ({
+          ...project,
+          base64EncodedImage: project.base64EncodedImage?.startsWith("data:image/")
+            ? project.base64EncodedImage  // Already formatted correctly
+            : `data:image/jpeg;base64,${project.base64EncodedImage}`  // Add prefix only if missing
+        }));
+        this.projectService.projectSubject.next({ projects: formattedProjects });
+      },
+      error: (err) => {
+        console.error("Failed to load projects:", err);
+      }
+    });
+    this.projectService.projectSubject.subscribe((state: any) => {
+      this.projects = state.projects;
+      console.log("Projects state updated with images:", this.projects);
+    });
+  }
   
   
   

@@ -6,12 +6,12 @@
     <img *ngIf="project?.base64EncodedImage" [src]="project?.base64EncodedImage" 
          alt="Project Image" class="w-full h-64 object-cover rounded-lg mt-4">
 
-    <p class="text-gray-600 mt-4"><i class="pi pi-calendar"></i> {{ project?.daysRemaining }} days remaining</p>
-    <p class="text-gray-600 mt-4"><i class="pi pi-map-marker"></i> {{ project?.location?.county }}</p>
+    <p class="text-gray-600 mt-4"><i class="pi pi-calendar mr-2"></i> {{ project?.daysRemaining }} days remaining</p>
+    <p class="text-gray-600 mt-4"><i class="pi pi-map-marker mr-2"></i> {{ project?.location?.county }}</p>
 
-    <p class="mt-4 text-gray-700">{{ project?.description }}</p>
-    <p class="mt-4 text-gray-700"><strong>Approximate Cost:</strong> ${{ project?.approximateCost }}</p>
-    <p class="mt-2 text-gray-700"><strong>Actual Cost:</strong> ${{ project?.actualCost }}</p>
+    <p class="mt-4 text-gray-700"><i class="pi pi-align-left mr-2"></i>{{ project?.description }}</p>
+    <p class="mt-4 text-gray-700"><i class="pi pi-money-bill mr-2"></i><strong>Approximate Cost:</strong> {{ project?.approximateCost }}</p>
+    <p class="mt-2 text-gray-700"><i class="pi pi-money-bill mr-2"></i><strong>Actual Cost:</strong> {{ project?.actualCost }}</p>
 
     <!-- Project Engagement Section -->
     <div class="mt-6 flex justify-between items-center">

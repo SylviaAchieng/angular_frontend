@@ -1,3 +1,4 @@
+<div id="top"></div>
 <div class="bg-white shadow-lg rounded-2xl p-6 border border-gray-200 hover:shadow-2xl transition flex mb-6 max-w-4xl mx-auto">
   <img [src]="event.base64EncodedImage" alt="Event Banner" class="w-29 h-40 object-cover rounded-lg mr-4">
 
@@ -27,7 +28,7 @@
       <span class="text-sm text-gray-700">Speakers</span>
     </div>
 
-    <button class="bg-blue-900 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition" [routerLink]="['/event-details', event.eventId]">
+    <button class="bg-blue-900 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition" [routerLink]="['/event-details', event.eventId]" fragment="top">
       RSVP
     </button>
   </div>

@@ -37,8 +37,8 @@ export class IssueService {
           }
 
           getIssueByLocationId(locationId: number): Observable<any> {
-            //const headers = this.getHeaders();
-            return this.http.get<any>(`${this.baseUrl}/api/v1/issue/location/${locationId}`).pipe(
+            const headers = this.getHeaders();
+            return this.http.get<any>(`${this.baseUrl}/api/v1/issue/location/${locationId}`, {headers}).pipe(
               tap((response: { _embedded: any[] }) => {
                 const currentState = this.issueSubject.value;
                 const issues = response._embedded || [];
@@ -46,4 +46,28 @@ export class IssueService {
               })
             );
           }
+
+          getAllIssues(): Observable<any> {
+            const headers = this.getHeaders();
+            return this.http.get<any>(`${this.baseUrl}/api/v1/issue`, {headers}).pipe(
+              tap((response: { _embedded: any[] }) => {  // Correctly type the response
+                const currentState = this.issueSubject.value;
+                const issues = response._embedded || [];  // Ensure it's an array
+                this.issueSubject.next({ ...currentState, issues });
+              })
+            );
+          }
+
+          updateIssue(issue:any):Observable<any>{
+            const headers = this.getHeaders();
+            return this.http.put<any>(`${this.baseUrl}/api/v1/issue/${issue.issueId}`,issue, {headers}).pipe(
+              tap((updatedIssue:any)=>{
+                const currentState = this.issueSubject.value;
+                const updatedIssues = currentState.issues.map((item:any)=>item.issueId === updatedIssue.issueId?updatedIssue:item);
+                this.issueSubject.next({...currentState, issues: updatedIssues})
+              })
+            )
+          }
+
+
 }

@@ -28,7 +28,9 @@ import { PublicServantComponent } from './public-servant/public-servant/public-s
 import { PublicServantDashboardComponent } from './public-servant/public-servant/public-servant-dashboard/public-servant-dashboard.component';
 import { AllEventsComponent } from './public-servant/public-servant/all-events/all-events.component';
 import { AllProjectsComponent } from './public-servant/public-servant/all-projects/all-projects.component';
-import { AllIssuesComponent } from './issue-reporting/all-issues/all-issues.component';
+import { AllIssuesComponent } from './public-servant/public-servant/all-issues/all-issues.component';
+import { IssuesComponent } from './components/admin/admin-dashboard/issues/issues.component';
+
 
 
 
@@ -60,7 +62,8 @@ export const routes: Routes = [
         {path: 'projects', component: ProjectsComponent},
         {path: 'users', component:UsersComponent},
         {path:'settings', component: SettingsComponent},
-        {path:'notifications', component:NotificationComponent}
+        {path:'notifications', component:NotificationComponent},
+        {path:'reportings', component: IssuesComponent}
     ]},
 
     { path: 'public-servant', component: PublicServantComponent, children: [

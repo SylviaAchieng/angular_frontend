@@ -33,16 +33,19 @@
         <div class="flex justify-between items-center mb-4">
           <span class="text-sm text-gray-500">{{ project?.daysRemaining }} days remaining</span>
           <button class="bg-red-100 text-red-600 text-xs px-3 py-1 rounded-full">
-            {{ project?.tag }}
+            <i class="pi pi-tag"></i>{{ project?.tag }}
           </button>
         </div>
-        <h3 class="text-2xl font-semibold text-gray-800 mb-4">
+        <h3 [routerLink]="['/project-details', project.projectId]" class="text-2xl font-semibold text-gray-800 mb-4">
           {{ project?.title }}
         </h3>
 
         <p class="text-gray-600 mb-6">
-          {{ project?.description }}
+          <i class="pi-align-left"></i>{{ project?.description }}
         </p>
+        <p class="text-gray-600 mt-4"><i class="pi pi-map-marker mr-2"></i> {{ project?.location?.county }}</p>
+        <p class="mt-4 text-gray-700"><i class="pi pi-money-bill mr-2"></i><strong>Approximate Cost:</strong> {{ project?.approximateCost }}</p>
+        <p class="mt-2 text-gray-700"><i class="pi pi-money-bill mr-2"></i><strong>Actual Cost:</strong> {{ project?.actualCost }}</p>
 
         <div class="flex justify-between items-center">
           <!-- Participants -->

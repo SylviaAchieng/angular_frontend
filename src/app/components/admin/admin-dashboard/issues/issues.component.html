@@ -25,10 +25,14 @@
           <input type="text" [(ngModel)]="newIssue.title" name="title" required class="w-full p-2 border rounded-md">
         </div>
         <!-- Location -->
-        <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700">Location:</label>
-          <input type="text" [(ngModel)]="newIssue.location.county" name="county" required class="w-full p-2 border rounded-md">
-        </div>
+        <div>
+            <label class="block text-gray-700 font-medium">Location:</label>
+            <select [(ngModel)]="newIssue.location.locationId" name="locationId"
+                    class="w-full bg-white border border-gray-400 rounded-lg p-3 focus:ring-2 focus:ring-[#0A1B52] focus:border-[#0A1B52]" required>
+              <option value="" disabled selected>Select Location</option>
+              <option *ngFor="let location of locations" [value]="location.locationId">{{ location.county }}</option>
+            </select>
+          </div>
         <!-- Date -->
         <div class="mb-4">
           <label class="block text-sm font-medium text-gray-700">Date:</label>
@@ -57,7 +61,7 @@
           <button type="button" (click)="toggleIssueForm()" class="bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-gray-600 transition-all">
             <i class="pi pi-times mr-2"></i> Cancel
           </button>
-          <button type="submit" class="bg-teal-600 text-white py-2 px-4 rounded-md hover:bg-success-dark transition-all">
+          <button type="submit" (click)="submitIssue()" class="bg-teal-600 text-white py-2 px-4 rounded-md hover:bg-success-dark transition-all">
             <i class="pi pi-check mr-2"></i> Submit
           </button>
         </div>
@@ -168,11 +172,11 @@
         </div>
         <div class="flex justify-end mt-4 gap-4">
           <button (click)="closeViewIssueModal()" class="bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-gray-600">
-            <i class="pi pi-check mr-2"></i> Close
+            <i class="pi pi-times mr-2"></i> Close
           </button>
-          <button (click)="updateProject()" class="bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-gray-500">
+          <!-- <button class="bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-gray-500">
             <i class="pi pi-check mr-2"></i> Update
-          </button>
+          </button> -->
           <button class="bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-gray-500">
             <i class="pi pi-trash mr-2"></i> Delete
           </button>

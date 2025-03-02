@@ -108,5 +108,23 @@ export class AllDiscussionsComponent {
     }
   }
   
+  selectedDiscussion: any = null;
+  newMessage: string = '';
+
+selectDiscussion(discussion: any) {
+  this.selectedDiscussion = discussion;
+}
+
+sendMessage() {
+  if (this.newMessage.trim()) {
+    this.selectedDiscussion.messages.push({
+      text: this.newMessage,
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      isMe: true
+    });
+    this.newMessage = '';
+  }
+}
+
 }
 
