@@ -1,5 +1,6 @@
 <app-navbar class="fixed top-0 w-full z-50 bg-white shadow-md"></app-navbar>
-<div class="container mx-auto flex flex-col lg:flex-row h-screen">
+
+<div class="container mx-auto flex flex-col lg:flex-row h-screen pt-16">
   <!-- Left Section (Image) -->
   <div class="left-section w-full lg:w-1/2 relative">
     <img
@@ -9,93 +10,96 @@
     />
     <div class="absolute bottom-8 left-8 bg-black bg-opacity-60 text-white p-4 rounded-md max-w-sm">
       <p class="text-sm leading-5">
-        Join <span class="font-extrabold">8,000+</span> users and access Government services easily
+        Join <span class="font-extrabold">8,000+</span> users and access Government services easily.
       </p>
     </div>
   </div>
 
   <!-- Right Section (Form) -->
   <div class="right-section w-full lg:w-1/2 flex flex-col justify-center items-center lg:items-start px-6 lg:px-16">
-    
     <!-- Title -->
-    <h1 class="text-2xl lg:text-3xl font-bold text-blue-900 mb-1">Sign Up</h1>
+    <h1 class="text-3xl font-bold text-blue-900 mb-1">Sign Up</h1>
     <p class="text-gray-600 text-sm lg:text-base mb-6">Create your account for Government Services</p>
+
     <!-- Form -->
     <form [formGroup]="registrationForm" (ngSubmit)="handleRegister()" class="w-full max-w-md">
-      <!-- First Name Input -->
+      <!-- Full Name -->
       <label for="full-name" class="block text-sm font-medium text-gray-700 mb-1">Full Name *</label>
       <input
         id="full-name"
         type="text"
         formControlName="fullName"
-        class="w-full p-2 border border-gray-300 rounded-md mb-4 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+        class="w-full p-2 border border-gray-300 outline-none rounded-md mb-4 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
         placeholder="Enter your full name"
       />
 
-      <!-- Phone Number Input -->
+      <!-- ID Number -->
       <label for="identification-number" class="block text-sm font-medium text-gray-700 mb-1">Identification Number *</label>
       <input
         id="identification-number"
         type="text"
         formControlName="nationalId"
-        class="w-full p-2 border border-gray-300 rounded-md mb-4 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-        placeholder="Enter your phone number"
+        class="w-full p-2 border border-gray-300 outline-none rounded-md mb-4 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+        placeholder="Enter your ID number"
       />
 
-      <!-- Email Input -->
+      <!-- Email -->
       <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address *</label>
       <input
         id="email"
         type="email"
         formControlName="email"
-        class="w-full p-2 border border-gray-300 rounded-md mb-4 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+        class="w-full p-2 border border-gray-300 outline-none rounded-md mb-4 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
         placeholder="Enter your email address"
       />
 
-      <!-- user role -->
-      <label for="role" class="block text-sm font-medium text-gray-700 mb-1">UserType *</label>
+      <!-- User Role -->
+      <label for="role" class="block text-sm font-medium text-gray-700 mb-1">User Type *</label>
       <input
         id="role"
         type="text"
         formControlName="userType"
-        class="w-full p-2 border border-gray-300 rounded-md mb-4 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+        class="w-full p-2 border border-gray-300 outline-none rounded-md mb-4 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
         placeholder="Enter your role"
       />
-      
 
-      <!-- Location Selection -->
-<label for="location" class="block text-sm font-medium text-gray-700 mb-1">Location *</label>
-<select
-  id="location"
-  formControlName="locationId"
-  [formGroupName]="'location'"
-  class="w-full p-2 border border-gray-300 rounded-md mb-4 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
->
-<option value="" disabled selected>Select your location</option>
-<option *ngFor="let location of locations" [value]="location.locationId">
- {{ location.county }}
-</option>
-</select>
+      <!-- Location -->
+      <label for="location" class="block text-sm font-medium text-gray-700 mb-1">Location *</label>
+      <select
+        id="location"
+        formControlName="locationId"
+        class="w-full p-2 border border-gray-300 outline-none rounded-md mb-4 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+      >
+        <option value="" disabled selected>Select your location</option>
+        <option *ngFor="let location of locations" [value]="location.locationId">
+          {{ location.county }}
+        </option>
+      </select>
 
-      <!-- Password Input -->
+      <!-- Password (With Toggle Visibility) -->
       <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password *</label>
-      <input
-        id="password"
-        type="password"
-        formControlName="password"
-        class="w-full p-2 border border-gray-300 rounded-md mb-4 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-        placeholder="Create a password"
-      />
+      <div class="relative">
+        <input
+          id="password"
+          [type]="showPassword ? 'text' : 'password'"
+          formControlName="password"
+          class="w-full p-2 border border-gray-300 outline-none rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pr-10"
+          placeholder="Create a password"
+        />
+        <button type="button" (click)="showPassword = !showPassword" class="absolute inset-y-0 right-0 flex items-center pr-3">
+          <i [class]="showPassword ? 'pi pi-eye-slash' : 'pi pi-eye'"></i>
+        </button>
+      </div>
 
       <!-- Sign Up Button -->
-      <button type="submit" class="w-full py-2 bg-blue-900 text-white rounded-md text-sm font-medium hover:bg-blue-800">
+      <button type="submit" class="w-full py-2 bg-blue-900 text-white rounded-md text-sm font-medium hover:bg-blue-800 mt-4">
         Sign Up
       </button>
     </form>
 
     <!-- Redirect to Login -->
     <p class="mt-4 text-gray-600 text-xs">
-      Already have an account? <a [routerLink]="['/login']"  class="text-blue-600 font-medium hover:underline">Sign in</a>
+      Already have an account? <a [routerLink]="['/login']" class="text-blue-600 font-medium hover:underline">Sign in</a>
     </p>
   </div>
 </div>

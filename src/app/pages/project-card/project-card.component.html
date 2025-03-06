@@ -22,10 +22,14 @@
 
     <div class="project-footer">
         <div class="avatar">
-            <div class="avatarimg">
-                <img src="assests/avatar.jpg" alt="avatar">
-            </div>
-            <span>+10 more</span>
+            <div class="flex items-center">
+                <ng-container *ngFor="let participant of participants; let i = index">
+                  <img [src]="participant.avatar" 
+                       [alt]="'Avatar ' + (i + 1)" 
+                       class="h-8 w-8 rounded-full border-2 border-white -ml-2 first:ml-0" />
+                </ng-container>
+                <span class="ml-2 text-gray-600 text-sm">{{ additionalParticipants }}</span>
+              </div>
         </div>
         <div class="icons flex items-center space-x-0.5">
             <span>{{ likes.length }}</span>

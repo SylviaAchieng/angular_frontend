@@ -32,6 +32,14 @@ export class ProjectCardComponent {
 
   showCommentDialog = false;
 
+  // Participants
+  participants = [
+    { avatar: 'assests/avatar.jpg' },
+    { avatar: 'assests/avatar.jpg' },
+    { avatar: 'assests/avatar.jpg' },
+  ];
+  additionalParticipants = '+12 more';
+
   toggleCommentDialog() {
     this.showCommentDialog = !this.showCommentDialog;
   }

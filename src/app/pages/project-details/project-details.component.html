@@ -49,16 +49,17 @@
 
         <div class="flex justify-between items-center">
           <!-- Participants -->
-          <div class="flex items-center space-x-2">
+          <div class="flex items-center">
             <ng-container *ngFor="let participant of participants; let i = index">
-              <img [src]="participant.avatar" [alt]="'Avatar ' + (i + 1)" class="h-8 w-8 rounded-full" />
+              <img [src]="participant.avatar" 
+                   [alt]="'Avatar ' + (i + 1)" 
+                   class="h-8 w-8 rounded-full border-2 border-white -ml-2 first:ml-0" />
             </ng-container>
-            <span class="text-gray-600 text-sm">{{ additionalParticipants }}</span>
+            <span class="ml-2 text-gray-600 text-sm">{{ additionalParticipants }}</span>
           </div>
 
-          <!-- Actions -->
+          <!-- Actions
           <div class="flex space-x-6 text-gray-600">
-            <!-- Likes Section -->
             <div class="flex items-center space-x-1">
               <span class="text-gray-800 font-semibold">{{ likes.length }}</span>
               <button (click)="submitLike()" type="button" mat-icon-button aria-label="Favorite">
@@ -70,7 +71,7 @@
                 <mat-icon>chat</mat-icon>
               </button>
             </div>
-          </div>
+          </div> -->
         </div>
 
       </div>

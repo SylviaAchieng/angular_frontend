@@ -54,9 +54,9 @@ export class ProjectDetailsComponent {
 
   // Participants
   participants = [
-    { avatar: 'https://i.ibb.co/YpHsQQr/user-avatar.jpg' },
-    { avatar: 'https://i.ibb.co/YpHsQQr/user-avatar.jpg' },
-    { avatar: 'https://i.ibb.co/YpHsQQr/user-avatar.jpg' },
+    { avatar: 'assests/avatar.jpg' },
+    { avatar: 'assests/avatar.jpg' },
+    { avatar: 'assests/avatar.jpg' },
   ];
   additionalParticipants = '+12 more';
 

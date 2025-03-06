@@ -5,17 +5,22 @@ import { Router, RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../../services/auth.service';
 import { ToastrService } from 'ngx-toastr';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule,NavbarComponent, RouterLink],
+  imports: [FormsModule,NavbarComponent, RouterLink, MatProgressSpinnerModule, CommonModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
 
   constructor(private authService: AuthService, private router: Router, private toastr: ToastrService){}
+
+  isLoading: boolean = false;
+  showPassword: boolean = false;
 
   loginForm = new FormGroup({
       email: new FormControl('',[Validators.required, Validators.email]),
@@ -35,10 +40,11 @@ export class LoginComponent {
   }
 
   togglePasswordVisibility() {
-    this.passwordVisible = !this.passwordVisible;
+    this.showPassword = !this.showPassword;
   }
 
   onLogin() {
+    this.isLoading = true;
     this.authService.login(this.email, this.password).subscribe({
       next: (response: any) => {
         console.log('Login successful:', response);
@@ -50,6 +56,7 @@ export class LoginComponent {
         localStorage.setItem('userType', response._embedded.user.userType);
         localStorage.setItem('user', JSON.stringify(response._embedded.user))
         
+        this.isLoading = false;
   
         const userId = response._embedded.user.userId;
         const userType = response._embedded.user.userType;
@@ -79,7 +86,8 @@ export class LoginComponent {
       error: (err) => {
         console.error('Login failed:', err);
         this.errorMessage = 'Invalid email or password';
-        this.toastr.error("Invalid email or password. Please try again.", "Error"); 
+        this.toastr.error("Invalid email or password. Please try again.", "Error");
+        this.isLoading = false; 
       }
     });
   }

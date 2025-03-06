@@ -1,0 +1,33 @@
+<app-navbar></app-navbar>
+
+<div class="events-page">
+    <!-- Hero Section -->
+    <section class="hero bg-cover bg-center text-white px-8 py-16"
+  [ngStyle]="{'background-image': 'url(' + heroImage + ')'}">
+  <div class="container mx-auto text-center">
+    <h1 class="text-4xl font-bold">Upcoming Theatre Events</h1>
+    <p class="text-lg mt-2">June 27th - July 4th</p>
+  </div>
+</section>
+
+  
+    <!-- Featured Upcoming Events -->
+    <section class="container mx-auto py-12">
+      <h2 class="text-3xl font-bold mb-6 text-center">Featured Upcoming Events</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <app-event-card *ngFor="let event of upcomingEvents" [event]="event"></app-event-card>
+      </div>
+      <div class="text-center mt-6">
+        <button class="bg-gray-900 text-white px-6 py-2 rounded">View All Events</button>
+      </div>
+    </section>
+  
+    <!-- Past Events -->
+    <section class="container mx-auto py-12 opacity-75">
+      <h2 class="text-3xl font-bold mb-6 text-center">Past Events</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <app-event-card *ngFor="let event of pastEvents" [event]="event"></app-event-card>
+      </div>
+    </section>
+  </div>
+  

@@ -35,12 +35,20 @@
       </div>
       <!-- time -->
       <div class="mb-4">
-        <label class="block text-sm font-medium text-gray-700">Days Remaining:</label>
-        <input type="number" [(ngModel)]="newProject.daysRemaining" name="daysRemaining" required class="w-full p-2 border rounded-md">
+        <label class="block text-sm font-medium text-gray-700">Start Date:</label>
+        <input type="date" [(ngModel)]="newProject.startDate" name="startDate" required class="w-full p-2 border rounded-md">
+      </div>
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-700">End Date:</label>
+        <input type="date" [(ngModel)]="newProject.endDate" name="endDate" required class="w-full p-2 border rounded-md">
       </div>
       <div class="mb-4">
         <label class="block text-sm font-medium text-gray-700">Tag:</label>
         <input type="text" [(ngModel)]="newProject.tag" name="tag" required class="w-full p-2 border rounded-md">
+      </div>
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-700">Location:</label>
+        <input type="text" [(ngModel)]="newProject.location.county" name="tag" required class="w-full p-2 border rounded-md">
       </div>
       <!-- Image Upload -->
       <div class="mb-4">

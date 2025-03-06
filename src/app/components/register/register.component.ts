@@ -37,6 +37,12 @@ export class RegisterComponent {
 
   locations: any[] = [];
 
+  showPassword: boolean = false;
+
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
+
 
   handleRegister(){
     console.log("register", this.registrationForm.value)

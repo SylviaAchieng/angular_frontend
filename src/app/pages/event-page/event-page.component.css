@@ -1,0 +1,13 @@
+.hero {
+    background-size: cover;
+    background-position: center;
+  }
+  
+  .event-card {
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .event-card:hover {
+    transform: scale(1.05);
+  }
+  

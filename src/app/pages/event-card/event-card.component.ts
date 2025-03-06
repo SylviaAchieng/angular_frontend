@@ -17,6 +17,14 @@ export class EventCardComponent {
 
   isRsvped: boolean = false;
 
+  // Participants
+  participants = [
+    { avatar: 'assests/avatar.jpg' },
+    { avatar: 'assests/avatar.jpg' },
+    { avatar: 'assests/avatar.jpg' },
+  ];
+  
+
   toggleRSVP() {
     this.isRsvped = !this.isRsvped;
   }

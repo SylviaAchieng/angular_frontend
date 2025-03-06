@@ -34,12 +34,15 @@ export class ProjectsComponent {
     isProjectFormVisible = false;
 
     newProject = {
-      userId: null,
+      user: null,
       title: '',
       description: '',
       daysRemaining: null,
+      startDate: '',
+      endDate: '',
       tag: '',
-      base64EncodedImage: '' 
+      base64EncodedImage: '' ,
+      location: {county: ''}
     };
   
   
@@ -106,31 +109,90 @@ export class ProjectsComponent {
     this.newProject.base64EncodedImage = '';
   }    
 
+  // createProject() {
+  //   if (!this.newProject.title || !this.newProject.description || !this.newProject.tag || !this.newProject.base64EncodedImage) {
+  //     this.toastr.info('Please fill in all required fields, including an image.', 'Info');
+  //     return;
+  //   }
+  //   const imageData = this.newProject.base64EncodedImage.startsWith("data:image/")
+  //     ? this.newProject.base64EncodedImage.split(",")[1]
+  //     : this.newProject.base64EncodedImage;
+  
+  //   const projectData = {
+  //     ...this.newProject,
+  //     base64EncodedImage: imageData  // Send only the Base64 string
+  //   };
+  //   this.projectService.createProject(projectData).subscribe({
+  //     next: (newProject) => {
+  //       this.toastr.success("Project created successfully!", "Success");
+  //       this.isProjectFormVisible = false;
+  //       // Reset the form
+  //       this.newProject = {  
+  //         userId: null,
+  //         title: '',
+  //         description: '',
+  //         daysRemaining: null,
+  //         startDate: '',
+  //         endDate: '',
+  //         tag: '',
+  //         base64EncodedImage: ''
+  //       };
+  //     },
+  //     error: (error) => {
+  //       console.error('Error creating project:', error);
+  //       this.toastr.error("Failed to create a project. Please try again.", "Error"); 
+  //     }
+  //   });
+  // }
+
   createProject() {
-    if (!this.newProject.title || !this.newProject.description || this.newProject.daysRemaining === null || !this.newProject.tag || !this.newProject.base64EncodedImage) {
+    if (!this.newProject.title || !this.newProject.description || !this.newProject.tag || !this.newProject.base64EncodedImage) {
       this.toastr.info('Please fill in all required fields, including an image.', 'Info');
       return;
     }
+  
+    // Retrieve user data from local storage
+    const userData = localStorage.getItem('user');
+    if (!userData) {
+      this.toastr.error("User not found. Please log in again.", "Error");
+      return;
+    }
+  
+    const loggedInUser = JSON.parse(userData); // Extract user object
+  
+    if (!loggedInUser?.userId) {
+      console.error("User ID is missing.");
+      this.toastr.error("User ID is missing. Please log in again.", "Error");
+      return;
+    }
+  
+    console.log("Creating project for user:", loggedInUser);
+  
     const imageData = this.newProject.base64EncodedImage.startsWith("data:image/")
       ? this.newProject.base64EncodedImage.split(",")[1]
       : this.newProject.base64EncodedImage;
   
     const projectData = {
       ...this.newProject,
-      base64EncodedImage: imageData  // Send only the Base64 string
+      user: { userId: loggedInUser.userId }, // Send user object instead of just ID
+      base64EncodedImage: imageData
     };
+  
     this.projectService.createProject(projectData).subscribe({
       next: (newProject) => {
         this.toastr.success("Project created successfully!", "Success");
         this.isProjectFormVisible = false;
         // Reset the form
         this.newProject = {  
-          userId: null,
+          user: null,
           title: '',
           description: '',
           daysRemaining: null,
+          startDate: '',
+          endDate: '',
           tag: '',
-          base64EncodedImage: ''
+          base64EncodedImage: '',
+          location: {county: ''}
         };
       },
       error: (error) => {
@@ -139,6 +201,8 @@ export class ProjectsComponent {
       }
     });
   }
+  
+  
   
   updateProject() {
     if (!this.selectedProject || !this.selectedProject.projectId) {

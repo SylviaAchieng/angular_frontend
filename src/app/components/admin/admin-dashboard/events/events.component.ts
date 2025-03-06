@@ -43,6 +43,7 @@ export class EventsComponent {
   isEventFormVisible = false;
 
   newEvent = {
+    user: null,
     title: '',
     eventDate: '',
     time: '',
@@ -111,12 +112,29 @@ export class EventsComponent {
       this.toastr.info('Please fill in all required fields, including an image.', 'Info');
       return;
     }
+
+    // Retrieve user data from local storage
+    const userData = localStorage.getItem('user');
+    if (!userData) {
+      this.toastr.error("User not found. Please log in again.", "Error");
+      return;
+    }
+  
+    const loggedInUser = JSON.parse(userData); // Extract user object
+  
+    if (!loggedInUser?.userId) {
+      console.error("User ID is missing.");
+      this.toastr.error("User ID is missing. Please log in again.", "Error");
+      return;
+    }
+
     const imageData = this.newEvent.base64EncodedImage.startsWith("data:image/")
       ? this.newEvent.base64EncodedImage.split(",")[1]
       : this.newEvent.base64EncodedImage;
   
     const eventData = {
       ...this.newEvent,
+      user: { userId: loggedInUser.userId },
       base64EncodedImage: imageData  // Send only the Base64 string
     };
     this.eventService.createEvent(eventData).subscribe({
@@ -125,7 +143,8 @@ export class EventsComponent {
         this.toastr.success('Event created successfully!', 'Success');
         this.isEventFormVisible = false;
         // Reset the form
-        this.newEvent = {  
+        this.newEvent = { 
+          user: null, 
           title: '',
           description: '',
           eventDate:'',
@@ -133,9 +152,9 @@ export class EventsComponent {
           location: { county: '' },
           base64EncodedImage: ''
         };
+        this.loadEvents()
       },
       error: (error) => {
-        console.error('Error creating project:', error);
         this.toastr.error("Failed to create event. Please try again.", "Error"); 
       }
     });

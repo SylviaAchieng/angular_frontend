@@ -30,6 +30,8 @@ import { AllEventsComponent } from './public-servant/public-servant/all-events/a
 import { AllProjectsComponent } from './public-servant/public-servant/all-projects/all-projects.component';
 import { AllIssuesComponent } from './public-servant/public-servant/all-issues/all-issues.component';
 import { IssuesComponent } from './components/admin/admin-dashboard/issues/issues.component';
+import { EventPageComponent } from './pages/event-page/event-page.component';
+import { DiscussionComponent } from './components/admin/admin-dashboard/discussion/discussion.component';
 
 
 
@@ -53,6 +55,7 @@ export const routes: Routes = [
     {path: 'neighbourhood', component: NeighbourhoodComponent},
     {path: 'planning', component: PlanningComponent},
     {path: 'contact-us', component: ContactUsComponent},
+    {path: 'all-events', component: EventPageComponent},
 
     
     { path: 'admin-dashboard', component: AdminDashboardComponent, children: [
@@ -63,7 +66,8 @@ export const routes: Routes = [
         {path: 'users', component:UsersComponent},
         {path:'settings', component: SettingsComponent},
         {path:'notifications', component:NotificationComponent},
-        {path:'reportings', component: IssuesComponent}
+        {path:'reportings', component: IssuesComponent},
+        {path: 'proposals', component: DiscussionComponent},
     ]},
 
     { path: 'public-servant', component: PublicServantComponent, children: [
