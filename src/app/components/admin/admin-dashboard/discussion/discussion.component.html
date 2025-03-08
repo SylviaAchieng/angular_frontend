@@ -17,35 +17,23 @@
         <h2 class="text-lg font-semibold mb-4">Create New Discussion</h2>
         <div class="grid grid-cols-2 gap-4">
           <div>
-            <label class="text-sm font-medium">Full Name:</label>
-            <input type="text" [(ngModel)]="newUser.fullName" class="border rounded p-2 w-full" />
+            <label class="text-sm font-medium">Title:</label>
+            <input type="text" [(ngModel)]="newDiscussion.title" class="border rounded p-2 w-full" />
           </div>
           <div>
-            <label class="text-sm font-medium">Email:</label>
-            <input type="email" [(ngModel)]="newUser.email" class="border rounded p-2 w-full" />
+            <label class="text-sm font-medium">Category:</label>
+            <input type="email" [(ngModel)]="newDiscussion.category" class="border rounded p-2 w-full" />
           </div>
           <div>
-            <label class="text-sm font-medium">Location:</label>
-            <input type="text" [(ngModel)]="newUser.location.county" class="border rounded p-2 w-full" />
-          </div>
-          <div>
-            <label class="text-sm font-medium">Identification Number:</label>
-            <input type="text" [(ngModel)]="newUser.nationalId" class="border rounded p-2 w-full" />
-          </div>
-          <div>
-            <label class="text-sm font-medium">Password:</label>
-            <input type="password" [(ngModel)]="newUser.password" class="border rounded p-2 w-full" />
-          </div>
-          <div>
-            <label class="text-sm font-medium">Role:</label>
-            <input type="text" [(ngModel)]="newUser.userType" class="border rounded p-2 w-full" />
+            <label class="text-sm font-medium">description:</label>
+            <input type="text" [(ngModel)]="newDiscussion.description" class="border rounded p-2 w-full" />
           </div>
         </div>
         <div class="flex justify-end mt-4 gap-4">
           <button (click)="toggleAddUserForm()" class="bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-gray-600">
             <i class="pi pi-times mr-2"></i> Cancel
           </button>
-          <button (click)="handleAddUser()" class="bg-teal-600 text-white py-2 px-4 rounded-md hover:bg-teal-700">
+          <button (click)="handleAddDiscussion()" class="bg-teal-600 text-white py-2 px-4 rounded-md hover:bg-teal-700">
             <i class="pi pi-check mr-2"></i> Submit
           </button>
         </div>
@@ -57,16 +45,16 @@
           <thead class="bg-teal-900 text-white">
             <tr>
               <th class="p-4 text-left text-sm font-semibold">
-                <i class="pi pi-id-card mr-1"></i>Full Name
+                <i class="pi pi-id-card mr-1"></i>Title
               </th>
               <th class="p-4 text-left text-sm font-semibold">
-                <i class="pi pi-envelope mr-1"></i>Email
+                <i class="pi pi-tag mr-1"></i>Category
               </th>
               <th class="p-4 text-left text-sm font-semibold">
-                <i class="pi pi-map-marker mr-1"></i>Location
+                <i class="pi pi-align-left mr-1"></i>Description
               </th>
               <th class="p-4 text-left text-sm font-semibold">
-                <i class="pi pi-users mr-1"></i>Role
+                <i class="pi pi-users mr-1"></i>Started By
               </th>
               <th class="p-4 text-left text-sm font-semibold">
                 <i class="pi pi-info-circle mr-1"></i>Details
@@ -74,21 +62,21 @@
             </tr>
           </thead>
           <tbody class="whitespace-nowrap divide-y divide-gray-200">
-            <tr *ngFor="let user of users">
+            <tr *ngFor="let discussion of discussions">
               <td class="p-4 text-sm text-black">
-                {{ user?.fullName }}
+                {{ discussion.title.slice(0, 50) }}
               </td>
               <td class="p-4 text-sm text-black">
-                  {{ user?.email }}
+                  {{ discussion.category }}
                 </td>
               <td class="p-4 text-sm text-black">
-                {{ user?.location?.county }}
+                {{ discussion.description.slice(0, 50) }}
               </td>
               <td class="p-4 text-sm text-black">
-                {{ user?.userType}}
+                {{ discussion.user?.fullName }}
               </td>
               <td class="p-4 text-sm text-center">
-                <button (click)="showViewEventModal(user)" class="bg-gray-500 text-white py-1 px-3 rounded-md hover:bg-gray-500">
+                <button (click)="showViewEventModal(discussion)" class="bg-gray-500 text-white py-1 px-3 rounded-md hover:bg-gray-500">
                   <i class="pi pi-eye"></i> View
                 </button>
               </td>
@@ -101,7 +89,7 @@
       <div *ngIf="isViewing" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
         <div class="bg-white p-6 rounded-md shadow-md relative w-full max-w-3xl mx-auto">
           <div class="flex justify-between items-center mb-4">
-            <h2 class="text-xl font-semibold">User Details</h2>
+            <h2 class="text-xl font-semibold">Discussion Details</h2>
             <button (click)="closeViewEventModal()" class="text-gray-500 hover:text-gray-700">
               <i class="pi pi-times"></i>
             </button>
@@ -111,62 +99,56 @@
               <div class="mb-4 flex items-center">
                 <i class="pi pi-tag mr-2"></i>
                 <div>
-                  <label class="text-sm font-medium">Full Name:</label>
-                  <input type="text" [(ngModel)]="selectedUser.fullName" class="border rounded p-2 w-full" />
+                  <label class="text-sm font-medium">Title:</label>
+                  <input type="text" [(ngModel)]="selectedDiscussion.title" class="border rounded p-2 w-full" />
                 </div>
               </div>
               <div class="mb-4 flex items-center">
-                <i class="pi pi-map-marker mr-2"></i>
+                <i class="pi pi-tag mr-2"></i>
                 <div>
-                  <label class="text-sm font-medium">Location:</label>
-                  <input type="text" [(ngModel)]="selectedUser.location.county" class="border rounded p-2 w-full" />
+                  <label class="text-sm font-medium">Category:</label>
+                  <input type="text" [(ngModel)]="selectedDiscussion.category" class="border rounded p-2 w-full" />
                 </div>
               </div>
               <div class="mb-4 flex items-center">
-                <i class="pi pi-envelope mr-2"></i>
-                <div>
-                  <label class="text-sm font-medium">Email:</label>
-                  <input type="email" [(ngModel)]="selectedUser.email" class="border rounded p-2 w-full" />
-                </div>
-              </div>
-              <div class="mb-4 flex items-center">
-                  <i class="pi pi-wallet mr-2"></i>
+                  <i class="pi pi-users mr-2"></i>
                   <div>
-                    <label class="text-sm font-medium">Role:</label>
-                    <input type="text" [(ngModel)]="selectedUser.userType" class="border rounded p-2 w-full" />
+                    <label class="text-sm font-medium">Started By</label>
+                    <input type="text" [(ngModel)]="selectedDiscussion.user.fullName" class="border rounded p-2 w-full" />
+                  </div>
+                </div>
+                <div class="mb-4 flex items-center">
+                  <i class="pi pi-tag mr-2"></i>
+                  <div>
+                    <label class="text-sm font-medium">Total Replies:</label>
+                    <input type="number" [(ngModel)]="selectedDiscussion.replyCount" class="border rounded p-2 w-full" />
+                  </div>
+                </div>
+                <div class="mb-4 flex items-center">
+                  <i class="pi pi-tag mr-2"></i>
+                  <div>
+                    <label class="text-sm font-medium">Total Views:</label>
+                    <input type="number" [(ngModel)]="selectedDiscussion.viewCount" class="border rounded p-2 w-full" />
                   </div>
                 </div>
               <div class="mb-4 flex items-center">
                 <i class="pi pi-align-left mr-2"></i>
                 <div>
-                  <label class="text-sm font-medium">National Id Number:</label>
-                  <input type="text" [(ngModel)]="selectedUser.nationalId" class="border rounded p-2 w-full" />
+                  <label class="text-sm font-medium">Description:</label>
+                  <textarea type="text" [(ngModel)]="selectedDiscussion.description" class="border rounded p-2 w-full" ></textarea>
                 </div>
-              </div>
-              <div class="mb-4 flex items-center">
-                <i class="pi pi-eye mr-2"></i>
-                <div>
-                  <label class="text-sm font-medium">Password:</label>
-                  <input type="password" [(ngModel)]="selectedUser.password" class="border rounded p-2 w-full" />
-                </div>
-              </div>
-            </div>
-            <div class="w-1/3">
-              <div class="mb-4">
-                <label class="text-sm font-medium mb-2">Banner Image:</label>
-                <img [src]="selectedUser.base64EncodedImage || 'assests/home.png'" alt="User Profile" class="w-full h-auto rounded-md" />
               </div>
             </div>
           </div>
           <div class="flex justify-end mt-4 gap-4">
             <button (click)="closeViewEventModal()" class="bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-gray-500">
-              <i class="pi pi-check mr-2"></i> Close
+              <i class="pi pi-times mr-2"></i> Close
             </button>
             <button (click)="handleUpdateUser()" class="bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-gray-500">
               <i class="pi pi-check mr-2"></i> Update
             </button>
-            <button (click)="handleDeleteUser(user.userId)" class="bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-gray-500">
-              <i class="pi pi-check mr-2"></i> Delete
+            <button (click)="handleDeleteUser(discussion.discussionId)" class="bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-gray-500">
+              <i class="pi pi-trash mr-2"></i> Delete
             </button>
           </div>
         </div>

@@ -70,6 +70,7 @@ export class AllEventsComponent {
     console.warn("No location ID found for logged-in user.");
     return;
   }
+  console.log("Location ID:", locationId);
 
   this.eventService.getEventByLocationId(locationId).subscribe({
     next: (response: any) => {

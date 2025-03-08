@@ -97,7 +97,7 @@ export class ProjectDetailsComponent {
 
 
   loadProjectDetails(): void {
-    this.projectService.getProjects().subscribe({
+    this.projectService.getActiveProjects().subscribe({
       next: (response: any) => {
         if (response && response._embedded) {
           const projects = response._embedded;

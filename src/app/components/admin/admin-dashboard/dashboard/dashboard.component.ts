@@ -6,6 +6,8 @@ import { AdminChartComponent } from "../admin-chart/admin-chart.component";
 import { startOfMonth, endOfMonth, startOfWeek, endOfWeek, eachDayOfInterval, format } from 'date-fns';
 import { AuthService } from '../../../../services/auth.service';
 import { EventService } from '../../../../services/event.service';
+import { IssueService } from '../../../../services/issue.service';
+import { ProjectService } from '../../../../services/project.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -20,16 +22,24 @@ export class DashboardComponent {
   calendarData: any[] = [];
   users:any;
   eventList: any[]=[];
+  issues: any[] = [];
+  projects: any[] = [];
+  project:any[] = [];
 
   constructor(
     private authService: AuthService,
-    private eventService: EventService
+    private eventService: EventService,
+    private issueService: IssueService,
+    private projectService: ProjectService
   ){}
 
   ngOnInit(){
     this.loadUsers();
     this.getAllEvents();
+    this.getAllIssues();
     this.generateCalendar();
+    this.getAllProjects();
+    this.getACtiveProjects();
   }
   navigateTo(section: string) {
     this.selectedSection = section;
@@ -79,7 +89,60 @@ export class DashboardComponent {
       this.calendarData.push(week);
     }
   }
+
+  getAllProjects(): void {
+    this.projectService.getProjects().subscribe({
+      next: (response: any) => {
+        console.log("Projects retrieved successfully:", response);
   
+        if (!response || !response._embedded) {
+          console.error("Invalid response format");
+          return;
+        }
+        const formattedProjects = response._embedded.map((project: any) => ({
+          ...project,
+          base64EncodedImage: project.base64EncodedImage?.startsWith("data:image/")
+            ? project.base64EncodedImage  // Already formatted correctly
+            : `data:image/jpeg;base64,${project.base64EncodedImage}`  // Add prefix only if missing
+        }));
+        this.projectService.projectSubject.next({ project: formattedProjects });
+      },
+      error: (err) => {
+        console.error("Failed to load projects:", err);
+      }
+    });
+    this.projectService.projectSubject.subscribe((state: any) => {
+      this.project = state.project;
+      console.log("Projects state updated with images:", this.project);
+    });
+  }
+  
+  getACtiveProjects(): void {
+    this.projectService.getActiveProjects().subscribe({
+      next: (response: any) => {
+        console.log("Projects retrieved successfully:", response);
+  
+        if (!response || !response._embedded) {
+          console.error("Invalid response format");
+          return;
+        }
+        const formattedProjects = response._embedded.map((project: any) => ({
+          ...project,
+          base64EncodedImage: project.base64EncodedImage?.startsWith("data:image/")
+            ? project.base64EncodedImage  // Already formatted correctly
+            : `data:image/jpeg;base64,${project.base64EncodedImage}`  // Add prefix only if missing
+        }));
+        this.projectService.projectSubject.next({ projects: formattedProjects });
+      },
+      error: (err) => {
+        console.error("Failed to load projects:", err);
+      }
+    });
+    this.projectService.projectSubject.subscribe((state: any) => {
+      this.projects = state.projects;
+      console.log("Projects state updated with images:", this.projects);
+    });
+  }
 
   loadUsers(): void {
     this.authService.getAllUsers().subscribe((response) => {
@@ -128,6 +191,33 @@ export class DashboardComponent {
       })) || [];
   
       console.log("Updated filtered events state:", this.eventList);
+    });
+  }
+
+  getAllIssues(): void {
+    this.issueService.getAllIssues().subscribe({
+      next: (response: any) => {
+        console.log("issues retrieved successfully:", response);
+  
+        if (!response || !response._embedded) {
+          console.error("Invalid response format");
+          return;
+        }
+        const formattedIssues = response._embedded.map((issue: any) => ({
+          ...issue,
+          base64EncodedImage: issue.base64EncodedImage?.startsWith("data:image/")
+            ? issue.base64EncodedImage  // Already formatted correctly
+            : `data:image/jpeg;base64,${issue.base64EncodedImage}`  // Add prefix only if missing
+        }));
+        this.issueService.issueSubject.next({ issues: formattedIssues });
+      },
+      error: (err) => {
+        console.error("Failed to load projects:", err);
+      }
+    });
+    this.issueService.issueSubject.subscribe((state: any) => {
+      this.issues = state.issues;
+      console.log("Projects state updated with images:", this.issues);
     });
   }
   

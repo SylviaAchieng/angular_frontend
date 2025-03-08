@@ -32,6 +32,12 @@ import { AllIssuesComponent } from './public-servant/public-servant/all-issues/a
 import { IssuesComponent } from './components/admin/admin-dashboard/issues/issues.component';
 import { EventPageComponent } from './pages/event-page/event-page.component';
 import { DiscussionComponent } from './components/admin/admin-dashboard/discussion/discussion.component';
+import { MessagingComponent } from './components/admin/admin-dashboard/messaging/messaging.component';
+import { UserDashboardComponent } from './user-section/user-profile/user-dashboard/user-dashboard.component';
+import { ProfileSettingComponent } from './user-section/user-profile/profile-setting/profile-setting.component';
+import { UserProfileComponent } from './user-section/user-profile/user-profile.component';
+import { ReportIssueComponent } from './user-section/user-profile/report-issue/report-issue.component';
+import { SupportComponent } from './user-section/user-profile/support/support.component';
 
 
 
@@ -68,6 +74,7 @@ export const routes: Routes = [
         {path:'notifications', component:NotificationComponent},
         {path:'reportings', component: IssuesComponent},
         {path: 'proposals', component: DiscussionComponent},
+        {path:'message', component: MessagingComponent},
     ]},
 
     { path: 'public-servant', component: PublicServantComponent, children: [
@@ -78,5 +85,13 @@ export const routes: Routes = [
         {path: 'issues', component:AllIssuesComponent},
         {path:'settings', component: SettingsComponent},
         {path:'notifications', component:NotificationComponent}
-    ]}
+    ]},
+
+    { path: 'profile', component: UserProfileComponent , children: [
+        { path: '', redirectTo: 'user-profile', pathMatch: 'full' },
+        { path: 'user-profile', component: UserDashboardComponent },
+        { path: 'profile-settings', component: ProfileSettingComponent },
+        {path:'report-issue', component: ReportIssueComponent},
+        {path:'privacy-policy', component: SupportComponent}
+    ]},
 ];

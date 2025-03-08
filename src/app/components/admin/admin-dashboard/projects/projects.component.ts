@@ -54,7 +54,7 @@ export class ProjectsComponent {
      }
 
     getAllProjects(): void {
-      this.projectService.getProjects().subscribe({
+      this.projectService.getActiveProjects().subscribe({
         next: (response: any) => {
           console.log("Projects retrieved successfully:", response);
     
@@ -194,6 +194,7 @@ export class ProjectsComponent {
           base64EncodedImage: '',
           location: {county: ''}
         };
+        this.getAllProjects();
       },
       error: (error) => {
         console.error('Error creating project:', error);
@@ -224,7 +225,7 @@ export class ProjectsComponent {
           project.projectId === updatedProject.projectId ? updatedProject : project
         );
 
-        this.toastr.success("Project created successfully!", "Success");
+        this.toastr.success("Project updated successfully!", "Success");
       },
       error: (error) => {
         console.error('Error updating project:', error);

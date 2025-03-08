@@ -20,6 +20,8 @@ export class DiscussionDetailsComponent {
   @Input() discussion: any;
   newReply: string = ''; 
   replies: any[] = [];
+  taggedReplyId: number | null = null;
+  taggedReplyUser: string | null = null;
 
   loggedInUserId = localStorage.getItem('userId');
 
@@ -31,6 +33,7 @@ export class DiscussionDetailsComponent {
     const discussionId = Number(this.route.snapshot.paramMap.get('id'));
     this.loadDiscussionDetails();
     this.loadReplies(discussionId);
+    this.loggedInUserId=localStorage.getItem('userId');
   }
 
   goBack() {

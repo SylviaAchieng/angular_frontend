@@ -1,0 +1,89 @@
+<div class="container mx-auto px-4 py-6">
+    <!-- Header -->
+    <nav class="flex items-center justify-between py-2 mb-6 bg-[#0b0359] text-white shadow-md rounded-lg px-6">
+      <div class="flex items-center text-lg font-medium">
+        <i class="pi pi-user mr-2"></i> Profile Settings
+      </div>
+    </nav>
+  
+    <div class="bg-white p-6 rounded-md shadow-md border border-gray-300 transition-all">
+      <h2 class="text-lg font-semibold mb-4 text-[#0b0359]">Update Profile</h2>
+  
+      <!-- Profile Picture Upload -->
+      <div class="flex items-center space-x-4 mb-6">
+        <img [src]="profileImage || 'assets/avatar.jpg'" alt="Profile" class="w-20 h-20 rounded-full border" />
+        <div>
+          <p class="font-medium text-gray-700">{{ users.fullName || 'User' }}</p>
+          <p class="text-sm text-gray-500">{{ users.userType || 'Role / Title' }}</p>
+          <p class="text-sm text-gray-500">{{ users.location?.county || 'Location' }}</p>
+        </div>
+        <div class="space-x-2">
+          <input type="file" id="fileInput" class="hidden" (change)="uploadImage($event)" />
+          <button class="bg-[#0b0359] text-white px-4 py-2 rounded-md shadow-md hover:bg-[#0a1b52] transition" (click)="triggerFileInput()">
+            <i class="pi pi-upload mr-2"></i> Upload
+          </button>
+          <button class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition">
+            <i class="pi pi-trash"></i> Delete
+          </button>
+        </div>
+      </div>
+  
+      <!-- Profile Information Form -->
+      <form>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-gray-600 font-medium">Full Name</label>
+            <input type="text" [(ngModel)]="users.fullName" class="w-full border border-gray-400 rounded-lg p-2 focus:ring-2 focus:ring-[#0A1B52] focus:border-[#0A1B52]" />
+          </div>
+          <div>
+            <label class="block text-gray-600 font-medium">Email Address</label>
+            <input type="email" [(ngModel)]="users.email" class="w-full border border-gray-400 rounded-lg p-2 focus:ring-2 focus:ring-[#0A1B52] focus:border-[#0A1B52]" />
+          </div>
+          <div>
+            <label class="block text-gray-600 font-medium">Phone Number</label>
+            <input type="text" class="w-full border border-gray-400 rounded-lg p-2 focus:ring-2 focus:ring-[#0A1B52] focus:border-[#0A1B52]" />
+          </div>
+          <div>
+            <label class="block text-gray-600 font-medium">Identification Number</label>
+            <input type="text" [(ngModel)]="users.nationalId" class="w-full border border-gray-400 rounded-lg p-2 focus:ring-2 focus:ring-[#0A1B52] focus:border-[#0A1B52]" />
+          </div>
+          <div>
+            <label class="block text-gray-600 font-medium">Password</label>
+            <input type="password" class="w-full border border-gray-400 rounded-lg p-2 focus:ring-2 focus:ring-[#0A1B52] focus:border-[#0A1B52]" />
+          </div>
+          <div>
+            <label class="block text-gray-600 font-medium">Role</label>
+            <input type="text" [(ngModel)]="users.userType" class="w-full border border-gray-400 rounded-lg p-2 focus:ring-2 focus:ring-[#0A1B52] focus:border-[#0A1B52]" disabled />
+          </div>
+        </div>
+  
+        <!-- Address -->
+        <div class="mt-6 grid grid-cols-2 gap-4">
+            <div>
+                <label class="block text-gray-600 font-medium">County</label>
+            <select [(ngModel)]="users.location.locationId" class="w-full border border-gray-400 rounded-lg p-2 focus:ring-2 focus:ring-[#0A1B52] focus:border-[#0A1B52]">
+                <option value="" disabled selected>Select your county</option>
+                <option *ngFor="let location of locations" [value]="location.locationId">
+                  {{ location.county }}
+                </option>
+              </select>
+            </div>
+          <div>
+            <label class="block text-gray-600 font-medium">SubCounty</label>
+            <input type="text" [(ngModel)]="users.location.subCounty" class="w-full border border-gray-400 rounded-lg p-2 focus:ring-2 focus:ring-[#0A1B52] focus:border-[#0A1B52]" />
+        </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="mt-6 flex justify-end gap-4">
+          <button type="button" class="bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-gray-600 transition">
+            <i class="pi pi-times mr-2"></i> Cancel
+          </button>
+          <button type="submit" class="bg-[#0b0359] text-white py-2 px-4 rounded-md hover:bg-[#0a1b52] transition">
+            <i class="pi pi-check mr-2"></i> Save Changes
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+  

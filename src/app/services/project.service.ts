@@ -36,22 +36,30 @@ export class ProjectService {
     // }
 
     getProjects(): Observable<any> {
-      //const headers = this.getHeaders();
       return this.http.get<any>(`${this.baseUrl}/api/v1/projects`).pipe(
-        tap((response: { _embedded: any[] }) => {  // Correctly type the response
+        tap((response: { _embedded: any[] }) => {  
           const currentState = this.projectSubject.value;
-          const projects = response._embedded || [];  // Ensure it's an array
+          const projects = response._embedded || [];  
+          this.projectSubject.next({ ...currentState, projects });
+        })
+      );
+    }
+
+    getActiveProjects(): Observable<any> {
+      return this.http.get<any>(`${this.baseUrl}/api/v1/projects/active`).pipe(
+        tap((response: { _embedded: any[] }) => {  
+          const currentState = this.projectSubject.value;
+          const projects = response._embedded || [];  
           this.projectSubject.next({ ...currentState, projects });
         })
       );
     }
 
     getAllProjects(): Observable<any> {
-      //const headers = this.getHeaders();
       return this.http.get<any>(`${this.baseUrl}/api/v1/projects`).pipe(
-        tap((response: { _embedded: any[] }) => {  // Correctly type the response
+        tap((response: { _embedded: any[] }) => {  
           const currentState = this.projectSubject.value;
-          const projects = response._embedded || [];  // Ensure it's an array
+          const projects = response._embedded || [];  
           this.projectSubject.next({ ...currentState, projects });
         })
       );

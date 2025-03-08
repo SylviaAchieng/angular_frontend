@@ -69,5 +69,26 @@ export class IssueService {
             )
           }
 
+          getIssuesByStatus(status:string):Observable<any>{
+            const headers = this.getHeaders();
+            return this.http.get<any>(`${this.baseUrl}/api/v1/issue/status/${status}`, {headers}).pipe(
+              tap((response: { _embedded: any[] }) => {
+                const currentState = this.issueSubject.value;
+                const issues = response._embedded || [];
+                this.issueSubject.next({ ...currentState, issues });
+              })
+            );
+          }
+
+          getIssuesByUserId(userId:number):Observable<any>{
+            return this.http.get<any>(`${this.baseUrl}/api/v1/issue/user/${userId}`).pipe(
+              tap((response: { _embedded: any[] }) => {
+                const currentState = this.issueSubject.value;
+                const issues = response._embedded || [];
+                this.issueSubject.next({ ...currentState, issues });
+              })
+            );
+          }
+
 
 }

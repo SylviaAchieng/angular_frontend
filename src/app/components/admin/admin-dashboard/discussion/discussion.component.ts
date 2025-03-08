@@ -4,6 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../../../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { DiscussionService } from '../../../../services/discussion.service';
 
 @Component({
   selector: 'app-discussion',
@@ -14,12 +15,13 @@ import { FormsModule } from '@angular/forms';
 })
 export class DiscussionComponent {
 
-  @Input() user: any;
+  @Input() discussion: any;
       @Output() deleteUserEvent = new EventEmitter<number>();
     
+      discussions: any[]=[];
         users: any;
         paginatedEvents: any[] = [];
-        selectedUser: any = null;
+        selectedDiscussion: any = null;
         isViewing = false;
         currentPage = 1;
         visiblePages: number[] = [];
@@ -29,41 +31,69 @@ export class DiscussionComponent {
         itemsPerPage: number=5;
         isDeleted: boolean=false;
         isAddUserFormVisible = false;
-  
-        newUser: any = {
-          fullName: '',
-          email: '',
-          idNumber: null,
-          password: '',
-          location: { county: '' },
-          userType: ''
+
+
+        newDiscussion: any = {
+          title: '',
+          category: '',
+          startedBy: '',
+          createdAt: '',
+          description: ''
         };
   
         errorMessage: string = '';
+  route: any;
       
       
-        constructor(private authService: AuthService, public dialog: MatDialog, private toastr: ToastrService) {}
+        constructor(private authService: AuthService, public dialog: MatDialog, private toastr: ToastrService, private discussionService: DiscussionService) {}
       
       
          ngOnInit(): void {
-           this.loadUsers();
+           this.getAllDiscussions();
          }
+
+         loadDiscussionDetails(): void {
+          const discussionId = this.route.snapshot.paramMap.get('id');
+          const userId = localStorage.getItem('userId'); // Retrieve userId from localStorage
       
-         loadUsers(): void {
-          this.authService.getAllUsers().subscribe((response) => {
-            console.log("users received:", response); // Debugging
-            this.users = response._embedded || [];
+          if (discussionId && userId) {
+            this.discussionService.getDiscussionById(discussionId).subscribe({
+              next: (response) => {
+                console.log('Discussion Details:', response);
+                this.discussion = response?._embedded ?? response; // Simplified null check
+              },
+              error: (error) => {
+                console.error('Error fetching discussion details', error);
+              }
+            });
+          } else {
+            console.error('Missing discussion ID or user ID.');
+          }
+      }
+
+         getAllDiscussions() {
+          this.discussionService.getAllDiscussions().subscribe({
+            next: (response: any) => {
+              this.discussions = response._embedded || [];
+            },
+            error: err => console.error('Error fetching discussions:', err)
           });
+        }
       
-          // Subscribe to projectSubject to update component state
-        this.authService.authSubject.subscribe((state) => {
-          this.users = state.users;
-          console.log("users state updated:", this.users);
-        });
+        handleAddDiscussion(){
+          this.discussionService.createDiscussion(this.newDiscussion.value).subscribe({
+            next:(response)=>{
+              this.toastr.success("Discussion created successfully!", "Success");
+            },
+          error: (err) => {
+            console.error("failed", err);
+            this.toastr.error("Failed to create a discussion. Please try again.", "Error"); 
+          }
+          });
         }
   
         handleUpdateUser() {
-          this.authService.updateUser(this.selectedUser.userId, this.selectedUser).subscribe({
+          this.authService.updateUser(this.selectedDiscussion.userId, this.selectedDiscussion).subscribe({
             next: (response) => {
               this.toastr.success("User updated successfully!", 'Success');
                this.closeViewEventModal();
@@ -77,7 +107,7 @@ export class DiscussionComponent {
         
         handleDeleteUser(userId: any): void {
           if (confirm('Are you sure you want to delete this user?')) {
-            this.authService.deleteUser(this.selectedUser.userId).subscribe({
+            this.authService.deleteUser(this.selectedDiscussion.userId).subscribe({
               next: () => {
                 console.log(`User with ID ${userId} deleted successfully`);
                 this.toastr.success("User deleted successfully!", 'Success');
@@ -95,29 +125,7 @@ export class DiscussionComponent {
           this.isAddUserFormVisible = !this.isAddUserFormVisible;
         }
   
-        handleAddUser() {
-          if (!this.newUser.fullName || !this.newUser.email || !this.newUser.password || !this.newUser.nationalId) {
-            this.toastr.info('All fields are required', 'Info');
-            return;
-          }
-          if (isNaN(this.newUser.nationalId)) {
-            this.toastr.info('National ID must be a number', 'Info');
-            return;
-          }
-          this.authService.register(this.newUser).subscribe({
-            next: (response) => {
-              console.log('User registered:', response);
-              this.users.push({ ...this.newUser });
-              this.toastr.success('User added successfully!', 'Success');
-              this.newUser = { fullName: '', email: '', nationalId: null, password: '', location: { county: '' }, userType: '' };
-              this.toggleAddUserForm();
-            },
-            error: (error) => {
-              console.error('Error registering user:', error);
-              this.toastr.error("Failed to create user. Please try again.", "Error"); 
-            }
-          });
-        }
+        
       
         updatePagination(): void {
           const totalPages = Math.ceil(this.users.length / this.itemsPerPage);
@@ -150,7 +158,7 @@ export class DiscussionComponent {
         }
       
         showViewEventModal(user: any): void {
-          this.selectedUser = user;
+          this.selectedDiscussion = user;
           // this.vipPrice = event.ticketTypes.find(t => t.type === 'VIP')?.price || null;
           // this.regularPrice = event.ticketTypes.find(t => t.type === 'Regular')?.price || null;
           // this.totalTickets = event.ticketTypes.reduce((total, t) => total + t.quantity, 0) || null;
@@ -159,7 +167,7 @@ export class DiscussionComponent {
       
         closeViewEventModal(): void {
           this.isViewing = false;
-          this.selectedUser = null;
+          this.selectedDiscussion = null;
           this.vipPrice = 0;
           this.regularPrice = 0;
           this.totalTickets = 0;

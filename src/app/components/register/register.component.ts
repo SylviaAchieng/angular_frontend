@@ -6,6 +6,12 @@ import { AuthService } from '../../services/auth.service';
 import { LocationService } from '../../services/location.service';
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
+import { User } from '../../types/app';
+
+enum UserType {
+  CITIZEN = 'CITIZEN',
+  PUBLIC_SERVANT = 'PUBLIC_SERVANT'
+}
 
 @Component({
   selector: 'app-register',
@@ -24,9 +30,10 @@ export class RegisterComponent {
     email: new FormControl('',[Validators.required, Validators.email]),
     userType: new FormControl('', [Validators.required]),
     password: new FormControl('',[Validators.required, Validators.minLength(8)]),
-    location: new FormGroup({
-      locationId: new FormControl(null, [Validators.required])
-    })
+    locationId: new FormControl(null, [Validators.required]),
+    department: new FormControl(''),
+    position: new FormControl('')
+    
   });
 
   fullName: string = '';
@@ -38,6 +45,7 @@ export class RegisterComponent {
   locations: any[] = [];
 
   showPassword: boolean = false;
+  userTypeEnum = UserType;
 
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
@@ -46,9 +54,24 @@ export class RegisterComponent {
 
   handleRegister(){
     console.log("register", this.registrationForm.value)
-    this.authService.register(this.registrationForm.value).subscribe({
+    const newUser: User = {
+
+      fullName: this.registrationForm.get('fullName')?.value,
+      nationalId: this.registrationForm.get('nationalId')?.value,
+      email: this.registrationForm.get('email')?.value,
+      password: this.registrationForm.get('password')?.value,
+      location: {locationId: this.registrationForm.get('locationId')?.value},
+      userType: this.registrationForm.get('userType')?.value,
+      publicServant: this.isPublicServant() ? {
+        department: this.registrationForm.get('department')?.value,
+        position: this.registrationForm.get('position')?.value
+      } : null  
+    }
+    console.log("new user", newUser);
+    this.authService.register(newUser).subscribe({
       next:(response)=>{
         localStorage.setItem('token', response.token);
+        console.log("Registration successful", response);
         const userId = response.userId;
         this.authService.getUserProfile(userId).subscribe();
         // Show success alert
@@ -64,6 +87,7 @@ export class RegisterComponent {
 
   ngOnInit(): void {
     this.fetchLocations();
+    
   }
 
   
@@ -75,6 +99,25 @@ export class RegisterComponent {
     this.locations = state.locations;
     console.log("location state updated:", this.locations);
   });
+  }
+
+  get emailControl() {
+    return this.registrationForm.get('email');
+  }
+  get passwordControl() {
+    return this.registrationForm.get('password');
+  }
+
+  get locationIdControl(){
+    return  this.registrationForm.get('locationId');
+  }
+
+  get userTypeControl(){
+    return this.registrationForm.get('userType');
+  }
+
+  isPublicServant() {
+    return this.registrationForm.get('userType')?.value === UserType.PUBLIC_SERVANT;
   }
 
 
