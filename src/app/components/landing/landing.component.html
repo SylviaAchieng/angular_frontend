@@ -15,7 +15,7 @@ class="relative bg-gray-700 bg-center bg-no-repeat bg-blend-multiply h-full flex
   </p>
   <div class="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-x-4 sm:space-y-0">
     <button
-      class="inline-flex items-center justify-center rounded-lg bg-green-900 px-5 py-3 text-center text-base font-medium text-white hover:bg-blue-600 focus:ring-4"
+      class="inline-flex items-center justify-center border border-white rounded-lg bg-[#092b29] px-5 py-3 text-center text-base font-medium text-white hover:bg-teal-800 focus:ring-4"
       (click)="onGetInvolved()"
     >
       {{ heroPrimaryButton }}
@@ -54,7 +54,7 @@ class="relative bg-gray-700 bg-center bg-no-repeat bg-blend-multiply h-full flex
 <section class="bg-white py-16 px-6 lg:px-32">
   <div class="container mx-auto">
     <!-- Heading -->
-    <h2 class="text-3xl font-bold text-blue-900 text-center mb-10">
+    <h2 class="text-3xl font-bold text-gray-800 text-center mb-10">
       Why choose Go Vocal’s engagement platform?
     </h2>
 
@@ -124,7 +124,7 @@ class="relative bg-gray-700 bg-center bg-no-repeat bg-blend-multiply h-full flex
 </section>
 
 <div class="bg-gray-60 py-10 w-full rounded-xl shadow-md max-w-12xl mx-auto mb-6">
-  <h2 class="text-3xl font-bold text-blue-900 text-center mb-6">Go Vocal’s Upcoming Events</h2>
+  <h2 class="text-3xl font-bold text-gray-800 text-center mb-6">Go Vocal’s Upcoming Events</h2>
 
   <div *ngIf="eventList.length > 0; else noEvents">
     <app-event-card *ngFor="let event of eventList" [event]="event"></app-event-card>
@@ -136,7 +136,7 @@ class="relative bg-gray-700 bg-center bg-no-repeat bg-blend-multiply h-full flex
 
 <section>
 <div class="bg-white py-10">
-  <h2 class="text-3xl font-bold text-blue-900 text-center mb-8">About Go Vocal Community platform...</h2>
+  <h2 class="text-3xl font-bold text-gray-800 text-center mb-8">About Go Vocal Community platform...</h2>
   <div class="flex flex-wrap justify-center gap-6">
     <div
       *ngFor="let card of cards"
@@ -157,7 +157,7 @@ class="relative bg-gray-700 bg-center bg-no-repeat bg-blend-multiply h-full flex
       <!-- Learn more button -->
       <a
       [routerLink]="card.route"
-        class="inline-block bg-blue-900 text-white px-6 py-2 mt-8 rounded-lg font-semibold hover:bg-blue-900"
+        class="inline-block bg-teal-900 text-white px-6 py-2 mt-8 rounded-lg font-semibold hover:bg-teal-800"
       >
         Learn more →
       </a>
@@ -170,7 +170,7 @@ class="relative bg-gray-700 bg-center bg-no-repeat bg-blend-multiply h-full flex
 
 
 <!-- New Schedule a Demo Section -->
-<section class="bg-gray-500 py-16 px-6 lg:px-32 text-center">
+<section class="bg-teal-700 py-16 px-6 lg:px-32 text-center">
   <div class="container mx-auto">
     <h2 class="text-3xl font-extrabold text-white mb-6">
       Ready to revolutionize civic engagement?
@@ -179,7 +179,7 @@ class="relative bg-gray-700 bg-center bg-no-repeat bg-blend-multiply h-full flex
       Schedule a personalized demo today and discover how our platform can help you create lasting impact!
     </p>
     <button
-      class="rounded-lg bg-blue-900 hover:bg-blue-800 px-8 py-3 text-white text-lg font-bold shadow-lg focus:outline-none focus:ring-4"
+      class="rounded-lg bg-teal-900 hover:bg-teal-800 px-8 py-3 text-white text-lg font-bold shadow-lg focus:outline-none focus:ring-4"
       (click)="onScheduleDemo()"
     >
       Sign Up

@@ -33,12 +33,13 @@ export class DiscussionComponent {
         isAddUserFormVisible = false;
 
 
-        newDiscussion: any = {
+        newDiscussion = {
           title: '',
           category: '',
           startedBy: '',
           createdAt: '',
-          description: ''
+          description: '',
+          user : {fullName: ''}
         };
   
         errorMessage: string = '';
@@ -79,9 +80,34 @@ export class DiscussionComponent {
             error: err => console.error('Error fetching discussions:', err)
           });
         }
+
+
+        onSubmit(){
+          if (!this.newDiscussion.title || !this.newDiscussion.description || !this.newDiscussion.category) {
+            this.toastr.info('Please fill in all required fields, including an image.', 'Info');
+            return;
+          }
       
-        handleAddDiscussion(){
-          this.discussionService.createDiscussion(this.newDiscussion.value).subscribe({
+          // Retrieve user data from local storage
+          const userData = localStorage.getItem('userId');
+          if (!userData) {
+            this.toastr.error("User not found. Please log in again.", "Error");
+            return;
+          }
+        
+          const loggedInUser = JSON.parse(userData); // Extract user object
+        
+          if (!loggedInUser) {
+            console.error("User ID is missing.");
+            this.toastr.error("User ID is missing. Please log in again.", "Error");
+            return;
+          }
+        
+          const data = {
+            ...this.newDiscussion,
+            user: { userId: loggedInUser },
+          };
+          this.discussionService.createDiscussion(data).subscribe({
             next:(response)=>{
               this.toastr.success("Discussion created successfully!", "Success");
             },
@@ -92,34 +118,30 @@ export class DiscussionComponent {
           });
         }
   
-        handleUpdateUser() {
-          this.authService.updateUser(this.selectedDiscussion.userId, this.selectedDiscussion).subscribe({
-            next: (response) => {
-              this.toastr.success("User updated successfully!", 'Success');
-               this.closeViewEventModal();
+          
+        deleteProject() {
+          if (!this.selectedDiscussion || !this.selectedDiscussion.discussionId) {
+            this.toastr.info('Please select a discussion to delete.', 'Info');
+            return;
+          }
+        
+          const discussionId = this.selectedDiscussion.discussionId; // Extract only the ID
+        
+          this.discussionService.deleteDiscussion(discussionId).subscribe({
+            next: () => {
+              console.log('discussion deleted successfully:', discussionId);
+        
+              this.discussions = this.discussions.filter((discussion: any) => discussion.discussionId !== discussionId);
+        
+              this.toastr.success("discussion deleted successfully!", "Success"); // Show success message
             },
             error: (error) => {
-              console.error("Error updating user:", error);
-              this.toastr.error("Failed to update user.", 'Error');
+              console.error('Error deleting discussion:', error);
+              this.toastr.error("Failed to delete discussion. Please try again.", "Error"); 
             }
           });
-        }  
-        
-        handleDeleteUser(userId: any): void {
-          if (confirm('Are you sure you want to delete this user?')) {
-            this.authService.deleteUser(this.selectedDiscussion.userId).subscribe({
-              next: () => {
-                console.log(`User with ID ${userId} deleted successfully`);
-                this.toastr.success("User deleted successfully!", 'Success');
-                this.users = this.users.filter((user: any) => user.userId !== userId);
-              },
-              error: (err) => {
-                console.error('Error deleting user:', err);
-                this.toastr.error("Failed to delete user. Please try again.", "Error"); 
-              }
-            });
-          }
         }
+        
         
         toggleAddUserForm() {
           this.isAddUserFormVisible = !this.isAddUserFormVisible;

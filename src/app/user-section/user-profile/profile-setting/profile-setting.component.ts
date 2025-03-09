@@ -15,18 +15,12 @@ import { IdType } from '../../../types/app';
 })
 export class ProfileSettingComponent {
   profileImage: string | null = null;
+
   //users: any = {};
   locations: any[] = [];
-  selectedProject: any = null;
+  selectedUser: any = {};
 
-  users: any = {
-    fullName: '',
-    email: '',
-    idNumber: null,
-    password: '',
-    location: { county: '' },
-    userType: ''
-  };
+  user: any = {};
 
   constructor(
     private authService: AuthService,
@@ -54,7 +48,7 @@ export class ProfileSettingComponent {
 
   ngOnInit(): void {
     this.fetchLocations();
-    this.loadUsers();
+    this.loadUser();
   }
 
   getUserIdFromLocalStorage(): number | null {
@@ -77,20 +71,20 @@ export class ProfileSettingComponent {
   }
   
 
-  loadUsers(): void {
+  loadUser(): void {
     const userId = this.getUserIdFromLocalStorage1();
     console.log("User ID:", userId);
     
     if (userId) {
       this.authService.getUserProfile(userId).subscribe((response) => {
         console.log("Users received:", response);
-        this.users = response._embedded || [];
+        this.user = response._embedded || [];
       });
   
       // Subscribe to authSubject to update component state dynamically
       this.authService.authSubject.subscribe((state) => {
-        this.users = state.users;
-        console.log("Users state updated:", this.users);
+        this.user = state.users;
+        console.log("User state updated:", this.user);
       });
     } else {
       console.warn("User ID not found in local storage.");
@@ -106,6 +100,35 @@ this.locationService.locationSubject.subscribe((state) => {
   this.locations = state.locations;
   console.log("location state updated:", this.locations);
 });
+}
+
+updateEvent() {
+  if (!this.selectedUser || !this.selectedUser.eventId) {
+    this.toastr.info('Please select an event to update.', 'Info');
+    return;
+  }
+
+  const userId = this.getUserIdFromLocalStorage1();
+
+  const updatedEventData = {
+    ...this.selectedUser,
+    
+  };
+  this.authService.updateUser(updatedEventData, userId).subscribe({
+    next: (updatedEvent) => {
+      console.log('event updated successfully:', updatedEvent);        
+      this.user = this.user.map((user: any) =>
+        user.userId === updatedEvent.userId ? updatedEvent : user
+      );
+
+      this.toastr.success('event updated successfully!', 'Success');
+      this.loadUser();
+    },
+    error: (error) => {
+      console.error('Error updating event:', error);
+      this.toastr.error("Failed to update an event. Please try again.", "Error"); 
+    }
+  });
 }
 
 

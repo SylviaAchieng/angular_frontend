@@ -7,6 +7,7 @@ import { EventService } from '../../../../services/event.service';
 import { UpdateProjectFormComponent } from '../../../../pages/update-project-form/update-project-form.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
+import { LocationService } from '../../../../services/location.service';
 
 @Component({
   selector: 'app-projects',
@@ -42,16 +43,35 @@ export class ProjectsComponent {
       endDate: '',
       tag: '',
       base64EncodedImage: '' ,
-      location: {county: ''}
+      location: {county: ''},
+      actualCost:0,
+      approximateCost: 0,
     };
+    locations: any[] = [];
   
   
-    constructor(private projectService: ProjectService, public dialog: MatDialog, private toastr: ToastrService) {}
+    constructor(
+      private projectService: ProjectService, 
+      public dialog: MatDialog, 
+      private toastr: ToastrService,
+      private locationService: LocationService
+    ) {}
   
   
      ngOnInit(): void {
        this.getAllProjects();
+       this.fetchLocations();
      }
+
+     fetchLocations(): void {
+      this.locationService.getAllLocations().subscribe((response) => {
+        this.locations = response._embedded || [];
+      });
+    this.locationService.locationSubject.subscribe((state) => {
+      this.locations = state.locations;
+      console.log("location state updated:", this.locations);
+    });
+    }
 
     getAllProjects(): void {
       this.projectService.getActiveProjects().subscribe({
@@ -146,7 +166,7 @@ export class ProjectsComponent {
   // }
 
   createProject() {
-    if (!this.newProject.title || !this.newProject.description || !this.newProject.tag || !this.newProject.base64EncodedImage) {
+    if (!this.newProject.title || !this.newProject.description || !this.newProject.tag || !this.newProject.base64EncodedImage || !this.newProject.startDate || !this.newProject.endDate || !this.newProject.approximateCost) {
       this.toastr.info('Please fill in all required fields, including an image.', 'Info');
       return;
     }
@@ -192,7 +212,9 @@ export class ProjectsComponent {
           endDate: '',
           tag: '',
           base64EncodedImage: '',
-          location: {county: ''}
+          location: {county: ''},
+          actualCost:0,
+          approximateCost: 0,
         };
         this.getAllProjects();
       },
@@ -226,6 +248,7 @@ export class ProjectsComponent {
         );
 
         this.toastr.success("Project updated successfully!", "Success");
+        this.getAllProjects();
       },
       error: (error) => {
         console.error('Error updating project:', error);
@@ -234,10 +257,13 @@ export class ProjectsComponent {
     });
   }
 
-  deleteProject(projectId: number) {
-    if (!confirm('Are you sure you want to delete this project?')) {
+  deleteProject() {
+    if (!this.selectedProject || !this.selectedProject.projectId) {
+      this.toastr.info('Please select a project to delete.', 'Info');
       return;
     }
+  
+    const projectId = this.selectedProject.projectId; // Extract only the ID
   
     this.projectService.deleteProject(projectId).subscribe({
       next: () => {
@@ -254,6 +280,7 @@ export class ProjectsComponent {
       }
     });
   }
+  
   
 
   getProjectById(projectId: number): void {

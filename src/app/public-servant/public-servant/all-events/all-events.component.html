@@ -2,13 +2,13 @@
 <div class="container mx-auto px-4 py-4">
 
     <div class="flex justify-end mb-4">
-      <button (click)="toggleEventForm()" class="bg-teal-600 text-white py-2 px-4 rounded-md shadow-md hover:bg-teal-700 transition">
+      <button (click)="toggleEventForm()" class="bg-teal-900 text-white py-2 px-4 rounded-md shadow-md hover:bg-teal-800 transition">
         <i class="pi pi-plus mr-2"></i> Create Event
       </button>
     </div>
     
     <!-- Navbar -->
-    <nav class="flex items-center justify-between py-2 mb-4 bg-teal-500 text-white shadow-md rounded-lg">
+    <nav class="flex items-center justify-between py-2 mb-4 bg-teal-900 text-white shadow-md rounded-lg">
       <div class="flex items-center text-xl font-medium px-4">
         <i class="pi pi-file-check mr-2"></i>Events
       </div>
@@ -24,10 +24,29 @@
           <label class="block text-sm font-medium text-gray-700">Title:</label>
           <input type="text" [(ngModel)]="newEvent.title" name="title" required class="w-full p-2 border rounded-md">
         </div>
-        <!-- Location -->
+        <!-- Description -->
         <div class="mb-4">
+          <label class="block text-sm font-medium text-gray-700">Description:</label>
+          <textarea [(ngModel)]="newEvent.description" name="description" required class="w-full p-2 border rounded-md"></textarea>
+        </div>
+        <!-- Location -->
+        <!-- <div class="mb-4">
           <label class="block text-sm font-medium text-gray-700">Location:</label>
           <input type="text" [(ngModel)]="newEvent.location.county" name="county" required class="w-full p-2 border rounded-md">
+        </div> -->
+        <div class="mb-4">
+          <label for="location" class="block text-sm font-medium text-gray-700">Location </label>
+          <select
+            id="location"
+            [(ngModel)]="newEvent.location"
+            name="location"
+            class="w-full p-2 border rounded-md"
+          >
+            <option value="" disabled selected>Select your location</option>
+            <option *ngFor="let location of locations" [ngValue]="location">
+              {{ location.county }}
+            </option>
+          </select>
         </div>
         <!-- Date -->
         <div class="mb-4">
@@ -38,11 +57,6 @@
         <div class="mb-4">
           <label class="block text-sm font-medium text-gray-700">Time:</label>
           <input type="time" [(ngModel)]="newEvent.time" name="time" required class="w-full p-2 border rounded-md">
-        </div>
-        <!-- Description -->
-        <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700">Description:</label>
-          <textarea [(ngModel)]="newEvent.description" name="description" required class="w-full p-2 border rounded-md"></textarea>
         </div>
         <!-- Image Upload -->
         <div class="mb-4">
@@ -62,7 +76,7 @@
           <button type="button" (click)="toggleEventForm()" class="bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-gray-600 transition-all">
             <i class="pi pi-times mr-2"></i> Cancel
           </button>
-          <button type="submit" class="bg-teal-600 text-white py-2 px-4 rounded-md hover:bg-success-dark transition-all">
+          <button type="submit" class="bg-teal-900 text-white py-2 px-4 rounded-md hover:bg-success-dark transition-all">
             <i class="pi pi-check mr-2"></i> Submit
           </button>
         </div>
@@ -177,16 +191,9 @@
               </div>
             </div>
             <div class="mb-4 flex items-center">
-              <i class="pi pi-wallet mr-2"></i>
-              <div>
-                <label class="text-sm font-medium">Regular Ticket Price:</label>
-                <input type="number" [(ngModel)]="regularPrice" class="w-full p-2 border rounded-md">
-              </div>
-            </div>
-            <div class="mb-4 flex items-center">
               <i class="pi pi-users mr-2"></i>
               <div>
-                <label class="text-sm font-medium">Number of Tickets:</label>
+                <label class="text-sm font-medium">Attendees:</label>
                 <input type="number" [(ngModel)]="totalTickets" class="w-full p-2 border rounded-md">
               </div>
             </div>
@@ -207,12 +214,12 @@
         </div>
         <div class="flex justify-end mt-4 gap-4">
           <button (click)="closeViewEventModal()" class="bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-gray-600">
-            <i class="pi pi-check mr-2"></i> Close
+            <i class="pi pi-times mr-2"></i> Close
           </button>
           <button (click)="updateEvent()" class="bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-gray-500">
             <i class="pi pi-check mr-2"></i> Update
           </button>
-          <button (click)="deleteEvent(events.eventId)" class="bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-gray-500">
+          <button (click)="deleteEvent()" class="bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-gray-500">
             <i class="pi pi-trash mr-2"></i> Delete
           </button>
         </div>

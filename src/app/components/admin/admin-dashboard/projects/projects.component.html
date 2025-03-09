@@ -1,13 +1,13 @@
 <div class="container mx-auto px-6 py-6">
 
   <div class="flex justify-end mb-4">
-    <button (click)="toggleProjectForm()" class="bg-teal-600 text-white py-2 px-4 rounded-md shadow-md hover:bg-teal-700 transition">
+    <button (click)="toggleProjectForm()" class="bg-teal-900 text-white py-2 px-4 rounded-md shadow-md hover:bg-teal-800 transition">
       <i class="pi pi-plus mr-2"></i> Create Project
     </button>
   </div>
 
     <!-- Navbar -->
-    <nav class="flex items-center justify-between py-2 mb-4 bg-teal-500 text-white shadow-md rounded-lg">
+    <nav class="flex items-center justify-between py-2 mb-4 bg-teal-900 text-white shadow-md rounded-lg">
       <div class="flex items-center text-xl font-medium px-4">
         <i class="pi pi-file-check mr-2"></i>Projects
       </div>
@@ -47,9 +47,32 @@
         <input type="text" [(ngModel)]="newProject.tag" name="tag" required class="w-full p-2 border rounded-md">
       </div>
       <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-700">Approximate Cost:</label>
+        <input type="number" [(ngModel)]="newProject.approximateCost" name="approximateCost" required class="w-full p-2 border rounded-md">
+      </div>
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-700">Actual Cost:</label>
+        <input type="number" [(ngModel)]="newProject.actualCost" name="actualCost" required class="w-full p-2 border rounded-md">
+      </div>
+      <!-- <div class="mb-4">
         <label class="block text-sm font-medium text-gray-700">Location:</label>
         <input type="text" [(ngModel)]="newProject.location.county" name="tag" required class="w-full p-2 border rounded-md">
+      </div> -->
+      <div class="mb-4">
+        <label for="location" class="block text-sm font-medium text-gray-700">Location </label>
+        <select
+          id="location"
+          [(ngModel)]="newProject.location"
+          name="location"
+          class="w-full p-2 border rounded-md"
+        >
+          <option value="" disabled selected>Select your location</option>
+          <option *ngFor="let location of locations" [ngValue]="location">
+            {{ location.county }}
+          </option>
+        </select>
       </div>
+      
       <!-- Image Upload -->
       <div class="mb-4">
         <label class="block text-sm font-medium text-gray-700">Project Banner:</label>
@@ -68,7 +91,7 @@
         <button type="button" (click)="toggleProjectForm()" class="bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-gray-600 transition-all">
           <i class="pi pi-times mr-2"></i> Cancel
         </button>
-        <button type="submit" class="bg-teal-600 text-white py-2 px-4 rounded-md hover:bg-success-dark transition-all">
+        <button type="submit" class="bg-teal-900 text-white py-2 px-4 rounded-md hover:bg-success-dark transition-all">
           <i class="pi pi-check mr-2"></i> Submit
         </button>
       </div>
@@ -279,7 +302,7 @@
           <button (click)="updateProject()" class="bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-gray-500">
             <i class="pi pi-check mr-2"></i> Update
           </button>
-          <button (click)="deleteProject(project.projectId)" class="bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-gray-500">
+          <button (click)="deleteProject()" (click)="closeViewEventModal()" class="bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-gray-500">
             <i class="pi pi-trash mr-2"></i> Delete
           </button>
         </div>

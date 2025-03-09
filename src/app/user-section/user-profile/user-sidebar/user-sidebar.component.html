@@ -6,34 +6,36 @@
       <span class="font-semibold">To platform</span>
     </div>
 
-    <div class="text-center mt-4">
-        <img [src]="user.avatar" alt="User Avatar" class="w-20 h-20 rounded-full mx-auto">
-        <h2 class="text-xl font-bold mt-2">{{ user.name }}</h2>
+    <div class="text-center mt-4 flex">
+        <img [src]="user.avatar" alt="User Avatar" class="w-20 h-20 rounded-full m-2">
+        <div class="flex flex-col items-start justify-center ml-2">
+        <h2 class="text-xl font-bold">{{ user.name }}</h2>
         <p class="text-sm opacity-75">{{ user.role }}</p>
-        <span class="text-green-400 text-sm" *ngIf="user.online">● Online</span>
+        <span class="text-green-400 text-sm" *ngIf="user.online">Online ●</span>
+      </div>
       </div>
   
     <!-- Navigation Links -->
-    <nav class="flex-1 mt-8  mx-auto">
+    <nav class="flex-1 mt-8">
       <ul>
-        <li class="px-16 py-2 bg-[#1a5d76] flex items-center gap-3 cursor-pointer">
+        <li class=" p-2 bg-[#1a5d76] flex items-center gap-3 cursor-pointer">
           <a [routerLink]="['/profile/user-profile']" class="w-full flex items-center gap-3">
             <i class="fas fa-chart-line"></i> Dashboard
           </a>
         </li>
-        <li class="px-16 py-2 hover:bg-[#1a5d76]flex items-center gap-3 cursor-pointer">
+        <li class=" p-2 hover:bg-[#1a5d76]flex items-center gap-3 cursor-pointer">
           <i class="fas fa-envelope"></i> Messaging
         </li>
-        <li [routerLink]="['/profile/report-issue']" class="px-16 py-2 hover:bg-[#1a5d76] flex items-center gap-3 cursor-pointer">
+        <li [routerLink]="['/profile/report-issue']" class="p-2 hover:bg-[#1a5d76] flex items-center gap-3 cursor-pointer">
           <i class="fas fa-chart-bar"></i> Reporting
         </li>
-        <li [routerLink]="['/profile/profile-settings']" class="px-16 py-2 hover:bg-[#1a5d76] flex items-center gap-3 cursor-pointer">
+        <li [routerLink]="['/profile/profile-settings']" class="p-2 hover:bg-[#1a5d76] flex items-center gap-3 cursor-pointer">
             <i class="fas fa-cog"></i> Settings
           </li>
-          <li [routerLink]="['/profile/privacy-policy']" class="px-16 py-2 hover:bg-[#1a5d76] flex items-center gap-3 cursor-pointer">
+          <li [routerLink]="['/profile/privacy-policy']" class="p-2 hover:bg-[#1a5d76] flex items-center gap-3 cursor-pointer">
             <i class="fas fa-user-shield"></i> Privacy
           </li>
-          <li class="px-16 py-2 hover:bg-[#1a5d76] flex items-center gap-3 cursor-pointer relative">
+          <li class=" p-2 hover:bg-[#1a5d76] flex items-center gap-3 cursor-pointer relative">
             <i class="fas fa-bell"></i> Notifications
             <span class="bg-red-500 text-xs px-2 rounded-full absolute right-4">2</span>
           </li>

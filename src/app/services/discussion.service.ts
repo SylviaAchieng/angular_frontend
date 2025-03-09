@@ -74,6 +74,17 @@ export class DiscussionService {
             })
           );
         }
+
+        deleteDiscussion(discussionId:any):Observable<any>{
+          const headers = this.getHeaders();
+          return this.http.delete<any>(`${this.baseUrl}/api/v1/discussions/${discussionId}`, {headers}).pipe(
+            tap((deletedDiscussion:any)=>{
+              const currentState = this.discussionSubject.value;
+              const updatedDiscussions = currentState.discussions.filter((item:any)=>item.discussionId !== discussionId);
+              this.discussionSubject.next({...currentState, discussions: updatedDiscussions})
+            })
+          )
+        }
         
         
 

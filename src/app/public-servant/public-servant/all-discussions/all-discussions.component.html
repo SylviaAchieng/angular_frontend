@@ -1,1 +1,157 @@
-<p>all-discussions works!</p>
+
+<div class="container mx-auto px-6 py-6">
+
+    <div class="flex justify-end mb-4">
+      <button (click)="toggleAddUserForm()" class="bg-teal-900 text-white py-2 px-4 rounded-md shadow-md hover:bg-teal-800 transition">
+        <i class="pi pi-user-plus mr-2"></i> Add Discussion
+      </button>
+    </div>
+      <!-- Navbar -->
+      <nav class="flex items-center justify-between py-2 mb-4 bg-teal-900 text-white shadow-md rounded-lg">
+        <div class="flex items-center text-xl font-medium px-4">
+            <i class="fas fa-leaf mr-2"></i> Discussions
+        </div>
+      </nav>
+  
+      <!-- Add User Form -->
+      <div *ngIf="isAddUserFormVisible" class="bg-white p-6 rounded-md shadow-md mb-6">
+        <h2 class="text-lg font-semibold mb-4">Create New Discussion</h2>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="text-sm font-medium">Title:</label>
+            <input type="text" [(ngModel)]="newDiscussion.title" class="border rounded p-2 w-full" />
+          </div>
+          <div>
+            <label class="text-sm font-medium">Category:</label>
+            <input type="email" [(ngModel)]="newDiscussion.category" class="border rounded p-2 w-full" />
+          </div>
+          <div>
+            <label class="text-sm font-medium">description:</label>
+            <input type="text" [(ngModel)]="newDiscussion.description" class="border rounded p-2 w-full" />
+          </div>
+        </div>
+        <div class="flex justify-end mt-4 gap-4">
+          <button (click)="toggleAddUserForm()" class="bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-gray-600">
+            <i class="pi pi-times mr-2"></i> Cancel
+          </button>
+          <button (click)="handleAddDiscussion()" class="bg-teal-900 text-white py-2 px-4 rounded-md hover:bg-teal-700">
+            <i class="pi pi-check mr-2"></i> Submit
+          </button>
+        </div>
+      </div>
+  
+      <!--User table-->
+      <div class="font-[sans-serif] overflow-x-auto">
+        <table value="events" class="min-w-full bg-white">
+          <thead class="bg-teal-900 text-white">
+            <tr>
+              <th class="p-4 text-left text-sm font-semibold">
+                <i class="pi pi-id-card mr-1"></i>Title
+              </th>
+              <th class="p-4 text-left text-sm font-semibold">
+                <i class="pi pi-tag mr-1"></i>Category
+              </th>
+              <th class="p-4 text-left text-sm font-semibold">
+                <i class="pi pi-align-left mr-1"></i>Description
+              </th>
+              <th class="p-4 text-left text-sm font-semibold">
+                <i class="pi pi-users mr-1"></i>Started By
+              </th>
+              <th class="p-4 text-left text-sm font-semibold">
+                <i class="pi pi-info-circle mr-1"></i>Details
+              </th>
+            </tr>
+          </thead>
+          <tbody class="whitespace-nowrap divide-y divide-gray-200">
+            <tr *ngFor="let discussion of discussions">
+              <td class="p-4 text-sm text-black">
+                {{ discussion.title.slice(0, 50) }}
+              </td>
+              <td class="p-4 text-sm text-black">
+                  {{ discussion.category }}
+                </td>
+              <td class="p-4 text-sm text-black">
+                {{ discussion.description.slice(0, 50) }}
+              </td>
+              <td class="p-4 text-sm text-black">
+                {{ discussion.user?.fullName }}
+              </td>
+              <td class="p-4 text-sm text-center">
+                <button (click)="showViewEventModal(discussion)" class="bg-gray-500 text-white py-1 px-3 rounded-md hover:bg-gray-500">
+                  <i class="pi pi-eye"></i> View
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    
+      <!-- View User Modal-->
+      <div *ngIf="isViewing" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+        <div class="bg-white p-6 rounded-md shadow-md relative w-full max-w-3xl mx-auto">
+          <div class="flex justify-between items-center mb-4">
+            <h2 class="text-xl font-semibold">Discussion Details</h2>
+            <button (click)="closeViewEventModal()" class="text-gray-500 hover:text-gray-700">
+              <i class="pi pi-times"></i>
+            </button>
+          </div>
+          <div class="flex">
+            <div class="w-2/3 pr-4">
+              <div class="mb-4 flex items-center">
+                <i class="pi pi-tag mr-2"></i>
+                <div>
+                  <label class="text-sm font-medium">Title:</label>
+                  <input type="text" [(ngModel)]="selectedDiscussion.title" class="border rounded p-2 w-full" />
+                </div>
+              </div>
+              <div class="mb-4 flex items-center">
+                <i class="pi pi-tag mr-2"></i>
+                <div>
+                  <label class="text-sm font-medium">Category:</label>
+                  <input type="text" [(ngModel)]="selectedDiscussion.category" class="border rounded p-2 w-full" />
+                </div>
+              </div>
+              <div class="mb-4 flex items-center">
+                  <i class="pi pi-users mr-2"></i>
+                  <div>
+                    <label class="text-sm font-medium">Started By</label>
+                    <input type="text" [(ngModel)]="selectedDiscussion.user.fullName" class="border rounded p-2 w-full" />
+                  </div>
+                </div>
+                <div class="mb-4 flex items-center">
+                  <i class="pi pi-tag mr-2"></i>
+                  <div>
+                    <label class="text-sm font-medium">Total Replies:</label>
+                    <input type="number" [(ngModel)]="selectedDiscussion.replyCount" class="border rounded p-2 w-full" />
+                  </div>
+                </div>
+                <div class="mb-4 flex items-center">
+                  <i class="pi pi-tag mr-2"></i>
+                  <div>
+                    <label class="text-sm font-medium">Total Views:</label>
+                    <input type="number" [(ngModel)]="selectedDiscussion.viewCount" class="border rounded p-2 w-full" />
+                  </div>
+                </div>
+              <div class="mb-4 flex items-center">
+                <i class="pi pi-align-left mr-2"></i>
+                <div>
+                  <label class="text-sm font-medium">Description:</label>
+                  <textarea type="text" [(ngModel)]="selectedDiscussion.description" class="border rounded p-2 w-full" ></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="flex justify-end mt-4 gap-4">
+            <button (click)="closeViewEventModal()" class="bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-gray-500">
+              <i class="pi pi-times mr-2"></i> Close
+            </button>
+            <button (click)="handleUpdateUser()" class="bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-gray-500">
+              <i class="pi pi-check mr-2"></i> Update
+            </button>
+            <button (click)="handleDeleteUser(discussion.discussionId)" class="bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-gray-500">
+              <i class="pi pi-trash mr-2"></i> Delete
+            </button>
+          </div>
+        </div>
+      </div> 
+    </div>

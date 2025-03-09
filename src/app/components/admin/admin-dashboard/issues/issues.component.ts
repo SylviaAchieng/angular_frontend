@@ -126,7 +126,7 @@ export class IssuesComponent {
     }
 
     submitIssue() {
-      if (!this.newIssue.title || !this.newIssue.description) {
+      if (!this.newIssue.title || !this.newIssue.description || !this.newIssue.base64EncodedImage) {
         this.toastr.info('Please fill in all required fields, including an image.', 'Info');
         return;
       }
@@ -164,6 +164,59 @@ export class IssuesComponent {
         error: (error) => {
           console.error('Error creating issue:', error);
           this.toastr.error("Failed to create issue. Please try again.", "Error"); 
+        }
+      });
+    }
+
+    updateIssue() {
+      if (!this.selectedIssue || !this.selectedIssue.issueId) {
+        this.toastr.info('Please select a project to update.', 'Info');
+        return;
+      }
+      const imageData = this.selectedIssue.base64EncodedImage.startsWith("data:image/")
+        ? this.selectedIssue.base64EncodedImage.split(",")[1]
+        : this.selectedIssue.base64EncodedImage;
+  
+      const updatedIssueData = {
+        ...this.selectedIssue,
+        base64EncodedImage: imageData  // Send only the Base64 string
+      };
+      this.issueService.updateIssue(updatedIssueData).subscribe({
+        next: (updatedIssue) => {
+          console.log('issue updated successfully:', updatedIssue);
+          this.issues = this.issues.map((issue: any) =>
+            issue.issueId === updatedIssue.projectId ? updatedIssue : issue
+          );
+  
+          this.toastr.success("Issue updated successfully!", "Success");
+        },
+        error: (error) => {
+          console.error('Error updating issue:', error);
+          this.toastr.error("Failed to update a issue. Please try again.", "Error");
+        }
+      });
+    }
+
+    deleteIssue() {
+      if (!this.selectedIssue || !this.selectedIssue.issueId) {
+        this.toastr.info('Please select a issue to delete.', 'Info');
+        return;
+      }
+    
+      const issueId = this.selectedIssue.issueId; // Extract only the ID
+    
+      this.issueService.deleteIssue(issueId).subscribe({
+        next: () => {
+          console.log('issue deleted successfully:', issueId);
+    
+          this.issues = this.issues.filter((issue: any) => issue.issueId !== issueId);
+    
+          this.toastr.success("issue deleted successfully!", "Success"); // Show success message
+          this.closeViewIssueModal(); // Close the modal
+        },
+        error: (error) => {
+          console.error('Error deleting issue:', error);
+          this.toastr.error("Failed to delete issue. Please try again.", "Error"); 
         }
       });
     }

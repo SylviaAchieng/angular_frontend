@@ -6,7 +6,7 @@
     <img *ngIf="project?.base64EncodedImage" [src]="project?.base64EncodedImage" 
          alt="Project Image" class="w-full h-64 object-cover rounded-lg mt-4">
 
-    <p class="text-gray-600 mt-4"><i class="pi pi-calendar mr-2"></i> {{ project?.daysRemaining }} days remaining</p>
+    <p class="text-gray-600 mt-6"><i class="pi pi-calendar mr-2"></i> {{ project?.daysRemaining }} days remaining</p>
     <p class="text-gray-600 mt-4"><i class="pi pi-map-marker mr-2"></i> {{ project?.location?.county }}</p>
 
     <p class="mt-4 text-gray-700"><i class="pi pi-align-left mr-2"></i>{{ project?.description }}</p>
@@ -25,7 +25,7 @@
                 <mat-icon>chat</mat-icon>
             </button>
         </div>
-        <button class="px-4 py-2 bg-blue-900 text-white rounded-lg hover:bg-blue-700 transition" (click)="goBack()">
+        <button class="px-4 py-2 bg-teal-900 text-white rounded-lg hover:bg-teal-700 transition" (click)="goBack()">
             Back
         </button>
     </div>
@@ -37,7 +37,7 @@
                   class="w-full p-2 border border-gray-300 rounded-lg mt-2"></textarea>
         <div class="flex justify-end space-x-2 mt-2">
             <button (click)="showCommentDialog = false" class="px-4 py-2 bg-gray-300 rounded-lg">Cancel</button>
-            <button (click)="createComment()" class="px-4 py-2 bg-blue-900 text-white rounded-lg hover:bg-blue-700 transition">
+            <button (click)="createComment()" class="px-4 py-2 bg-teal-900 text-white rounded-lg hover:bg-teal-800 transition">
                 Submit
             </button>
         </div>

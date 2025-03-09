@@ -90,5 +90,15 @@ export class IssueService {
             );
           }
 
+          deleteIssue(issueId:any):Observable<any>{
+            const headers = this.getHeaders();
+            return this.http.delete<any>(`${this.baseUrl}/api/v1/issue/${issueId}`, {headers}).pipe(
+              tap((deletedIssue:any)=>{
+                const currentState = this.issueSubject.value;
+                const updatedIssues = currentState.issues.filter((item:any)=>item.issueId !== issueId);
+                this.issueSubject.next({...currentState, projects: updatedIssues})
+              })
+            )
+          }
 
 }

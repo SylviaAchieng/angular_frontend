@@ -5,7 +5,7 @@
 <div class="container mx-auto flex flex-col lg:flex-row h-screen pt-16">
   <!-- Left Section -->
   <div class="left-section w-full lg:w-1/2 flex flex-col justify-center items-center lg:items-start px-6 lg:px-16">
-    <h1 class="text-sm lg:text-2xl font-bold text-blue-900 mb-1">One Login</h1>
+    <h1 class="text-sm lg:text-2xl font-bold text-gray-800 mb-1">One Login</h1>
     <p class="text-gray-600 text-sm lg:text-base mb-6">All Government Services</p>
 
     <!-- Form -->
@@ -17,7 +17,7 @@
         type="email"
         [(ngModel)]="email"
         name="email"
-        class="w-full p-2 border border-gray-300 outline-none rounded-md mb-4 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+        class="w-full p-2 border border-gray-300 outline-none rounded-md mb-4 focus:ring-2 focus:ring-teal-800 focus:border-teal-500"
         placeholder="Enter your email"
       />
 
@@ -29,7 +29,7 @@
           [type]="showPassword ? 'text' : 'password'"
           [(ngModel)]="password"
           name="password"
-          class="w-full p-2 border border-gray-300 outline-none rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          class="w-full p-2 border border-gray-300 outline-none rounded-md focus:ring-2 focus:ring-teal-800 focus:border-teal-500"
           placeholder="Password"
         />
         <button
@@ -47,11 +47,11 @@
           <input type="checkbox" [(ngModel)]="rememberMe" name="rememberMe" class="rounded border-gray-300" />
           <span class="text-sm text-gray-600 whitespace-nowrap">Remember for 30 days</span>
         </label>
-        <a href="#" class="text-blue-600 text-xs font-medium hover:underline">Forgot Password</a>
+        <a href="#" class="text-teal-800 text-xs font-medium hover:underline">Forgot Password</a>
       </div>
 
       <!-- Sign In Button -->
-      <button type="submit" class="w-full py-2 bg-blue-900 text-white rounded-md text-sm font-medium hover:bg-blue-800">
+      <button type="submit" class="w-full py-2 bg-teal-900 text-white rounded-md text-sm font-medium hover:bg-teal-800">
         Sign In
       </button>
     </form>
@@ -59,7 +59,7 @@
     <!-- Sign Up Link -->
     <p class="mt-4 text-gray-600 text-sm font-medium">
       Don’t have an account?
-      <a [routerLink]="['/register']" class="text-blue-600 font-medium hover:underline text-sm">Sign up</a>
+      <a [routerLink]="['/register']" class="text-teal-900 font-medium hover:underline text-sm">Sign up</a>
     </p>
   </div>
 

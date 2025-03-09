@@ -45,24 +45,6 @@ export class DashboardComponent {
     this.selectedSection = section;
   }
 
-  // generateCalendar() {
-  //   const today = new Date();
-  //   const start = startOfWeek(startOfMonth(today));
-  //   const end = endOfWeek(endOfMonth(today));
-  //   const days = eachDayOfInterval({ start, end });
-
-  //   this.calendarData = [];
-  //   let week: any[] = [];
-  //   days.forEach((day, index) => {
-  //     if (index % 7 === 0 && index !== 0) {
-  //       this.calendarData.push(week);
-  //       week = [];
-  //     }
-  //     week.push({ date: format(day, 'd'), isToday: format(day, 'yyyy-MM-dd') === format(today, 'yyyy-MM-dd') });
-  //   });
-  //   this.calendarData.push(week);
-  // }
-
   generateCalendar() {
     const today = new Date();
     const firstDayOfMonth = startOfMonth(today);

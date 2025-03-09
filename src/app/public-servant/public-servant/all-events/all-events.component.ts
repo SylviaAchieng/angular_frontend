@@ -3,6 +3,7 @@ import { ToastrService } from 'ngx-toastr';
 import { EventService } from '../../../services/event.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { LocationService } from '../../../services/location.service';
 
 @Component({
   selector: 'app-all-events',
@@ -39,6 +40,7 @@ export class AllEventsComponent {
     isEventFormVisible = false;
   
     newEvent = {
+      user: null,
       title: '',
       eventDate: '',
       time: '',
@@ -46,15 +48,27 @@ export class AllEventsComponent {
       location: { county: '' },
       base64EncodedImage: '' // Stores encoded image
     };
+    locations: any[] = [];
   
   
-    constructor(private eventService: EventService, private toastr: ToastrService) {}
+    constructor(private eventService: EventService, private toastr: ToastrService, private locationService: LocationService) {}
   
   
      ngOnInit(): void {
        this.loadEvents();
+       this.fetchLocations();
      }
   
+     fetchLocations(): void {
+      this.locationService.getAllLocations().subscribe((response) => {
+        this.locations = response._embedded || [];
+      });
+    this.locationService.locationSubject.subscribe((state) => {
+      this.locations = state.locations;
+      console.log("location state updated:", this.locations);
+    });
+    }
+
      loadEvents(): void {
   const userString = localStorage.getItem('user');
 
@@ -121,12 +135,29 @@ export class AllEventsComponent {
         this.toastr.info('Please fill in all required fields, including an image.', 'Info');
         return;
       }
+  
+      // Retrieve user data from local storage
+      const userData = localStorage.getItem('user');
+      if (!userData) {
+        this.toastr.error("User not found. Please log in again.", "Error");
+        return;
+      }
+    
+      const loggedInUser = JSON.parse(userData); // Extract user object
+    
+      if (!loggedInUser?.userId) {
+        console.error("User ID is missing.");
+        this.toastr.error("User ID is missing. Please log in again.", "Error");
+        return;
+      }
+  
       const imageData = this.newEvent.base64EncodedImage.startsWith("data:image/")
         ? this.newEvent.base64EncodedImage.split(",")[1]
         : this.newEvent.base64EncodedImage;
     
       const eventData = {
         ...this.newEvent,
+        user: { userId: loggedInUser.userId },
         base64EncodedImage: imageData  // Send only the Base64 string
       };
       this.eventService.createEvent(eventData).subscribe({
@@ -135,7 +166,8 @@ export class AllEventsComponent {
           this.toastr.success('Event created successfully!', 'Success');
           this.isEventFormVisible = false;
           // Reset the form
-          this.newEvent = {  
+          this.newEvent = { 
+            user: null, 
             title: '',
             description: '',
             eventDate:'',
@@ -143,9 +175,9 @@ export class AllEventsComponent {
             location: { county: '' },
             base64EncodedImage: ''
           };
+          this.loadEvents()
         },
         error: (error) => {
-          console.error('Error creating project:', error);
           this.toastr.error("Failed to create event. Please try again.", "Error"); 
         }
       });
@@ -154,7 +186,7 @@ export class AllEventsComponent {
   
   
     updateEvent() {
-      if (!this.selectedEvent || !this.selectedEvent.projectId) {
+      if (!this.selectedEvent || !this.selectedEvent.eventId) {
         this.toastr.info('Please select an event to update.', 'Info');
         return;
       }
@@ -173,34 +205,36 @@ export class AllEventsComponent {
             event.eventId === updatedEvent.eventId ? updatedEvent : event
           );
   
-          this.toastr.success('Project updated successfully!', 'Success');
+          this.toastr.success('event updated successfully!', 'Success');
+          this.loadEvents();
         },
         error: (error) => {
-          console.error('Error updating project:', error);
+          console.error('Error updating event:', error);
           this.toastr.error("Failed to update an event. Please try again.", "Error"); 
         }
       });
     }
   
-  
-    deleteEvent(eventId: any) {
-      if (!eventId) {
-        console.error("Event ID is undefined, cannot delete.");
+    deleteEvent() {
+      if (!this.selectedEvent || !this.selectedEvent.eventId) {
+        this.toastr.info('Please select a event to delete.', 'Info');
         return;
       }
     
-      if (!confirm("Are you sure you want to delete this event?")) {
-        return;
-      }
+      const eventId = this.selectedEvent.eventId; // Extract only the ID
     
       this.eventService.deleteEvent(eventId).subscribe({
         next: () => {
-          console.log("Event deleted successfully:", eventId);
-          this.toastr.success("Event deleted successfully!", 'Success');
+          console.log('event deleted successfully:', eventId);
+    
+          this.events = this.events.filter((event: any) => event.eventId !== eventId);
+    
+          this.toastr.success("event deleted successfully!", "Success"); // Show success message
+          this.closeViewEventModal();
         },
         error: (error) => {
-          console.error("Error deleting event:", error);
-          this.toastr.error("Failed to delete event.", 'Error');
+          console.error('Error deleting event:', error);
+          this.toastr.error("Failed to delete event. Please try again.", "Error"); 
         }
       });
     }

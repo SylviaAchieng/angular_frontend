@@ -5,6 +5,7 @@ import { UpdateProjectFormComponent } from '../../../pages/update-project-form/u
 import { ProjectService } from '../../../services/project.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { LocationService } from '../../../services/location.service';
 
 @Component({
   selector: 'app-all-projects',
@@ -28,52 +29,45 @@ export class AllProjectsComponent {
       totalTickets: number=0;
       itemsPerPage: number=5;
       isDeleted: boolean=false;
+      locations: any[] = [];
   
       isProjectFormVisible = false;
   
       newProject = {
-        userId: null,
+        user: null,
         title: '',
         description: '',
         daysRemaining: null,
         tag: '',
-        base64EncodedImage: '' 
+        base64EncodedImage: '' ,
+        actualCost: 0,
+        approximateCost:0,
+        startDate:'',
+        endDate: '',
+        location: {county: ''}
       };
+
+
     
     
-      constructor(private projectService: ProjectService, public dialog: MatDialog, private toastr: ToastrService) {}
+      constructor(private projectService: ProjectService, public dialog: MatDialog, private toastr: ToastrService, private locationService: LocationService) {}
     
     
        ngOnInit(): void {
          this.getAllProjects();
+         this.fetchLocations();
+         
        }
   
-      // getAllProjects(): void {
-      //   this.projectService.getProjects().subscribe({
-      //     next: (response: any) => {
-      //       console.log("Projects retrieved successfully:", response);
-      
-      //       if (!response || !response._embedded) {
-      //         console.error("Invalid response format");
-      //         return;
-      //       }
-      //       const formattedProjects = response._embedded.map((project: any) => ({
-      //         ...project,
-      //         base64EncodedImage: project.base64EncodedImage?.startsWith("data:image/")
-      //           ? project.base64EncodedImage  // Already formatted correctly
-      //           : `data:image/jpeg;base64,${project.base64EncodedImage}`  // Add prefix only if missing
-      //       }));
-      //       this.projectService.projectSubject.next({ projects: formattedProjects });
-      //     },
-      //     error: (err) => {
-      //       console.error("Failed to load projects:", err);
-      //     }
-      //   });
-      //   this.projectService.projectSubject.subscribe((state: any) => {
-      //     this.projects = state.projects;
-      //     console.log("Projects state updated with images:", this.projects);
-      //   });
-      // }
+       fetchLocations(): void {
+        this.locationService.getAllLocations().subscribe((response) => {
+          this.locations = response._embedded || [];
+        });
+      this.locationService.locationSubject.subscribe((state) => {
+        this.locations = state.locations;
+        console.log("location state updated:", this.locations);
+      });
+      }
 
       getAllProjects(): void {
         const userString = localStorage.getItem('user');
@@ -140,31 +134,57 @@ export class AllProjectsComponent {
     }    
   
     createProject() {
-      if (!this.newProject.title || !this.newProject.description || this.newProject.daysRemaining === null || !this.newProject.tag || !this.newProject.base64EncodedImage) {
+      if (!this.newProject.title || !this.newProject.description || !this.newProject.tag || !this.newProject.base64EncodedImage || !this.newProject.startDate || !this.newProject.endDate || !this.newProject.approximateCost) {
         this.toastr.info('Please fill in all required fields, including an image.', 'Info');
         return;
       }
+    
+      // Retrieve user data from local storage
+      const userData = localStorage.getItem('user');
+      if (!userData) {
+        this.toastr.error("User not found. Please log in again.", "Error");
+        return;
+      }
+    
+      const loggedInUser = JSON.parse(userData); // Extract user object
+    
+      if (!loggedInUser?.userId) {
+        console.error("User ID is missing.");
+        this.toastr.error("User ID is missing. Please log in again.", "Error");
+        return;
+      }
+    
+      console.log("Creating project for user:", loggedInUser);
+    
       const imageData = this.newProject.base64EncodedImage.startsWith("data:image/")
         ? this.newProject.base64EncodedImage.split(",")[1]
         : this.newProject.base64EncodedImage;
     
       const projectData = {
         ...this.newProject,
-        base64EncodedImage: imageData  // Send only the Base64 string
+        user: { userId: loggedInUser.userId }, // Send user object instead of just ID
+        base64EncodedImage: imageData
       };
+    
       this.projectService.createProject(projectData).subscribe({
         next: (newProject) => {
           this.toastr.success("Project created successfully!", "Success");
           this.isProjectFormVisible = false;
           // Reset the form
           this.newProject = {  
-            userId: null,
+            user: null,
             title: '',
             description: '',
             daysRemaining: null,
+            startDate: '',
+            endDate: '',
             tag: '',
-            base64EncodedImage: ''
+            base64EncodedImage: '',
+            location: {county: ''},
+            actualCost:0,
+            approximateCost: 0,
           };
+          this.getAllProjects();
         },
         error: (error) => {
           console.error('Error creating project:', error);
@@ -194,6 +214,7 @@ export class AllProjectsComponent {
           );
   
           this.toastr.success("Project updated successfully!", "Success");
+          this.getAllProjects();
         },
         error: (error) => {
           console.error('Error updating project:', error);
@@ -202,10 +223,13 @@ export class AllProjectsComponent {
       });
     }
   
-    deleteProject(projectId: number) {
-      if (!confirm('Are you sure you want to delete this project?')) {
+    deleteProject() {
+      if (!this.selectedProject || !this.selectedProject.projectId) {
+        this.toastr.info('Please select a project to delete.', 'Info');
         return;
       }
+    
+      const projectId = this.selectedProject.projectId; // Extract only the ID
     
       this.projectService.deleteProject(projectId).subscribe({
         next: () => {

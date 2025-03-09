@@ -42,7 +42,11 @@ export class ReportIssueComponent {
 
 
   toggleIssueForm() {
-    this.isIssueFormVisible = !this.isIssueFormVisible;
+    this.newIssue.title= '';
+    this.newIssue.createdAt= '';
+    this.newIssue.description= '';
+    this.newIssue.location= { locationId: '' };
+    this.newIssue.base64EncodedImage= '';
   }
   fetchLocations(): void {
     this.locationService.getAllLocations().subscribe((response) => {

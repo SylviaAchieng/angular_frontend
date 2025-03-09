@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { EventService } from '../../../../services/event.service';
 import { AuthService } from '../../../../services/auth.service';
 import { ToastrService } from 'ngx-toastr';
+import { LocationService } from '../../../../services/location.service';
 
 @Component({
   selector: 'app-events',
@@ -52,13 +53,30 @@ export class EventsComponent {
     base64EncodedImage: '' // Stores encoded image
   };
 
+  locations: any[] = [];
 
-  constructor(private eventService: EventService, private toastr: ToastrService) {}
+
+  constructor(
+    private eventService: EventService, 
+    private toastr: ToastrService,
+    private locationService: LocationService
+  ) {}
 
 
    ngOnInit(): void {
      this.loadEvents();
+     this.fetchLocations();
    }
+
+   fetchLocations(): void {
+    this.locationService.getAllLocations().subscribe((response) => {
+      this.locations = response._embedded || [];
+    });
+  this.locationService.locationSubject.subscribe((state) => {
+    this.locations = state.locations;
+    console.log("location state updated:", this.locations);
+  });
+  }
 
    loadEvents(): void {
     this.eventService.getAllEvents().subscribe((response: any) => {
@@ -163,7 +181,7 @@ export class EventsComponent {
 
 
   updateEvent() {
-    if (!this.selectedEvent || !this.selectedEvent.projectId) {
+    if (!this.selectedEvent || !this.selectedEvent.eventId) {
       this.toastr.info('Please select an event to update.', 'Info');
       return;
     }
@@ -182,34 +200,36 @@ export class EventsComponent {
           event.eventId === updatedEvent.eventId ? updatedEvent : event
         );
 
-        this.toastr.success('Project updated successfully!', 'Success');
+        this.toastr.success('event updated successfully!', 'Success');
+        this.loadEvents();
       },
       error: (error) => {
-        console.error('Error updating project:', error);
+        console.error('Error updating event:', error);
         this.toastr.error("Failed to update an event. Please try again.", "Error"); 
       }
     });
   }
 
-
-  deleteEvent(eventId: any) {
-    if (!eventId) {
-      console.error("Event ID is undefined, cannot delete.");
+  deleteEvent() {
+    if (!this.selectedEvent || !this.selectedEvent.eventId) {
+      this.toastr.info('Please select a event to delete.', 'Info');
       return;
     }
   
-    if (!confirm("Are you sure you want to delete this event?")) {
-      return;
-    }
+    const eventId = this.selectedEvent.eventId; // Extract only the ID
   
     this.eventService.deleteEvent(eventId).subscribe({
       next: () => {
-        console.log("Event deleted successfully:", eventId);
-        this.toastr.success("Event deleted successfully!", 'Success');
+        console.log('event deleted successfully:', eventId);
+  
+        this.events = this.events.filter((event: any) => event.eventId !== eventId);
+  
+        this.toastr.success("event deleted successfully!", "Success"); // Show success message
+        this.closeViewEventModal();
       },
       error: (error) => {
-        console.error("Error deleting event:", error);
-        this.toastr.error("Failed to delete event.", 'Error');
+        console.error('Error deleting event:', error);
+        this.toastr.error("Failed to delete event. Please try again.", "Error"); 
       }
     });
   }
@@ -247,9 +267,6 @@ export class EventsComponent {
 
   showViewEventModal(event: any): void {
     this.selectedEvent = event;
-    // this.vipPrice = event.ticketTypes.find(t => t.type === 'VIP')?.price || null;
-    // this.regularPrice = event.ticketTypes.find(t => t.type === 'Regular')?.price || null;
-    // this.totalTickets = event.ticketTypes.reduce((total, t) => total + t.quantity, 0) || null;
     this.isViewing = true;
   }
 
