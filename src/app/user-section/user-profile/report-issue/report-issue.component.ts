@@ -4,6 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { LocationService } from '../../../services/location.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-report-issue',
@@ -17,7 +18,8 @@ export class ReportIssueComponent {
   constructor(
     private issueService: IssueService,
     private toastr: ToastrService,
-    private locationService: LocationService
+    private locationService: LocationService,
+    private router: Router
   ){}
 
   locations: any[] = [];
@@ -37,17 +39,15 @@ export class ReportIssueComponent {
     //createdAt: '',
     description: '',
     location: { locationId: '' },
+    status: null,
     base64EncodedImage: '' // Stores encoded image
   };
 
-
-  toggleIssueForm() {
-    this.newIssue.title= '';
-    this.newIssue.createdAt= '';
-    this.newIssue.description= '';
-    this.newIssue.location= { locationId: '' };
-    this.newIssue.base64EncodedImage= '';
+  ngOnInit(): void {
+    this.fetchLocations();
+    
   }
+
   fetchLocations(): void {
     this.locationService.getAllLocations().subscribe((response) => {
       this.locations = response._embedded || [];
@@ -56,6 +56,15 @@ export class ReportIssueComponent {
     this.locations = state.locations;
     console.log("location state updated:", this.locations);
   });
+  }
+  
+
+  toggleIssueForm() {
+    this.newIssue.title= '';
+    this.newIssue.createdAt= '';
+    this.newIssue.description= '';
+    this.newIssue.location= { locationId: '' };
+    this.newIssue.base64EncodedImage= '';
   }
 
   // Handle image upload
@@ -80,7 +89,7 @@ export class ReportIssueComponent {
   }
 
   submitIssue() {
-    if (!this.newIssue.title || !this.newIssue.description) {
+    if (!this.newIssue.title || !this.newIssue.description || !this.newIssue.base64EncodedImage) {
       this.toastr.info('Please fill in all required fields, including an image.', 'Info');
       return;
     }
@@ -99,10 +108,12 @@ export class ReportIssueComponent {
   
     const issueData = {
       ...this.newIssue,
+      status: null,
       user: { userId: userId ? parseInt(userId, 10) : null }, // Include the logged-in user ID
       base64EncodedImage: imageData  
     };
-  
+
+    console.log("issueData", issueData);
     this.issueService.createIssue(issueData).subscribe({
       next: (newIssue) => {
         console.log('Issue created successfully', newIssue);
@@ -112,8 +123,12 @@ export class ReportIssueComponent {
           title: '',
           description: '',
           location: { locationId: '' },
-          base64EncodedImage: ''
+          base64EncodedImage: '',
+          status: null
         };
+        this.router.navigate(['/profile']);
+        //this.toggleIssueForm();
+        
       },
       error: (error) => {
         console.error('Error creating issue:', error);

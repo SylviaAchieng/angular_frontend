@@ -75,7 +75,7 @@ export class LoginComponent {
             } else if (userType === 'PUBLIC_SERVANT') {
               this.router.navigate(['/public-servant']);
             } else {
-              this.router.navigate(['/']); // Default home page for all users
+              this.router.navigate(['/profile']); // Default home page for all users
             }
           },
           error: (profileError) => {

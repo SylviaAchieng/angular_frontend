@@ -34,10 +34,10 @@
             </select>
           </div>
         <!-- Date -->
-        <div class="mb-4">
+        <!-- <div class="mb-4">
           <label class="block text-sm font-medium text-gray-700">Date:</label>
           <input type="date" [(ngModel)]="newIssue.createdAt" name="createdAt" required class="w-full p-2 border rounded-md">
-        </div>
+        </div> -->
         <!-- Description -->
         <div class="mb-4">
           <label class="block text-sm font-medium text-gray-700">Description:</label>
@@ -61,7 +61,7 @@
           <button type="button" (click)="toggleIssueForm()" class="bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-gray-600 transition-all">
             <i class="pi pi-times mr-2"></i> Cancel
           </button>
-          <button type="submit" (click)="submitIssue()" class="bg-[#134e4a] text-white py-2 px-4 rounded-md hover:bg-success-dark transition-all">
+          <button type="submit" (click)="submitIssue()" class="bg-teal-900 text-white py-2 px-4 rounded-md hover:bg-success-dark transition-all">
             <i class="pi pi-check mr-2"></i> Submit
           </button>
         </div>

@@ -19,8 +19,17 @@ export class ProfileSettingComponent {
   //users: any = {};
   locations: any[] = [];
   selectedUser: any = {};
+  
 
-  user: any = {};
+  user: any = {
+    userId: '',
+    firstName: '',
+    lastName: '',
+    email: '',
+    phoneNumber: '',
+    location: { locationId: '' },
+  
+  };
 
   constructor(
     private authService: AuthService,
@@ -49,6 +58,17 @@ export class ProfileSettingComponent {
   ngOnInit(): void {
     this.fetchLocations();
     this.loadUser();
+  }
+
+
+  fetchLocations(): void {
+    this.locationService.getAllLocations().subscribe((response) => {
+      this.locations = response._embedded || [];
+    });
+  this.locationService.locationSubject.subscribe((state) => {
+    this.locations = state.locations;
+    console.log("location state updated:", this.locations);
+  });
   }
 
   getUserIdFromLocalStorage(): number | null {
@@ -91,16 +111,6 @@ export class ProfileSettingComponent {
     }
   }
   
-
- fetchLocations(): void {
-  this.locationService.getAllLocations().subscribe((response) => {
-    this.locations = response._embedded || [];
-  });
-this.locationService.locationSubject.subscribe((state) => {
-  this.locations = state.locations;
-  console.log("location state updated:", this.locations);
-});
-}
 
 updateEvent() {
   if (!this.selectedUser || !this.selectedUser.eventId) {

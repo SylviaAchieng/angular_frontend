@@ -25,7 +25,7 @@ export class UserDashboardComponent {
 
   ngOnInit() {
     this.getIssuesByUserId();
-    this.getAllIssues();
+    //this.getAllIssues();
     
   }
 
@@ -83,30 +83,30 @@ export class UserDashboardComponent {
 }
 
 
-  getAllIssues(): void {
-    this.issueService.getAllIssues().subscribe({
-      next: (response: any) => {
-        console.log("issues retrieved successfully:", response);
+  // getAllIssues(): void {
+  //   this.issueService.getAllIssues().subscribe({
+  //     next: (response: any) => {
+  //       console.log("issues retrieved successfully:", response);
   
-        if (!response || !response._embedded) {
-          console.error("Invalid response format");
-          return;
-        }
-        const formattedIssues = response._embedded.map((issue: any) => ({
-          ...issue,
-          base64EncodedImage: issue.base64EncodedImage?.startsWith("data:image/")
-            ? issue.base64EncodedImage  // Already formatted correctly
-            : `data:image/jpeg;base64,${issue.base64EncodedImage}`  // Add prefix only if missing
-        }));
-        this.issueService.issueSubject.next({ issues: formattedIssues });
-      },
-      error: (err) => {
-        console.error("Failed to load projects:", err);
-      }
-    });
-    this.issueService.issueSubject.subscribe((state: any) => {
-      this.issues = state.issues;
-      console.log("Projects state updated with images:", this.issues);
-    });
-  }
+  //       if (!response || !response._embedded) {
+  //         console.error("Invalid response format");
+  //         return;
+  //       }
+  //       const formattedIssues = response._embedded.map((issue: any) => ({
+  //         ...issue,
+  //         base64EncodedImage: issue.base64EncodedImage?.startsWith("data:image/")
+  //           ? issue.base64EncodedImage  // Already formatted correctly
+  //           : `data:image/jpeg;base64,${issue.base64EncodedImage}`  // Add prefix only if missing
+  //       }));
+  //       this.issueService.issueSubject.next({ issues: formattedIssues });
+  //     },
+  //     error: (err) => {
+  //       console.error("Failed to load projects:", err);
+  //     }
+  //   });
+  //   this.issueService.issueSubject.subscribe((state: any) => {
+  //     this.issues = state.issues;
+  //     console.log("Projects state updated with images:", this.issues);
+  //   });
+  // }
 }
