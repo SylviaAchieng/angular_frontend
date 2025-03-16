@@ -25,8 +25,8 @@ export class IssueService {
       }
 
       createIssue(issue:any):Observable<any>{
-            const headers = this.getHeaders();
-            return this.http.post<any>(`${this.baseUrl}/api/v1/issue`,issue, {headers}).pipe(
+            //const headers = this.getHeaders();
+            return this.http.post<any>(`${this.baseUrl}/api/v1/issue`,issue).pipe(
               tap((newIssue)=>{
                 const currentState = this.issueSubject.value;
                 this.issueSubject.next({...currentState, issues:
@@ -48,8 +48,7 @@ export class IssueService {
           }
 
           getAllIssues(): Observable<any> {
-            const headers = this.getHeaders();
-            return this.http.get<any>(`${this.baseUrl}/api/v1/issue`, {headers}).pipe(
+            return this.http.get<any>(`${this.baseUrl}/api/v1/issue`).pipe(
               tap((response: { _embedded: any[] }) => {  // Correctly type the response
                 const currentState = this.issueSubject.value;
                 const issues = response._embedded || [];  // Ensure it's an array

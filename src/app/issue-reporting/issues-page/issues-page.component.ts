@@ -11,7 +11,7 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-issues-page',
   standalone: true,
-  imports: [NavbarComponent, CommonModule, FormsModule, ReactiveFormsModule, FooterComponent],
+  imports: [NavbarComponent, CommonModule, FormsModule, ReactiveFormsModule, FooterComponent, RouterLink],
   templateUrl: './issues-page.component.html',
   styleUrl: './issues-page.component.css'
 })
@@ -80,6 +80,54 @@ export class IssuesPageComponent {
   }
 
 
+  // submitIssue() {
+  //   if (!this.newIssue.title || !this.newIssue.description || !this.newIssue.base64EncodedImage) {
+  //     this.toastr.info('Please fill in all required fields, including an image.', 'Info');
+  //     return;
+  //   }
+  
+  //   const imageData = this.newIssue.base64EncodedImage.startsWith("data:image/")
+  //     ? this.newIssue.base64EncodedImage.split(",")[1]
+  //     : this.newIssue.base64EncodedImage;
+  
+  //   // Retrieve userId from localStorage
+  //   const userId = localStorage.getItem('userId');
+  
+  //   if (!userId) {
+  //     this.toastr.error('User not authenticated.', 'Error');
+  //     return;
+  //   }
+  
+  //   const issueData = {
+  //     ...this.newIssue,
+  //     status: null,
+  //     user: { userId: userId ? parseInt(userId, 10) : null }, // Include the logged-in user ID
+  //     base64EncodedImage: imageData  
+  //   };
+
+  //   console.log("issueData", issueData);
+  //   this.issueService.createIssue(issueData).subscribe({
+  //     next: (newIssue) => {
+  //       console.log('Issue created successfully', newIssue);
+  //       this.toastr.success('Issue created successfully!', 'Success');
+  //       // Reset the form
+  //       this.newIssue = {  
+  //         title: '',
+  //         description: '',
+  //         location: { locationId: '' },
+  //         base64EncodedImage: '',
+  //         status: null
+  //       };
+  //       //this.toggleIssueForm();
+        
+  //     },
+  //     error: (error) => {
+  //       console.error('Error creating issue:', error);
+  //       this.toastr.error("Failed to create issue. Please try again.", "Error"); 
+  //     }
+  //   });
+  // }
+  
   submitIssue() {
     if (!this.newIssue.title || !this.newIssue.description || !this.newIssue.base64EncodedImage) {
       this.toastr.info('Please fill in all required fields, including an image.', 'Info');
@@ -93,18 +141,13 @@ export class IssuesPageComponent {
     // Retrieve userId from localStorage
     const userId = localStorage.getItem('userId');
   
-    if (!userId) {
-      this.toastr.error('User not authenticated.', 'Error');
-      return;
-    }
-  
     const issueData = {
       ...this.newIssue,
       status: null,
-      user: { userId: userId ? parseInt(userId, 10) : null }, // Include the logged-in user ID
+      user: userId ? { userId: parseInt(userId, 10) } : null, // Allow anonymous submission
       base64EncodedImage: imageData  
     };
-
+  
     console.log("issueData", issueData);
     this.issueService.createIssue(issueData).subscribe({
       next: (newIssue) => {
@@ -118,8 +161,6 @@ export class IssuesPageComponent {
           base64EncodedImage: '',
           status: null
         };
-        //this.toggleIssueForm();
-        
       },
       error: (error) => {
         console.error('Error creating issue:', error);

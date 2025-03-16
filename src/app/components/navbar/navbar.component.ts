@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
-import { CommonModule } from '@angular/common';
+import { CommonModule, ViewportScroller } from '@angular/common';
 
 @Component({
   selector: 'app-navbar',
@@ -12,7 +12,7 @@ import { CommonModule } from '@angular/common';
 })
 export class NavbarComponent {
 
-  constructor(private router: Router, public authService: AuthService) {}
+  constructor(private router: Router, public authService: AuthService, private viewportScroller: ViewportScroller) {}
 
   user:any = null;
   username: any;
@@ -36,6 +36,10 @@ export class NavbarComponent {
 
   logout(){
     this.authService.logout();
+  }
+
+  scrollToSection(sectionId: string) {
+    this.viewportScroller.scrollToAnchor(sectionId);
   }
 
 }

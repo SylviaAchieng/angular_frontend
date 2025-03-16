@@ -46,7 +46,8 @@ export class LandingComponent {
     return index; // Use the index as the unique identifier
   }
 
-  heroBackground = 'https://i.ibb.co/8Dw3HDN/conference.jpg';
+  //heroBackground = 'https://i.ibb.co/8Dw3HDN/conference.jpg';
+  heroBackground: string = 'assests/confernce.jpeg';
   //heroBackground = 'assests/confernce.jpeg';
   heroTitle = 'Your Voice, Our Action';
   heroSubtitle =

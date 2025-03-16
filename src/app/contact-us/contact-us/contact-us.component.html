@@ -16,21 +16,23 @@
   
       <!-- Right Contact Form -->
       <div class="lg:w-1/2 bg-[#CDEDE4] text-black p-6 rounded-lg shadow-lg w-full">
-        <form class="flex flex-col gap-4">
+        <form (submit)="sendMessage(); $event.preventDefault()" class="flex flex-col gap-4">
           <div class="grid grid-cols-2 gap-4">
-            <input type="text" placeholder="Enter Your Name" class="p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500">
-            <input type="text" placeholder="Enter Your Role" class="p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500">
-          </div>
-          <div class="grid grid-cols-2 gap-4">
-            <input type="email" placeholder="Email" class="p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500">
-            <select class="p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500">
-              <option>Select Country</option>
-              <option>Kenya</option>
-              <option>USA</option>
-              <option>UK</option>
+            <input [(ngModel)]="newMessage.fullName" name="fullName" type="text" placeholder="Enter Your Name" class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500">
+            <select [(ngModel)]="newMessage.userType" name="userType" id="role" class="w-full p-3 border border-gray-300 outline-none rounded-md focus:ring-2 focus:ring-teal-800 focus:border-teal-500">
+              <option [ngValue]="userTypeEnum.CITIZEN">Citizen</option>
+              <option [ngValue]="userTypeEnum.PUBLIC_SERVANT">Public Servant</option>
             </select>
           </div>
-          <textarea placeholder="How can we help you?" rows="4" class="p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"></textarea>
+          <div class="grid grid-cols-2 gap-4">
+            <input [(ngModel)]="newMessage.email" name="email" type="email" placeholder="Email" class="p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500">
+            <select [(ngModel)]="newMessage.location.locationId" name="locationId"
+                    class="w-full bg-white border border-gray-400 rounded-lg p-3 focus:ring-2 focus:ring-teal-500">
+              <option value="" disabled selected>Select Location</option>
+              <option *ngFor="let location of locations" [value]="location.locationId">{{ location.county }}</option>
+            </select>
+          </div>
+          <textarea [(ngModel)]="newMessage.message" name="message" placeholder="How can we help you?" rows="4" class="p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"></textarea>
           
           <div class="flex items-center gap-4">
             <label class="flex items-center">
@@ -39,7 +41,7 @@
             </label>
             <label class="flex items-center">
               <input type="checkbox" class="mr-2">
-              Accept <a href="#" class="text-teal-900 underline">Terms & Conditions</a>
+              Accept <a routerLink="/terms-and-conditions" class="text-teal-900 underline">Terms & Conditions</a>
             </label>
           </div>
           

@@ -40,6 +40,9 @@ import { ReportIssueComponent } from './user-section/user-profile/report-issue/r
 import { SupportComponent } from './user-section/user-profile/support/support.component';
 import { DiscussionsComponent } from './public-servant/public-servant/discussions/discussions.component';
 import { ChatComponent } from './components/admin/admin-dashboard/chat/chat.component';
+import { AllProjectsSectionComponent } from './pages/all-projects-section/all-projects-section.component';
+import { TermsComponent } from './about-us/terms/terms.component';
+import { PrivacyComponent } from './about-us/privacy/privacy.component';
 
 
 
@@ -63,7 +66,10 @@ export const routes: Routes = [
     {path: 'neighbourhood', component: NeighbourhoodComponent},
     {path: 'planning', component: PlanningComponent},
     {path: 'contact-us', component: ContactUsComponent},
-    {path: 'all-events', component: EventPageComponent},
+    {path: 'govocal-events', component: EventPageComponent},
+    {path: 'govocal-projects', component: AllProjectsSectionComponent},
+    {path: 'terms-and-conditions', component: TermsComponent},
+    {path: 'privacy-policy', component: PrivacyComponent},
 
     
     { path: 'admin-dashboard', component: AdminDashboardComponent, children: [

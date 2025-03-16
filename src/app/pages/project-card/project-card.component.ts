@@ -132,4 +132,19 @@ export class ProjectCardComponent {
 
   }
 
+  getProgressWidth(daysRemaining: number): string {
+    if (daysRemaining > 200) {
+        return '100%'; 
+    } else if (daysRemaining > 100) {
+        return '50%'; 
+    } else if (daysRemaining > 50) {
+        return '25%';
+    } else if (daysRemaining <= 10) {
+        return '5%'; 
+    } else {
+        return '10%'; 
+    }
+}
+
+
 }

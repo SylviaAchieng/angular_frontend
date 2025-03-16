@@ -99,7 +99,3 @@
     cursor: pointer;
     transition: color 0.3s ease;
 }
-
-.icons i:hover {
-    color: #e74c3c;
-}

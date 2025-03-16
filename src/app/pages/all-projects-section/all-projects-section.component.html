@@ -1,0 +1,52 @@
+<app-navbar></app-navbar>
+
+<section class="bg-teal-900 text-white flex justify-center items-center py-16 mt-16">
+  <div class="max-w-5xl w-full px-6 flex flex-col lg:flex-row items-center gap-10">
+    
+    <!-- Left Content -->
+    <div class="lg:w-1/2 text-center lg:text-left">
+      <p class="text-lg text-gray-300">Empowering Change Through Collaboration</p>
+      <h1 class="text-4xl lg:text-5xl font-bold mt-2 leading-tight">
+        Explore Ongoing Projects Driving Real-World Impact.
+      </h1>
+      <p class="mt-4 text-gray-300">
+      Stay informed about government and community projects—what was promised, how funds are managed, and the real impact. 
+      Share your thoughts, engage with fellow citizens, and ensure transparency through open discussions and feedback. 
+      </p>
+    </div>
+
+    <!-- Right Image -->
+    <div class="lg:w-1/2">
+      <img src="assests/event.jpeg" alt="Projects" class="rounded-lg shadow-lg w-full max-h-96 object-cover">
+    </div>
+
+  </div>
+</section>
+
+
+
+<section class="bg-gray-100 py-4">
+    <div class="max-w-screen-xl mx-auto px-4">
+        <div class="flex justify-between items-center ml-12">
+            <h2 class="text-2xl font-bold text-gray-800">Browse all Projects</h2>
+            <div class="flex items-center bg-white rounded-full px-4 py-2 w-80 shadow">
+                <i class="fas fa-search text-gray-500 mr-2"></i>
+                <input 
+                  type="text" 
+                  placeholder="Search projects" 
+                  class="w-full text-black focus:outline-none"
+                />
+              </div>
+          </div>
+    </div>
+    <div class="flex flex-wrap justify-center gap-6">
+      <div *ngFor="let item of projects;">
+        <app-project-card [project]="item"></app-project-card>
+      </div>
+      <div *ngIf="projects.length === 0" class="w-full text-center">
+        Signup to view all projects
+      </div>
+    </div>
+  </section>
+
+  <app-footer></app-footer>

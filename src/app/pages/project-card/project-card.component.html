@@ -4,7 +4,7 @@
             <p>{{ project.daysRemaining }} days remaining</p>
             <div class="progress">
                 <div class="w-60 bg-gray-200 rounded-full h-2 mt-1">
-                    <div class="h-2 rounded-full bg-green-500" style="width: 50%;"></div>
+                    <div class="h-2 rounded-full bg-green-500" [ngStyle]="{'width': getProgressWidth(project.daysRemaining)}"></div>
                 </div>
             </div>
         </div>

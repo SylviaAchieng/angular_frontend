@@ -28,7 +28,7 @@
         <div>
             <label class="block text-gray-700 font-medium">Location:</label>
             <select [(ngModel)]="newIssue.location.locationId" name="locationId"
-                    class="w-full bg-white border border-gray-400 rounded-lg p-3 focus:ring-2 focus:ring-[#0A1B52] focus:border-[#0A1B52]" required>
+                    class="w-full bg-white border border-gray-400 rounded-lg p-3 focus:ring-2 focus:ring-[#0A1B52]" required>
               <option value="" disabled selected>Select Location</option>
               <option *ngFor="let location of locations" [value]="location.locationId">{{ location.county }}</option>
             </select>

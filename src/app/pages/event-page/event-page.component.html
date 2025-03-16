@@ -1,33 +1,56 @@
 <app-navbar></app-navbar>
 
-<div class="events-page">
-    <!-- Hero Section -->
-    <section class="hero bg-cover bg-center text-white px-8 py-16"
-  [ngStyle]="{'background-image': 'url(' + heroImage + ')'}">
-  <div class="container mx-auto text-center">
-    <h1 class="text-4xl font-bold">Upcoming Theatre Events</h1>
-    <p class="text-lg mt-2">June 27th - July 4th</p>
+<section class="bg-teal-900 text-white flex justify-center items-center py-16 mt-16">
+  <div class="max-w-5xl w-full px-6 flex flex-col lg:flex-row items-center gap-10">
+
+    <!-- Left Content -->
+    <div class="lg:w-1/2 text-center lg:text-left">
+      <p class="text-lg text-gray-300">Empowering Change Through Collaboration</p>
+      <h1 class="text-4xl lg:text-5xl font-bold mt-2 leading-tight">
+        Explore Ongoing Projects Driving Real-World Impact.
+      </h1>
+      <p class="mt-4 text-gray-300">
+        Join a growing network of change-makers leveraging GOVocal to drive impactful projects. Explore innovative
+        initiatives,
+        gain insights from successful collaborations, and discover best practices that empower communities.
+        Whether you're launching a new idea or scaling an existing project, learn from real-world experiences and make a
+        lasting difference.
+      </p>
+    </div>
+
+    <!-- Right Image -->
+    <div class="lg:w-1/2">
+      <img src="assests/event.jpeg" alt="Projects" class="rounded-lg shadow-lg w-full max-h-96 object-cover">
+    </div>
+
   </div>
 </section>
 
-  
-    <!-- Featured Upcoming Events -->
-    <section class="container mx-auto py-12">
-      <h2 class="text-3xl font-bold mb-6 text-center">Featured Upcoming Events</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <app-event-card *ngFor="let event of upcomingEvents" [event]="event"></app-event-card>
-      </div>
-      <div class="text-center mt-6">
-        <button class="bg-gray-900 text-white px-6 py-2 rounded">View All Events</button>
-      </div>
-    </section>
-  
-    <!-- Past Events -->
-    <section class="container mx-auto py-12 opacity-75">
-      <h2 class="text-3xl font-bold mb-6 text-center">Past Events</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <app-event-card *ngFor="let event of pastEvents" [event]="event"></app-event-card>
-      </div>
-    </section>
+<section class="bg-gray-100 py-4">
+  <div class="max-w-screen-xl mx-auto px-6 mt-6">
+    <h2 class="text-3xl font-bold text-gray-800 text-center mb-6">GOVocal's Upcoming Events</h2>
+
   </div>
-  
+  <div class="bg-gray-60 py-10 w-full rounded-xl shadow-md max-w-12xl mx-auto mb-6">
+    <div *ngIf="eventList.length > 0; else noEvents">
+      <app-event-card *ngFor="let event of eventList" [event]="event"></app-event-card>
+    </div>
+    <ng-template #noEvents>
+      <p class="text-center text-gray-500">No upcoming events.</p>
+    </ng-template>
+  </div>
+
+  <section class="bg-gray-100 py-4">
+    <div class="max-w-screen-xl mx-auto px-6 mt-6">
+      <h2 class="text-3xl font-bold text-gray-800 text-center mb-6">GOVocal's Past Events</h2>
+    </div>
+    <div *ngIf="pastEvents.length > 0; else noEvents">
+      <app-event-card *ngFor="let event of pastEvents" [event]="event"></app-event-card>
+    </div>
+    <ng-template #noEvents>
+      <p class="text-center text-gray-500">No past events.</p>
+    </ng-template>
+
+  </section>
+
+  <app-footer></app-footer>
