@@ -152,7 +152,13 @@
               <i class="pi pi-wallet mr-2"></i>
               <div>
                 <label class="text-sm font-medium">Status:</label>
-                <input type="text" [(ngModel)]="selectedIssue.status" class="w-full p-2 border rounded-md">
+                <select type="text" [(ngModel)]="selectedIssue.status" class="w-full p-2 border rounded-md">
+                  <option [ngValue]="issuesStatus.CREATED">CREATED</option>
+                  <option [ngValue]="issuesStatus.PENDING">PENDING</option>
+                  <option [ngValue]="issuesStatus.PARKED">PARKED</option>
+                  <option [ngValue]="issuesStatus.RESOLVED">RESOLVED</option>
+                  <option [ngValue]="issuesStatus.CANCELLED">CANCELLED</option>
+                </select>
               </div>
             </div>
             <div class="mb-4 flex items-center">

@@ -7,6 +7,7 @@ import { LocationService } from '../../services/location.service';
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { User } from '../../types/app';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 enum UserType {
   CITIZEN = 'CITIZEN',
@@ -16,7 +17,7 @@ enum UserType {
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [NavbarComponent, RouterLink, ReactiveFormsModule, FormsModule, CommonModule],
+  imports: [NavbarComponent, RouterLink, ReactiveFormsModule, FormsModule, CommonModule, MatProgressSpinnerModule],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
 })
@@ -46,6 +47,7 @@ export class RegisterComponent {
 
   showPassword: boolean = false;
   userTypeEnum = UserType;
+  isLoading: boolean = false;
 
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
@@ -53,6 +55,7 @@ export class RegisterComponent {
 
 
   handleRegister(){
+    this.isLoading = true;
     console.log("register", this.registrationForm.value)
     const newUser: User = {
 
@@ -76,6 +79,7 @@ export class RegisterComponent {
         this.authService.getUserProfile(userId).subscribe();
         // Show success alert
       this.toastr.success("Registration successful! Please log in.", 'Success');
+      this.isLoading = false;
       this.router.navigate(['/login']);
       },
     error: (err) => {

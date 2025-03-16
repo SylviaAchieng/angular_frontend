@@ -3,18 +3,17 @@ import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../../../services/auth.service';
 import { DiscussionService } from '../../../services/discussion.service';
-import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-all-discussions',
+  selector: 'app-discussions',
   standalone: true,
-  imports: [CommonModule, FormsModule],
-  templateUrl: './all-discussions.component.html',
-  styleUrl: './all-discussions.component.css'
+  imports: [FormsModule, CommonModule],
+  templateUrl: './discussions.component.html',
+  styleUrl: './discussions.component.css'
 })
-export class AllDiscussionsComponent {
-
+export class DiscussionsComponent {
   @Input() discussion: any;
         @Output() deleteUserEvent = new EventEmitter<number>();
       
@@ -33,19 +32,23 @@ export class AllDiscussionsComponent {
           isAddUserFormVisible = false;
   
   
-          newDiscussion: any = {
+          newDiscussion = {
             title: '',
             category: '',
-            startedBy: '',
-            createdAt: '',
-            description: ''
+            startedBy: {fullName: ''},
+            description: '',
           };
     
           errorMessage: string = '';
-    route: any;
+          route: any;
         
         
-          constructor(private authService: AuthService, public dialog: MatDialog, private toastr: ToastrService, private discussionService: DiscussionService) {}
+          constructor(
+            private authService: AuthService, 
+            public dialog: MatDialog, 
+            private toastr: ToastrService, 
+            private discussionService: DiscussionService
+          ) {}
         
         
            ngOnInit(): void {
@@ -79,9 +82,17 @@ export class AllDiscussionsComponent {
               error: err => console.error('Error fetching discussions:', err)
             });
           }
-        
-          handleAddDiscussion(){
-            this.discussionService.createDiscussion(this.newDiscussion.value).subscribe({
+  
+  
+          onSubmit(){
+            if (!this.newDiscussion.title || !this.newDiscussion.description || !this.newDiscussion.category) {
+              this.toastr.info('Please fill in all required fields, including an image.', 'Info');
+              return;
+            }
+            const data = {
+              ...this.newDiscussion
+            };
+            this.discussionService.createDiscussion(data).subscribe({
               next:(response)=>{
                 this.toastr.success("Discussion created successfully!", "Success");
               },
@@ -91,35 +102,56 @@ export class AllDiscussionsComponent {
             }
             });
           }
-    
-          handleUpdateUser() {
-            this.authService.updateUser(this.selectedDiscussion.userId, this.selectedDiscussion).subscribe({
-              next: (response) => {
-                this.toastr.success("User updated successfully!", 'Success');
-                 this.closeViewEventModal();
+
+          updateDiscussion() {
+            if (!this.selectedDiscussion || !this.selectedDiscussion.discussionId) {
+              this.toastr.info('Please select a discussion to update.', 'Info');
+              return;
+            }
+            const imageData = this.selectedDiscussion.base64EncodedImage.startsWith("data:image/")
+              ? this.selectedDiscussion.base64EncodedImage.split(",")[1]
+              : this.selectedDiscussion.base64EncodedImage;
+        
+            const updatedDiscussionData = {
+              ...this.selectedDiscussion,
+              base64EncodedImage: imageData  // Send only the Base64 string
+            };
+            this.discussionService.updateDiscussion(updatedDiscussionData).subscribe({
+              next: (updatedDiscussion) => {
+                console.log('Discussion updated successfully:', updatedDiscussion);
+                this.discussions = this.discussions.map((discussion: any) =>
+                  discussion.discussionId === updatedDiscussion.discussionId ? updatedDiscussion : discussion
+                );
+        
+                this.toastr.success("Discussion updated successfully!", "Success");
               },
               error: (error) => {
-                console.error("Error updating user:", error);
-                this.toastr.error("Failed to update user.", 'Error');
+                console.error('Error updating Discussion:', error);
+                this.toastr.error("Failed to update discussion. Please try again.", "Error");
               }
             });
-          }  
-          
-          handleDeleteUser(userId: any): void {
-            if (confirm('Are you sure you want to delete this user?')) {
-              this.authService.deleteUser(this.selectedDiscussion.userId).subscribe({
-                next: () => {
-                  console.log(`User with ID ${userId} deleted successfully`);
-                  this.toastr.success("User deleted successfully!", 'Success');
-                  this.users = this.users.filter((user: any) => user.userId !== userId);
-                },
-                error: (err) => {
-                  console.error('Error deleting user:', err);
-                  this.toastr.error("Failed to delete user. Please try again.", "Error"); 
-                }
-              });
-            }
           }
+    
+            
+          deleteDiscussion() {
+            if (!this.selectedDiscussion || !this.selectedDiscussion.discussionId) {
+              this.toastr.info('Please select a discussion to delete.', 'Info');
+              return;
+            }
+            const discussionId = this.selectedDiscussion.discussionId; // Extract only the ID
+            this.discussionService.deleteDiscussion(discussionId).subscribe({
+              next: () => {
+                console.log('discussion deleted successfully:', discussionId);
+                this.discussions = this.discussions.filter((discussion: any) => discussion.discussionId !== discussionId);
+                this.toastr.success("discussion deleted successfully!", "Success"); // Show success message
+              },
+              error: (error) => {
+                console.error('Error deleting discussion:', error);
+                this.toastr.error("Failed to delete discussion. Please try again.", "Error"); 
+              }
+            });
+          }
+          
           
           toggleAddUserForm() {
             this.isAddUserFormVisible = !this.isAddUserFormVisible;
@@ -159,17 +191,12 @@ export class AllDiscussionsComponent {
         
           showViewEventModal(user: any): void {
             this.selectedDiscussion = user;
-            // this.vipPrice = event.ticketTypes.find(t => t.type === 'VIP')?.price || null;
-            // this.regularPrice = event.ticketTypes.find(t => t.type === 'Regular')?.price || null;
-            // this.totalTickets = event.ticketTypes.reduce((total, t) => total + t.quantity, 0) || null;
             this.isViewing = true;
           }
         
           closeViewEventModal(): void {
             this.isViewing = false;
             this.selectedDiscussion = null;
-            this.vipPrice = 0;
-            this.regularPrice = 0;
-            this.totalTickets = 0;
           }
+
 }

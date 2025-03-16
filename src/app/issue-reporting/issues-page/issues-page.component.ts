@@ -25,7 +25,8 @@ export class IssuesPageComponent {
     //createdAt: '',
     description: '',
     location: { locationId: '' },
-    base64EncodedImage: '' // Stores encoded image
+    base64EncodedImage: '',
+    status: null
   };
 
   constructor(
@@ -80,7 +81,7 @@ export class IssuesPageComponent {
 
 
   submitIssue() {
-    if (!this.newIssue.title || !this.newIssue.description) {
+    if (!this.newIssue.title || !this.newIssue.description || !this.newIssue.base64EncodedImage) {
       this.toastr.info('Please fill in all required fields, including an image.', 'Info');
       return;
     }
@@ -99,10 +100,12 @@ export class IssuesPageComponent {
   
     const issueData = {
       ...this.newIssue,
+      status: null,
       user: { userId: userId ? parseInt(userId, 10) : null }, // Include the logged-in user ID
       base64EncodedImage: imageData  
     };
-  
+
+    console.log("issueData", issueData);
     this.issueService.createIssue(issueData).subscribe({
       next: (newIssue) => {
         console.log('Issue created successfully', newIssue);
@@ -112,8 +115,11 @@ export class IssuesPageComponent {
           title: '',
           description: '',
           location: { locationId: '' },
-          base64EncodedImage: ''
+          base64EncodedImage: '',
+          status: null
         };
+        //this.toggleIssueForm();
+        
       },
       error: (error) => {
         console.error('Error creating issue:', error);

@@ -5,6 +5,14 @@ import { ToastrService } from 'ngx-toastr';
 import { IssueService } from '../../../../services/issue.service';
 import { LocationService } from '../../../../services/location.service';
 
+enum IssueStatusEnum {
+  CREATED = 'CREATED',
+  PENDING = 'PENDING',
+  RESOLVED = 'RESOLVED',
+  CANCELLED = 'CANCELLED',
+  PARKED = 'PARKED'
+}
+
 @Component({
   selector: 'app-issues',
   standalone: true,
@@ -21,6 +29,9 @@ export class IssuesComponent {
     isDeleted: boolean = false;
   
     isIssueFormVisible = false;
+    issuesStatus = IssueStatusEnum;
+
+    statuses: string[] = ['CREATED','PENDING','PARKED','CANCELLED', 'RESOLVED'];
 
   
     newIssue = {
@@ -37,7 +48,8 @@ export class IssuesComponent {
       //createdAt: '',
       description: '',
       location: { locationId: '' },
-      base64EncodedImage: '' // Stores encoded image
+      base64EncodedImage: '',
+      status: null
     };
   
   
@@ -125,6 +137,49 @@ export class IssuesComponent {
       });
     }
 
+    // submitIssue() {
+    //   if (!this.newIssue.title || !this.newIssue.description || !this.newIssue.base64EncodedImage) {
+    //     this.toastr.info('Please fill in all required fields, including an image.', 'Info');
+    //     return;
+    //   }
+    
+    //   const imageData = this.newIssue.base64EncodedImage.startsWith("data:image/")
+    //     ? this.newIssue.base64EncodedImage.split(",")[1]
+    //     : this.newIssue.base64EncodedImage;
+    
+    //   // Retrieve userId from localStorage
+    //   const userId = localStorage.getItem('userId');
+    
+    //   if (!userId) {
+    //     this.toastr.error('User not authenticated.', 'Error');
+    //     return;
+    //   }
+    
+    //   const issueData = {
+    //     ...this.newIssue,
+    //     user: { userId: userId ? parseInt(userId, 10) : null }, // Include the logged-in user ID
+    //     base64EncodedImage: imageData  
+    //   };
+    
+    //   this.issueService.createIssue(issueData).subscribe({
+    //     next: (newIssue) => {
+    //       console.log('Issue created successfully', newIssue);
+    //       this.toastr.success('Issue created successfully!', 'Success');
+    //       // Reset the form
+    //       this.newIssues = {  
+    //         title: '',
+    //         description: '',
+    //         location: { locationId: '' },
+    //         base64EncodedImage: ''
+    //       };
+    //     },
+    //     error: (error) => {
+    //       console.error('Error creating issue:', error);
+    //       this.toastr.error("Failed to create issue. Please try again.", "Error"); 
+    //     }
+    //   });
+    // }
+
     submitIssue() {
       if (!this.newIssue.title || !this.newIssue.description || !this.newIssue.base64EncodedImage) {
         this.toastr.info('Please fill in all required fields, including an image.', 'Info');
@@ -145,10 +200,12 @@ export class IssuesComponent {
     
       const issueData = {
         ...this.newIssue,
+        status: null,
         user: { userId: userId ? parseInt(userId, 10) : null }, // Include the logged-in user ID
         base64EncodedImage: imageData  
       };
-    
+  
+      console.log("issueData", issueData);
       this.issueService.createIssue(issueData).subscribe({
         next: (newIssue) => {
           console.log('Issue created successfully', newIssue);
@@ -158,8 +215,12 @@ export class IssuesComponent {
             title: '',
             description: '',
             location: { locationId: '' },
-            base64EncodedImage: ''
+            base64EncodedImage: '',
+            status: null
           };
+          this.toggleIssueForm();
+          
+          
         },
         error: (error) => {
           console.error('Error creating issue:', error);
@@ -170,7 +231,7 @@ export class IssuesComponent {
 
     updateIssue() {
       if (!this.selectedIssue || !this.selectedIssue.issueId) {
-        this.toastr.info('Please select a project to update.', 'Info');
+        this.toastr.info('Please select a issue to update.', 'Info');
         return;
       }
       const imageData = this.selectedIssue.base64EncodedImage.startsWith("data:image/")
@@ -185,7 +246,7 @@ export class IssuesComponent {
         next: (updatedIssue) => {
           console.log('issue updated successfully:', updatedIssue);
           this.issues = this.issues.map((issue: any) =>
-            issue.issueId === updatedIssue.projectId ? updatedIssue : issue
+            issue.issueId === updatedIssue.issueId ? updatedIssue : issue
           );
   
           this.toastr.success("Issue updated successfully!", "Success");

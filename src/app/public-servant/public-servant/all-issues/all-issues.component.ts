@@ -8,6 +8,15 @@ import { IssueService } from '../../../services/issue.service';
 import { EventService } from '../../../services/event.service';
 import { LocationService } from '../../../services/location.service';
 
+
+enum IssueStatusEnum {
+  CREATED = 'CREATED',
+  PENDING = 'PENDING',
+  RESOLVED = 'RESOLVED',
+  CANCELLED = 'CANCELLED',
+  PARKED = 'PARKED'
+}
+
 @Component({
   selector: 'app-all-issues',
   standalone: true,
@@ -27,13 +36,15 @@ export class AllIssuesComponent {
   isIssueFormVisible = false;
   locations: any[] = [];
 
+  issuesStatus = IssueStatusEnum;
+
   newIssue = {
     title: '',
     createdAt: '',
     status: '',
     description: '',
     location: { locationId: '' },
-    base64EncodedImage: '' // Stores encoded image
+    base64EncodedImage: '' 
   };
 
   newIssues = {
@@ -41,7 +52,8 @@ export class AllIssuesComponent {
     //createdAt: '',
     description: '',
     location: { locationId: '' },
-    base64EncodedImage: '' // Stores encoded image
+    base64EncodedImage: '',
+    status: null
   };
 
 
@@ -64,6 +76,55 @@ export class AllIssuesComponent {
   });
   }
 
+  // submitIssue() {
+  //   if (!this.newIssue.title || !this.newIssue.description || !this.newIssue.base64EncodedImage) {
+  //     this.toastr.info('Please fill in all required fields, including an image.', 'Info');
+  //     return;
+  //   }
+  
+  //   const imageData = this.newIssue.base64EncodedImage.startsWith("data:image/")
+  //     ? this.newIssue.base64EncodedImage.split(",")[1]
+  //     : this.newIssue.base64EncodedImage;
+  
+  //   // Retrieve userId from localStorage
+  //   const userId = localStorage.getItem('userId');
+  
+  //   if (!userId) {
+  //     this.toastr.error('User not authenticated.', 'Error');
+  //     return;
+  //   }
+  
+  //   const issueData = {
+  //     ...this.newIssue,
+  //     status: null,
+  //     user: { userId: userId ? parseInt(userId, 10) : null }, // Include the logged-in user ID
+  //     base64EncodedImage: imageData  
+  //   };
+
+  //   console.log("issueData", issueData);
+  //   this.issueService.createIssue(issueData).subscribe({
+  //     next: (newIssue) => {
+  //       console.log('Issue created successfully', newIssue);
+  //       this.toastr.success('Issue created successfully!', 'Success');
+  //       // Reset the form
+  //       this.newIssues = {  
+  //         title: '',
+  //         description: '',
+  //         location: { locationId: '' },
+  //         base64EncodedImage: '',
+  //         status: null
+  //       };
+  //       this.toggleIssueForm();
+        
+        
+  //     },
+  //     error: (error) => {
+  //       console.error('Error creating issue:', error);
+  //       this.toastr.error("Failed to create issue. Please try again.", "Error"); 
+  //     }
+  //   });
+  // }
+
   submitIssue() {
     if (!this.newIssue.title || !this.newIssue.description || !this.newIssue.base64EncodedImage) {
       this.toastr.info('Please fill in all required fields, including an image.', 'Info');
@@ -84,6 +145,7 @@ export class AllIssuesComponent {
   
     const issueData = {
       ...this.newIssue,
+      status: null,
       user: { userId: userId ? parseInt(userId, 10) : null }, // Include the logged-in user ID
       base64EncodedImage: imageData  
     };
@@ -97,7 +159,8 @@ export class AllIssuesComponent {
           title: '',
           description: '',
           location: { locationId: '' },
-          base64EncodedImage: ''
+          base64EncodedImage: '',
+          status:null
         };
         this.loadIssues();
         this.isIssueFormVisible = false;

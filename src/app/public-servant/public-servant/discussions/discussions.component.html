@@ -1,9 +1,8 @@
-
 <div class="container mx-auto px-6 py-6">
 
     <div class="flex justify-end mb-4">
       <button (click)="toggleAddUserForm()" class="bg-teal-900 text-white py-2 px-4 rounded-md shadow-md hover:bg-teal-800 transition">
-        <i class="pi pi-user-plus mr-2"></i> Add Discussion
+        <i class="pi pi-plus mr-2"></i> Add Discussion
       </button>
     </div>
       <!-- Navbar -->
@@ -29,12 +28,16 @@
             <label class="text-sm font-medium">description:</label>
             <input type="text" [(ngModel)]="newDiscussion.description" class="border rounded p-2 w-full" />
           </div>
+           <div>
+            <label class="text-sm font-medium">StartedBy:</label>
+            <input type="text" [(ngModel)]="newDiscussion.startedBy.fullName" class="border rounded p-2 w-full" />
+          </div>
         </div>
         <div class="flex justify-end mt-4 gap-4">
           <button (click)="toggleAddUserForm()" class="bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-gray-600">
             <i class="pi pi-times mr-2"></i> Cancel
           </button>
-          <button (click)="handleAddDiscussion()" class="bg-teal-900 text-white py-2 px-4 rounded-md hover:bg-teal-700">
+          <button (click)="onSubmit()" class="bg-teal-900 text-white py-2 px-4 rounded-md hover:bg-teal-700">
             <i class="pi pi-check mr-2"></i> Submit
           </button>
         </div>
@@ -145,10 +148,10 @@
             <button (click)="closeViewEventModal()" class="bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-gray-500">
               <i class="pi pi-times mr-2"></i> Close
             </button>
-            <button (click)="handleUpdateUser()" class="bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-gray-500">
+            <!-- <button (click)="handleUpdateUser()" class="bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-gray-500">
               <i class="pi pi-check mr-2"></i> Update
-            </button>
-            <button (click)="handleDeleteUser(discussion.discussionId)" class="bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-gray-500">
+            </button> -->
+            <button (click)="deleteDiscussion()" class="bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-gray-500">
               <i class="pi pi-trash mr-2"></i> Delete
             </button>
           </div>

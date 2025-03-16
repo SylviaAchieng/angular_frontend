@@ -85,6 +85,17 @@ export class DiscussionService {
             })
           )
         }
+
+        updateDiscussion(discussion:any):Observable<any>{
+          const headers = this.getHeaders();
+          return this.http.put<any>(`${this.baseUrl}/api/v1/discussions/${discussion.discussionId}`,discussion, {headers}).pipe(
+            tap((updateDiscussion:any)=>{
+              const currentState = this.discussionSubject.value;
+              const updatedDiscussion = currentState.discussions.map((item:any)=>item.discussionId === updateDiscussion.discussionId?updateDiscussion:item);
+              this.discussionSubject.next({...currentState, discussions: updatedDiscussion})
+            })
+          )
+        }
         
         
 

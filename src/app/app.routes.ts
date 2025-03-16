@@ -38,6 +38,8 @@ import { ProfileSettingComponent } from './user-section/user-profile/profile-set
 import { UserProfileComponent } from './user-section/user-profile/user-profile.component';
 import { ReportIssueComponent } from './user-section/user-profile/report-issue/report-issue.component';
 import { SupportComponent } from './user-section/user-profile/support/support.component';
+import { DiscussionsComponent } from './public-servant/public-servant/discussions/discussions.component';
+import { ChatComponent } from './components/admin/admin-dashboard/chat/chat.component';
 
 
 
@@ -74,7 +76,7 @@ export const routes: Routes = [
         {path:'notifications', component:NotificationComponent},
         {path:'reportings', component: IssuesComponent},
         {path: 'proposals', component: DiscussionComponent},
-        {path:'message', component: MessagingComponent},
+        {path:'message', component: ChatComponent},
     ]},
 
     { path: 'public-servant', component: PublicServantComponent, children: [
@@ -84,7 +86,8 @@ export const routes: Routes = [
         {path: 'projects', component: AllProjectsComponent},
         {path: 'issues', component:AllIssuesComponent},
         {path:'settings', component: SettingsComponent},
-        {path:'notifications', component:NotificationComponent}
+        {path:'notifications', component:NotificationComponent},
+        {path:'proposals', component: DiscussionsComponent},
     ]},
 
     { path: 'profile', component: UserProfileComponent , children: [

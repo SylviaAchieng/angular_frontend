@@ -117,9 +117,34 @@ export class DiscussionComponent {
           }
           });
         }
+
+        updateDiscussion() {
+          if (!this.selectedDiscussion || !this.selectedDiscussion.discussionId) {
+            this.toastr.info('Please select a project to update.', 'Info');
+            return;
+          }
+      
+          const updatedDiscussionData = {
+            ...this.selectedDiscussion,
+          };
+          this.discussionService.updateDiscussion(updatedDiscussionData).subscribe({
+            next: (updatedDiscussion) => {
+              console.log('Discussion updated successfully:', updatedDiscussion);
+              this.discussions = this.discussions.map((discussion: any) =>
+                discussion.discussionId === updatedDiscussion.discussionId ? updatedDiscussion : discussion
+              );
+      
+              this.toastr.success("Discussion updated successfully!", "Success");
+            },
+            error: (error) => {
+              console.error('Error updating Discussion:', error);
+              this.toastr.error("Failed to update discussion. Please try again.", "Error");
+            }
+          });
+        }
   
           
-        deleteProject() {
+        deleteDiscussion() {
           if (!this.selectedDiscussion || !this.selectedDiscussion.discussionId) {
             this.toastr.info('Please select a discussion to delete.', 'Info');
             return;
