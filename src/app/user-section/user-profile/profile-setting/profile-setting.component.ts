@@ -112,34 +112,40 @@ export class ProfileSettingComponent {
   }
   
 
-updateEvent() {
-  if (!this.selectedUser || !this.selectedUser.eventId) {
-    this.toastr.info('Please select an event to update.', 'Info');
-    return;
-  }
-
-  const userId = this.getUserIdFromLocalStorage1();
-
-  const updatedEventData = {
-    ...this.selectedUser,
+  updateUser() {
+    const userId = this.getUserIdFromLocalStorage1();
     
-  };
-  this.authService.updateUser(updatedEventData, userId).subscribe({
-    next: (updatedEvent) => {
-      console.log('event updated successfully:', updatedEvent);        
-      this.user = this.user.map((user: any) =>
-        user.userId === updatedEvent.userId ? updatedEvent : user
-      );
-
-      this.toastr.success('event updated successfully!', 'Success');
-      this.loadUser();
-    },
-    error: (error) => {
-      console.error('Error updating event:', error);
-      this.toastr.error("Failed to update an event. Please try again.", "Error"); 
+    if (!userId) {
+      this.toastr.warning('User ID not found. Please log in again.', 'Warning');
+      return;
     }
-  });
-}
+  
+    // Ensure user has valid data before updating
+    if (!this.user || !this.user.userId) {
+      this.toastr.info('Invalid user data. Please try again.', 'Info');
+      return;
+    }
+  
+    // Prepare updated user data
+    const updatedUserData = { ...this.user };
+  
+    this.authService.updateUser(updatedUserData, userId).subscribe({
+      next: (updatedUser) => {
+        console.log('User updated successfully:', updatedUser);
+        
+        // Update the user object with the new data
+        this.user = { ...updatedUser };
+  
+        this.toastr.success('User updated successfully!', 'Success');
+        this.loadUser(); // Reload user data to ensure consistency
+      },
+      error: (error) => {
+        console.error('Error updating user:', error);
+        this.toastr.error('Failed to update user. Please try again.', 'Error');
+      }
+    });
+  }
+  
 
 
 }

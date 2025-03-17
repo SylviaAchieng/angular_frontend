@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, Output } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../../../../services/auth.service';
 
@@ -30,5 +30,19 @@ export class SidebarComponent {
     )
   }
 
+  isSidebarOpen = false;
+  isMobile = window.innerWidth < 768;
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.isMobile = event.target.innerWidth < 768;
+    if (!this.isMobile) {
+      this.isSidebarOpen = true; // Always open on larger screens
+    }
+  }
+
+  toggleSidebar() {
+    this.isSidebarOpen = !this.isSidebarOpen;
+  }
 
 }
