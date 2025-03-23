@@ -20,7 +20,8 @@ export class IssueService {
       private getHeaders(): HttpHeaders{
         const token = localStorage.getItem('token');
         return new HttpHeaders({
-          Authorization: `Bearer ${localStorage.getItem('token')}`
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+          Accept: 'application/json'
         })
       }
 
@@ -68,9 +69,9 @@ export class IssueService {
             )
           }
 
-          getIssuesByStatus(status:string):Observable<any>{
+          getIssuesByStatus(status:string, user: number):Observable<any>{
             const headers = this.getHeaders();
-            return this.http.get<any>(`${this.baseUrl}/api/v1/issue/status/${status}`, {headers}).pipe(
+            return this.http.get<any>(`${this.baseUrl}/api/v1/issue/status?status=${status}&user=${user}`, {headers}).pipe(
               tap((response: { _embedded: any[] }) => {
                 const currentState = this.issueSubject.value;
                 const issues = response._embedded || [];

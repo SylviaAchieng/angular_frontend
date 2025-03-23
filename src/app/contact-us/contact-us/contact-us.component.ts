@@ -31,6 +31,14 @@ export class ContactUsComponent {
     userType:null
   };
 
+  clearForm(){
+    this.newMessage.email = '';
+    this.newMessage.fullName = '';
+    this.newMessage.message = '';
+    this.newMessage.location.locationId = '';
+    this.newMessage.userType = null;
+  }
+
   constructor(
     private locationService: LocationService,
     private contactUsService: ContactUsService,
@@ -56,7 +64,7 @@ export class ContactUsComponent {
       this.toastr.info('Please fill in all required fields.', 'Info');
       return;
     }
-  
+    console.log('Sending message:', this.newMessage);
     this.contactUsService.createMessage(this.newMessage).subscribe({
       next: (response) => {
         console.log('Message sent successfully:', response);
@@ -69,6 +77,7 @@ export class ContactUsComponent {
           location: { locationId: '' }, 
           userType: null 
         };
+        this.clearForm();
       },
       error: (error) => {
         console.error('Error sending message:', error);

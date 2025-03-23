@@ -175,7 +175,7 @@ export class LandingComponent {
   // }
 
   getAllProjects(): void {
-    this.projectService.getProjects().subscribe({
+    this.projectService.getActiveProjects().subscribe({
       next: (response: any) => {
         if (!response || !response._embedded) {
           console.error("Invalid response format");

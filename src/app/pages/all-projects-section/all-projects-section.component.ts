@@ -7,6 +7,7 @@ import { ProjectService } from '../../services/project.service';
 import { ProjectCardComponent } from '../project-card/project-card.component';
 import { CommonModule } from '@angular/common';
 import { FooterComponent } from "../../components/footer/footer.component";
+import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 
 @Component({
   selector: 'app-all-projects-section',
@@ -24,6 +25,8 @@ export class AllProjectsSectionComponent {
     private projectService: ProjectService, 
     
   ) {}
+
+  searchTerm = new BehaviorSubject<string>('');
 
   ngOnInit(): void {
     this.getAllProjects();
@@ -46,6 +49,10 @@ export class AllProjectsSectionComponent {
       },
       error: (err) => console.error("Failed to load projects:", err)
     });
+  }
+
+  onSearch(event: any) {
+    this.searchTerm.next(event.target.value);
   }
 
 }

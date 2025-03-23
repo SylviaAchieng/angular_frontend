@@ -208,20 +208,14 @@
 
             <div class="mb-4">
               <label class="text-sm font-medium mb-2">Receipts:</label>
-              <img [src]="selectedProject?.base64Encoded || 'assests/home.png'" alt="Receipts Banner" class="w-full h-auto rounded-md" />
+              <img [src]="selectedProject?.base64Encoded || 'assests/home.png'" alt="Receipts Banner" class="w-full h-50 rounded-md" />
             </div>
 
             <div class="mb-4">
-              <label class="block text-sm font-medium text-gray-700">Upload Image:</label>
-              <input type="file" (change)="onImageUpload($event)" accept="image/*" class="w-full bg-white p-2 border rounded-lg border-gray-400">
+              <label class="text-sm font-medium mb-2">Upload Receipt:</label>
+              <input type="file" (change)="onImageUpload($event)" class="w-full h-auto p-2 border rounded-md" />
             </div>
-            <!-- Image Preview -->
-            <div *ngIf="selectedProject.base64Encoded" class="mb-4">
-              <img [src]="selectedProject.base64Encoded" class="mt-2 h-32 rounded-lg shadow object-cover" />
-              <button type="button" (click)="clearImage()" class="mt-2 bg-red-500 text-white py-1 px-3 rounded-md hover:bg-red-600">
-                <i class="pi pi-trash"></i> Remove Image
-              </button>
-            </div>
+
           </div>
         </div>
         <div class="flex justify-end mt-4 gap-4">

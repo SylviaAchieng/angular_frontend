@@ -58,7 +58,6 @@ export class RegisterComponent {
     this.isLoading = true;
     console.log("register", this.registrationForm.value)
     const newUser: User = {
-
       fullName: this.registrationForm.get('fullName')?.value,
       nationalId: this.registrationForm.get('nationalId')?.value,
       email: this.registrationForm.get('email')?.value,
@@ -77,7 +76,6 @@ export class RegisterComponent {
         console.log("Registration successful", response);
         const userId = response.userId;
         this.authService.getUserProfile(userId).subscribe();
-        // Show success alert
       this.toastr.success("Registration successful! Please log in.", 'Success');
       this.isLoading = false;
       this.router.navigate(['/login']);

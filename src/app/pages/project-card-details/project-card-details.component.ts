@@ -26,6 +26,9 @@ export class ProjectCardDetailsComponent {
   newComment: string = '';
   showCommentDialog: boolean = false;
 
+  isImageModalOpen = false;
+  selectedImage: string | null = null;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -42,6 +45,16 @@ export class ProjectCardDetailsComponent {
     this.loadComments(projectId);
   }
 
+  openImageModal(imageUrl: string) {
+    this.selectedImage = imageUrl;
+    this.isImageModalOpen = true;
+  }
+
+  closeImageModal() {
+    this.isImageModalOpen = false;
+    this.selectedImage = null;
+  }
+
   loadProjectDetails(): void {
     const projectId = this.route.snapshot.paramMap.get('id');
     const userId = localStorage.getItem('userId');
@@ -55,21 +68,25 @@ export class ProjectCardDetailsComponent {
             base64EncodedImage: projectData.base64EncodedImage
               ? `data:image/jpg;base64,${projectData.base64EncodedImage}`
               : null,
+            base64Encoded: projectData.base64Encoded
+              ? `data:image/jpg;base64,${projectData.base64Encoded}`
+              : null,
           };
           console.log("Formatted project:", this.project);
         } else {
           console.error("Project data missing in response.");
         }
       });
-  
-      // Subscribe to projectSubject for real-time updates
-      this.projectService.projectSubject.subscribe((state: any) => {
+        this.projectService.projectSubject.subscribe((state: any) => {
         if (state.project) {
           this.project = {
             ...state.project,
             base64EncodedImage: state.project.base64EncodedImage
               ? `data:image/jpg;base64,${state.project.base64EncodedImage}`
               : null,
+            base64Encoded: state.project.base64Encoded
+              ? `data:image/jpg;base64,${state.project.base64Encoded}`
+              : null,  
           };
           console.log("Updated project state:", this.project);
         }

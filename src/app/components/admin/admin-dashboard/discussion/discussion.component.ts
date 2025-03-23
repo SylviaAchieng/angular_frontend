@@ -206,9 +206,6 @@ export class DiscussionComponent {
       
         showViewEventModal(user: any): void {
           this.selectedDiscussion = user;
-          // this.vipPrice = event.ticketTypes.find(t => t.type === 'VIP')?.price || null;
-          // this.regularPrice = event.ticketTypes.find(t => t.type === 'Regular')?.price || null;
-          // this.totalTickets = event.ticketTypes.reduce((total, t) => total + t.quantity, 0) || null;
           this.isViewing = true;
         }
       

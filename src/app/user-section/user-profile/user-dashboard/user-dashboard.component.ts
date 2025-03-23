@@ -25,21 +25,31 @@ export class UserDashboardComponent {
 
   ngOnInit() {
     this.getIssuesByUserId();
-    //this.getAllIssues();
+    this.loadIssueCounts();
     
   }
 
   loadIssueCounts() {
-    this.issueService.getIssuesByStatus('Pending').subscribe(data => {
-      this.pendingIssuesCount = data.length;
+    const userData = localStorage.getItem('user'); // Retrieve user ID from localStorage
+
+  if (!userData) {
+    console.error("User ID not found in localStorage");
+    return;
+  }
+  const loggedInUser = JSON.parse(userData);
+  const id = loggedInUser.userId; 
+    this.issueService.getIssuesByStatus('PENDING', id).subscribe(data => {
+      console.log("Pending Issues:", data);
+      this.pendingIssuesCount = data._embedded.length;
     });
 
-    this.issueService.getIssuesByStatus('In Progress').subscribe(data => {
-      this.inProgressIssuesCount = data.length;
+    this.issueService.getIssuesByStatus('PARKED', id).subscribe(data => {
+      this.inProgressIssuesCount = data._embedded.length;
     });
 
-    this.issueService.getIssuesByStatus('Resolved').subscribe(data => {
-      this.resolvedIssuesCount = data.length;
+    this.issueService.getIssuesByStatus('RESOLVED', id).subscribe(data => {
+      console.log("Resolved Issues:", data);
+      this.resolvedIssuesCount = data._embedded.length;
     });
   }
 
