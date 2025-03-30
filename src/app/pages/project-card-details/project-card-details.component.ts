@@ -55,6 +55,17 @@ export class ProjectCardDetailsComponent {
     this.selectedImage = null;
   }
 
+  downloadReceipt() {
+    if (this.selectedImage) {
+      const link = document.createElement('a');
+      link.href = this.selectedImage;
+      link.download = 'receipt.png'; // Default filename
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  }
+
   loadProjectDetails(): void {
     const projectId = this.route.snapshot.paramMap.get('id');
     const userId = localStorage.getItem('userId');
@@ -120,6 +131,7 @@ export class ProjectCardDetailsComponent {
         this.newComment = '';
         this.showCommentDialog = false;
         this.toastr.success('Comment added successfully!', 'Success');
+        this.loadComments(this.project.projectId);
       },
       error: (error) => {
         console.error('Error submitting comment:', error);

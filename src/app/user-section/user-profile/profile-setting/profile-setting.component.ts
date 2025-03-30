@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { IdType } from '../../../types/app';
+import { count } from 'rxjs';
 
 @Component({
   selector: 'app-profile-setting',
@@ -27,7 +28,7 @@ export class ProfileSettingComponent {
     lastName: '',
     email: '',
     phoneNumber: '',
-    location: { locationId: '' },
+    location: { locationId: '' , county: '', subCounty: '' },
   
   };
 
@@ -86,7 +87,7 @@ export class ProfileSettingComponent {
   }
 
   getUserIdFromLocalStorage1(): IdType | null {
-    return localStorage.getItem('userId'); // Retrieve stored user details
+    return localStorage.getItem('userId');
     
   }
   

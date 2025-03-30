@@ -123,6 +123,8 @@
       <div *ngIf="passwordControl && passwordControl.invalid && (passwordControl.dirty || passwordControl.touched)">
         <p *ngIf="passwordControl.errors?.['required']" class="text-red-500 text-sm">Password is required.</p>
         <p *ngIf="passwordControl.errors?.['minlength']" class="text-red-500 text-sm">Password must be at least 8 characters.</p>
+        <!-- <p *ngIf="passwordControl.invalid && passwordControl.errors?.['pattern']" class="text-red-500 text-sm">Password must be 8+ characters.  
+          Include a number, uppercase, and special char.</p> -->
       </div>
 
       <!-- Sign Up Button -->

@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { IdType } from '../types/app';
 
 @Injectable({
   providedIn: 'root'
@@ -69,7 +70,7 @@ export class IssueService {
             )
           }
 
-          getIssuesByStatus(status:string, user: number):Observable<any>{
+          getIssuesByStatus(status:string, user: IdType):Observable<any>{
             const headers = this.getHeaders();
             return this.http.get<any>(`${this.baseUrl}/api/v1/issue/status?status=${status}&user=${user}`, {headers}).pipe(
               tap((response: { _embedded: any[] }) => {

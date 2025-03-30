@@ -48,6 +48,19 @@ export class ProjectsComponent {
     approximateCost: 0,
     base64Encoded: ''
   };
+  newProjects = {
+    user: null,
+    title: '',
+    description: '',
+    daysRemaining: null,
+    startDate: '',
+    endDate: '',
+    tag: '',
+    base64EncodedImage: '',
+    location: { county: '' },
+    actualCost: 0,
+    approximateCost: 0,
+  };
 
   locations: any[] = [];
 
@@ -132,7 +145,7 @@ export class ProjectsComponent {
     if (file) {
       const reader = new FileReader();
       reader.onload = (e: any) => {
-        this.selectedProject.base64Encoded = e.target.result;
+        this.newProject.base64EncodedImage = e.target.result;
       };
       reader.readAsDataURL(file);
     }
@@ -140,7 +153,7 @@ export class ProjectsComponent {
 
   // Clear selected image
   clearImage() {
-    this.newProject.base64Encoded = '';
+    this.newProject.base64EncodedImage = '';
   }
 
   // createProject() {
@@ -180,10 +193,10 @@ export class ProjectsComponent {
   // }
 
   createProject() {
-    if (!this.newProject.title || !this.newProject.description || !this.newProject.tag || !this.newProject.base64EncodedImage || !this.newProject.startDate || !this.newProject.endDate || !this.newProject.approximateCost) {
-      this.toastr.info('Please fill in all required fields, including an image.', 'Info');
-      return;
-    }
+    // if (!this.newProject.title || !this.newProject.description || !this.newProject.tag || !this.newProject.base64EncodedImage || !this.newProject.startDate || !this.newProject.endDate || !this.newProject.approximateCost) {
+    //   this.toastr.info('Please fill in all required fields, including an image.', 'Info');
+    //   return;
+    // }
 
     // Retrieve user data from local storage
     const userData = localStorage.getItem('user');
@@ -204,7 +217,7 @@ export class ProjectsComponent {
 
     const imageData = this.newProject.base64EncodedImage.startsWith("data:image/")
       ? this.newProject.base64EncodedImage.split(",")[1]
-      : this.newProject.base64EncodedImage;
+      : this.newProjects.base64EncodedImage;
 
     const projectData = {
       ...this.newProject,
@@ -229,7 +242,7 @@ export class ProjectsComponent {
           location: { county: '' },
           actualCost: 0,
           approximateCost: 0,
-          base64Encoded: ''
+          base64Encoded:''
         };
         this.getAllProjects();
       },

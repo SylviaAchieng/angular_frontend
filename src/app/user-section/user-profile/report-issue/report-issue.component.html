@@ -24,24 +24,19 @@
           <label class="block text-sm font-medium text-gray-700">Title:</label>
           <input type="text" [(ngModel)]="newIssue.title" name="title" required class="w-full p-2 border rounded-md">
         </div>
-        <!-- Location -->
-        <div>
-            <label class="block text-gray-700 font-medium">Location:</label>
-            <select [(ngModel)]="newIssue.location.locationId" name="locationId"
-                    class="w-full bg-white border border-gray-400 rounded-lg p-3 focus:ring-2 focus:ring-[#0A1B52] focus:border-[#0A1B52]" required>
-              <option value="" disabled selected>Select Location</option>
-              <option *ngFor="let location of locations" [value]="location.locationId">{{ location.county }}</option>
-            </select>
-          </div>
-        <!-- Date -->
-        <!-- <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700">Date:</label>
-          <input type="date" [(ngModel)]="newIssue.createdAt" name="createdAt" required class="w-full p-2 border rounded-md">
-        </div> -->
         <!-- Description -->
         <div class="mb-4">
           <label class="block text-sm font-medium text-gray-700">Description:</label>
           <textarea [(ngModel)]="newIssue.description" name="description" required class="w-full p-2 border rounded-md"></textarea>
+        </div>
+        <!-- Location -->
+        <div>
+          <label class="block text-gray-700 font-medium">Location:</label>
+          <select [(ngModel)]="newIssue.location.locationId" name="locationId"
+                  class="w-full bg-white border border-gray-400 rounded-lg p-3 focus:ring-2 focus:ring-[#0A1B52] focus:border-[#0A1B52]" required>
+            <option value="" disabled selected>Select Location</option>
+            <option *ngFor="let location of locations" [value]="location.locationId">{{ location.county }}</option>
+          </select>
         </div>
         <!-- Image Upload -->
         <div class="mb-4">
