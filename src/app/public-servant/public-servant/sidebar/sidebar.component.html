@@ -50,7 +50,7 @@
         </li>
         <li [routerLink]="['/public-servant/notifications']" class="px-4 py-2 hover:bg-[#1a5d76] flex items-center gap-3 cursor-pointer relative">
           <i class="fas fa-bell"></i> Notifications
-          <span class="bg-red-500 text-xs px-2 rounded-full absolute right-4">2</span>
+          <span class="bg-red-500 text-xs px-2 rounded-full absolute right-4">{{pendingNotificationsCount}}</span>
         </li>
       </ul>
     </div>

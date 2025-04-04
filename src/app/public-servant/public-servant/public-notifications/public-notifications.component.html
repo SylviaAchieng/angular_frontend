@@ -1,0 +1,64 @@
+<div class="p-6 bg-white shadow-md rounded-lg">
+    <h2 class="text-xl font-semibold">List Notification</h2>
+    <p class="text-gray-500">{{ pendingNotificationsCount}} Notification</p>
+  
+    <!-- Tabs -->
+    <div class="flex space-x-6 mt-4 border-b">
+      <button 
+        class="pb-2 border-b-4 transition-all"
+        [class.border-red-500]="activeTab === 'all'"
+        (click)="setTab('all')">
+        All
+      </button>
+      <button 
+        class="pb-2 border-b-4 transition-all"
+        [class.border-red-500]="activeTab === 'archive'"
+        (click)="setTab('archive')">
+        Archive
+      </button>
+      <button 
+        class="pb-2 border-b-4 transition-all"
+        [class.border-red-500]="activeTab === 'favorite'"
+        (click)="setTab('favorite')">
+        Favorite
+      </button>
+    </div>
+  
+    <!-- Search bar -->
+    <div class="mt-4 flex items-center bg-gray-100 p-2 rounded-md">
+      <input
+        type="text"
+        placeholder="Search notifications..."
+        class="w-full bg-transparent outline-none"
+      />
+    </div>
+  
+    <!-- Notification List -->
+    <div class="mt-4 space-y-4">
+      <div 
+        *ngFor="let notification of notifications"
+        class="flex items-center justify-between p-4 bg-gray-50 rounded-lg shadow-sm">
+        
+        <div class="flex items-start space-x-4">
+          <span 
+            class="h-3 w-3 rounded-full"
+            [class.bg-green-500]="!notification.status"
+            [class.bg-gray-400]="notification.status"></span>
+          
+          <div>
+            <p (click)="getNotificationById(notification?.notificationId)" class="font-medium cursor-pointer text-teal-800" >{{ notification.description }}</p>
+            <p class="text-sm text-gray-600">{{ notification.type }}</p>
+            <span class="text-xs text-gray-400">{{ notification.sentAt }}</span>
+          </div>
+        </div>
+  
+        <div class="flex space-x-3">
+          <button (click)="toggleFavorite(notification)">
+            <span [class.text-yellow-500]="notification.isFavorite">⭐</span>
+          </button>
+          <button (click)="deleteNotification(notification.notificationId)" class="text-red-500">🗑</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  

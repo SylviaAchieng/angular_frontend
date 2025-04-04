@@ -13,7 +13,7 @@ import { ProjectCommentsService } from '../../services/project-comments.service'
 @Component({
   selector: 'app-project-details',
   standalone: true,
-  imports: [CommonModule, FormsModule, MatIcon, MatCardModule, MatButtonModule, MatIconModule, RouterLink],
+  imports: [CommonModule, FormsModule, MatCardModule, MatButtonModule, MatIconModule, RouterLink],
   templateUrl: './project-details.component.html',
   styleUrl: './project-details.component.css'
 })

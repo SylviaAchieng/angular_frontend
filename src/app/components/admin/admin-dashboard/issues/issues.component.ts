@@ -137,49 +137,6 @@ export class IssuesComponent {
       });
     }
 
-    // submitIssue() {
-    //   if (!this.newIssue.title || !this.newIssue.description || !this.newIssue.base64EncodedImage) {
-    //     this.toastr.info('Please fill in all required fields, including an image.', 'Info');
-    //     return;
-    //   }
-    
-    //   const imageData = this.newIssue.base64EncodedImage.startsWith("data:image/")
-    //     ? this.newIssue.base64EncodedImage.split(",")[1]
-    //     : this.newIssue.base64EncodedImage;
-    
-    //   // Retrieve userId from localStorage
-    //   const userId = localStorage.getItem('userId');
-    
-    //   if (!userId) {
-    //     this.toastr.error('User not authenticated.', 'Error');
-    //     return;
-    //   }
-    
-    //   const issueData = {
-    //     ...this.newIssue,
-    //     user: { userId: userId ? parseInt(userId, 10) : null }, // Include the logged-in user ID
-    //     base64EncodedImage: imageData  
-    //   };
-    
-    //   this.issueService.createIssue(issueData).subscribe({
-    //     next: (newIssue) => {
-    //       console.log('Issue created successfully', newIssue);
-    //       this.toastr.success('Issue created successfully!', 'Success');
-    //       // Reset the form
-    //       this.newIssues = {  
-    //         title: '',
-    //         description: '',
-    //         location: { locationId: '' },
-    //         base64EncodedImage: ''
-    //       };
-    //     },
-    //     error: (error) => {
-    //       console.error('Error creating issue:', error);
-    //       this.toastr.error("Failed to create issue. Please try again.", "Error"); 
-    //     }
-    //   });
-    // }
-
     submitIssue() {
       if (!this.newIssue.title || !this.newIssue.description || !this.newIssue.base64EncodedImage) {
         this.toastr.info('Please fill in all required fields, including an image.', 'Info');
@@ -219,6 +176,7 @@ export class IssuesComponent {
             status: null
           };
           this.toggleIssueForm();
+          this.getAllIssues();
           
           
         },

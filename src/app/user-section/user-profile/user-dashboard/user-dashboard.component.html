@@ -6,7 +6,7 @@
       </button>
       <button class="relative bg-white p-2 rounded-full shadow">
         <i class="fas fa-bell text-[#134e4a]"></i>
-        <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs px-1 rounded-full">3</span>
+        <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs px-1 rounded-full">{{pendingNotificationsCount}}</span>
       </button>
     </div>
   
@@ -86,13 +86,13 @@
             {{ issue?.title }}
           </td>
           <td class="p-4 text-sm text-black">
-            {{ issue?.description}}
+            {{ issue?.description?.slice(0, 50)}}
           </td>
           <td class="p-4 text-sm text-black">
             {{ issue?.status }}
           </td>
           <td class="p-4 text-sm text-center">
-            <button class="bg-gray-500 text-white py-1 px-3 rounded-md hover:bg-gray-600">
+            <button (click)="showViewIssueModal(issue)" class="bg-gray-500 text-white py-1 px-3 rounded-md hover:bg-gray-600">
               <i class="pi pi-eye"></i> View
             </button>
           </td>
@@ -101,3 +101,73 @@
     </table>
   </div>
 </div>
+
+<!-- View issue Modal-->
+<div *ngIf="isViewing" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+  <div class="bg-white p-6 rounded-md shadow-md relative w-full max-w-3xl mx-auto">
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-xl font-semibold">Issue Details</h2>
+      <button (click)="closeViewIssueModal()" class="text-gray-500 hover:text-gray-700">
+        <i class="pi pi-times"></i>
+      </button>
+    </div>
+    <div class="flex">
+      <div class="w-2/3 pr-4">
+        <div class="mb-4 flex items-center">
+          <i class="pi pi-tag mr-2"></i>
+          <div>
+            <label class="text-sm font-medium">Title:</label>
+            <input type="text" [(ngModel)]="selectedIssue.title" class="w-full p-2 border rounded-md">
+          </div>
+        </div>
+        <div class="mb-4 flex items-center">
+          <i class="pi pi-map-marker mr-2"></i>
+          <div>
+            <label class="text-sm font-medium">Location:</label>
+            <input type="text" [(ngModel)]="selectedIssue.location.county" class="w-full p-2 border rounded-md">
+          </div>
+        </div>
+        <div class="mb-4 flex items-center">
+          <i class="pi pi-calendar mr-2"></i>
+          <div>
+            <label class="text-sm font-medium">Date:</label>
+            <input type="date" [(ngModel)]="selectedIssue.createdAt" class="w-full p-2 border rounded-md">
+          </div>
+        </div>
+        <div class="mb-4 flex items-center">
+          <i class="pi pi-wallet mr-2"></i>
+          <div>
+            <label class="text-sm font-medium">Status:</label>
+            <select type="text" [(ngModel)]="selectedIssue.status" class="w-full p-2 border rounded-md">
+              <option [ngValue]="issuesStatus.CREATED">CREATED</option>
+            </select>
+          </div>
+        </div>
+        <div class="mb-4 flex items-center">
+          <i class="pi pi-align-left mr-2"></i>
+          <div>
+            <label class="text-sm font-medium">Description:</label>
+            <textarea [(ngModel)]="selectedIssue.description" class="w-full p-2 border rounded-md"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="w-1/3">
+        <div class="mb-4">
+          <label class="text-sm font-medium mb-2">Banner Image:</label>
+          <img [src]="selectedIssue?.base64EncodedImage || 'assests/home.png'" alt="Event Banner" class="w-full h-auto rounded-md" />
+        </div>
+      </div>
+    </div>
+    <div class="flex justify-end mt-4 gap-4">
+      <button (click)="closeViewIssueModal()" class="bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-gray-600">
+        <i class="pi pi-times mr-2"></i> Close
+      </button>
+       <button (click)="updateIssue()" class="bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-gray-500">
+        <i class="pi pi-check mr-2"></i> Update
+      </button> 
+      <button (click)="deleteIssue()" class="bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-gray-500">
+        <i class="pi pi-trash mr-2"></i> Delete
+      </button>
+    </div>
+  </div>
+</div> 

@@ -1,0 +1,15 @@
+<div class="max-w-md mx-auto mt-12 p-6 bg-white shadow-md rounded-lg text-center">
+    <h2 class="text-xl font-semibold text-gray-800 mb-4">Check Your Email</h2>
+    <p class="text-sm text-gray-600 mb-4 cursor-pointer">
+      A confirmation email has been sent to <a [href]="'https://mail.google.com/mail/u/0/#inbox'" target="_blank" class="text-teal-700 font-semibold hover:underline"><strong>{{ userData.email }}</strong></a>.  
+      Please check your inbox and follow the instructions to log in.
+    </p>
+  
+    <button 
+      (click)="goToLogin()" 
+      class="w-full bg-teal-700 text-white py-2 rounded-md hover:bg-teal-800 transition"
+    >
+      Go to Login
+    </button>
+  </div>
+  

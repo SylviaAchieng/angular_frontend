@@ -2,25 +2,29 @@ import { Component } from '@angular/core';
 import { AuthService } from '../../../services/auth.service';
 import { LocationService } from '../../../services/location.service';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
-import { IdType } from '../../../types/app';
+import { IdType, User } from '../../../types/app';
 import { count } from 'rxjs';
+
+// enum UserType {
+//   CITIZEN = 'CITIZEN',
+//   PUBLIC_SERVANT = 'PUBLIC_SERVANT'
+// }
 
 @Component({
   selector: 'app-profile-setting',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './profile-setting.component.html',
   styleUrl: './profile-setting.component.css'
 })
 export class ProfileSettingComponent {
   profileImage: string | null = null;
 
-  //users: any = {};
   locations: any[] = [];
   selectedUser: any = {};
-  
+  // userTypeEnum = UserType;
 
   user: any = {
     userId: '',
@@ -31,6 +35,27 @@ export class ProfileSettingComponent {
     location: { locationId: '' , county: '', subCounty: '' },
   
   };
+
+  users: any = {
+    userId: '',
+    firstName: '',
+    lastName: '',
+    email: '',
+    phoneNumber: '',
+    location: { locationId: ''},
+  
+  };
+
+  profileForm=new FormGroup({
+      fullName: new FormControl('', [Validators.required]),
+      nationalId: new FormControl('', [Validators.required]),
+      email: new FormControl('',[Validators.required, Validators.email]),
+      userType: new FormControl('', [Validators.required]),
+      password: new FormControl('',[Validators.required, Validators.minLength(8), Validators.pattern(/^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)]),
+      locationId: new FormControl(null, [Validators.required]),
+      phoneNumber: new FormControl(''),
+      
+    });
 
   constructor(
     private authService: AuthService,
@@ -69,6 +94,7 @@ export class ProfileSettingComponent {
   this.locationService.locationSubject.subscribe((state) => {
     this.locations = state.locations;
     console.log("location state updated:", this.locations);
+    //this.loadUser();
   });
   }
 
@@ -113,39 +139,64 @@ export class ProfileSettingComponent {
   }
   
 
-  updateUser() {
-    const userId = this.getUserIdFromLocalStorage1();
+  // updateUser() {
+  //   const userId = this.getUserIdFromLocalStorage1();
+  //   console.log("user id:", userId)
     
-    if (!userId) {
-      this.toastr.warning('User ID not found. Please log in again.', 'Warning');
-      return;
-    }
+  //   if (!userId) {
+  //     this.toastr.warning('User ID not found. Please log in again.', 'Warning');
+  //     return;
+  //   }
   
-    // Ensure user has valid data before updating
-    if (!this.user || !this.user.userId) {
-      this.toastr.info('Invalid user data. Please try again.', 'Info');
-      return;
-    }
+  //   // if (!this.users || !this.users.userId) {
+  //   //   this.toastr.info('Invalid user data. Please try again.', 'Info');
+  //   //   return;
+  //   // }
+
+  //   const updatedUserData = { ...this.users };
   
-    // Prepare updated user data
-    const updatedUserData = { ...this.user };
+  //   console.log("updatedUserData", updatedUserData)
+  //   this.authService.updateUser(updatedUserData, userId).subscribe({
+  //     next: (updatedUser) => {
+  //       console.log('User updated successfully:', updatedUser);
+  //       this.users = { ...updatedUser };
   
-    this.authService.updateUser(updatedUserData, userId).subscribe({
-      next: (updatedUser) => {
-        console.log('User updated successfully:', updatedUser);
-        
-        // Update the user object with the new data
-        this.user = { ...updatedUser };
-  
-        this.toastr.success('User updated successfully!', 'Success');
-        this.loadUser(); // Reload user data to ensure consistency
-      },
-      error: (error) => {
-        console.error('Error updating user:', error);
-        this.toastr.error('Failed to update user. Please try again.', 'Error');
+  //       this.toastr.success('User updated successfully!', 'Success');
+  //       this.loadUser();
+  //     },
+  //     error: (error) => {
+  //       console.error('Error updating user:', error);
+  //       this.toastr.error('Failed to update user. Please try again.', 'Error');
+  //     }
+  //   });
+  // }
+
+
+  updateUser(){
+    const userId = this.getUserIdFromLocalStorage1();
+    console.log("user id:", userId)
+      console.log("register", this.profileForm.value)
+      const updatedUser: User = {
+        fullName: this.profileForm.get('fullName')?.value,
+        nationalId: this.profileForm.get('nationalId')?.value,
+        email: this.profileForm.get('email')?.value,
+        password: this.profileForm.get('password')?.value,
+        location: {locationId: this.profileForm.get('locationId')?.value},
+        userType: this.profileForm.get('userType')?.value,
+        phoneNumber: this.profileForm.get('phoneNumber')?.value,
       }
-    });
-  }
+      console.log("new user", updatedUser);
+      this.authService.updateUser(updatedUser, userId).subscribe({
+        next:(response)=>{
+          this.toastr.success('User updated successfully!', 'Success');
+          this.loadUser();
+        },
+      error: (err) => {
+        console.error("update failed", err);
+        this.toastr.error("update failed. Please try again.", 'Error');
+      }
+      });
+    }
   
 
 

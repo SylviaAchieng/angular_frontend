@@ -18,11 +18,6 @@ export class AuthService {
     })
   }
 
-  // login(email: string, password: string): Observable<any>{
-  //   const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-  //   const body = { email, password };
-  //   return this.http.post(`http://localhost:8000/api/v1/users/auth`, body,{headers})
-  // }
 
 
   authSubject = new BehaviorSubject<any>({
@@ -33,13 +28,11 @@ export class AuthService {
   login(email: string, password: string): Observable<any> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     const body = { email, password };
-
     return this.http.post(`${this.baseUrl}/api/v1/users/auth`, body, { headers }).pipe(
       tap((response: any) => {
         localStorage.setItem('token', response.token);
-        localStorage.setItem('user', JSON.stringify(response.user)); // Store user
-
-        this.authSubject.next(response.user); // Update global state
+        localStorage.setItem('user', JSON.stringify(response.user)); 
+        this.authSubject.next(response.user); 
       })
     );
   }
@@ -65,7 +58,6 @@ export class AuthService {
   
 
   getAllUsers(): Observable<any> {
-    //const headers = this.getHeaders();
     return this.http.get<any>(`${this.baseUrl}/api/v1/users`).pipe(
       tap((response: { _embedded: any[] }) => {  // Correctly type the response
         const currentState = this.authSubject.value;
@@ -98,7 +90,8 @@ export class AuthService {
   }
 
   getUser() {
-    return this.authSubject.value; // Get current user
+    const user = localStorage.getItem('user');
+    return user ? JSON.parse(user) : null;
   }
 
   // Initialize user from localStorage on load

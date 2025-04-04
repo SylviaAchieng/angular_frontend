@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { Router, RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule,NavbarComponent, RouterLink, MatProgressSpinnerModule, CommonModule],
+  imports: [FormsModule,NavbarComponent, RouterLink, MatProgressSpinnerModule, CommonModule, ReactiveFormsModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
@@ -21,31 +21,33 @@ export class LoginComponent {
 
   isLoading: boolean = false;
   showPassword: boolean = false;
+  
 
   loginForm = new FormGroup({
       email: new FormControl('',[Validators.required, Validators.email]),
-      password: new FormControl('',[Validators.required])
+      password: new FormControl('',[Validators.required, Validators.minLength(8), Validators.pattern(/^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)])
     })
 
-  email: string = '';
-  password: string = '';
+  // email: string = '';
+  // password: string = '';
   errorMessage = '';
   passwordVisible: boolean = false;
   rememberMe: boolean = false;
-
-  onSubmit() {
-    console.log('Email:', this.email);
-    console.log('Password:', this.password);
-    console.log('Remember Me:', this.rememberMe);
-  }
 
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
   }
 
   onLogin() {
+    if (this.loginForm.invalid) {
+      this.toastr.error("Please enter valid credentials", "Error");
+      this.isLoading = false;
+      return;
+    }
     this.isLoading = true;
-    this.authService.login(this.email, this.password).subscribe({
+    const email = this.loginForm.get('email')?.value as string;
+    const password = this.loginForm.get('password')?.value as string;
+    this.authService.login(email, password).subscribe({
       next: (response: any) => {
         console.log('Login successful:', response);
         this.toastr.success("Login successful!", "Success");
@@ -90,6 +92,13 @@ export class LoginComponent {
         this.isLoading = false; 
       }
     });
+  }
+
+  get emailControl() {
+    return this.loginForm.get('email');
+  }
+  get passwordControl() {
+    return this.loginForm.get('password');
   }
 
 }

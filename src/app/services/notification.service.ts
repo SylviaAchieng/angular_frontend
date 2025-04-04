@@ -34,4 +34,50 @@ export class NotificationService {
       })
     );
   }
+
+  getAllNotifications(): Observable<any> {
+    const headers = this.getHeaders();
+    return this.http.get<any>(`${this.baseUrl}/api/v1/notifications`, { headers }).pipe(
+      tap((response: { _embedded: any[] }) => {  
+        const currentState = this.notificationSubject.value;
+        const notifications = response._embedded || []; 
+        this.notificationSubject.next({ ...currentState, notifications });
+      })
+    );
+  }
+
+  markAllAsRead(): Observable<any> {
+    const headers = this.getHeaders();
+    return this.http.post<any>(`${this.baseUrl}/api/v1/notifications/mark-read`, {}, { headers }).pipe(
+      tap(() => {
+        const currentState = this.notificationSubject.value;
+        this.notificationSubject.next({ ...currentState, notifications: [] });
+      })
+    );
+  }
+
+  getNotificationById(notificationId: number):Observable<any>{
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${localStorage.getItem('token')}`
+    })
+    return this.http.get<any>(`${this.baseUrl}/api/v1/notifications/${notificationId}`, {headers}).pipe(
+      tap((notification)=>{
+        console.log("notification info", notification)
+        const currentState = this.notificationSubject.value;
+        this.notificationSubject.next({...currentState, notification})
+      })
+    )
+  }
+
+  deleteNotification(notificationId:number):Observable<any>{
+    const headers = this.getHeaders();
+    return this.http.delete<any>(`${this.baseUrl}/api/v1/notifications/${notificationId}`, {headers}).pipe(
+      tap((deletedNotificaton:any)=>{
+        const currentState = this.notificationSubject.value;
+        const updatedNotification = currentState.notifications.filter((item:any)=>item.notificationId !== notificationId);
+        this.notificationSubject.next({...currentState, notifications: updatedNotification})
+      })
+    )
+  }
+
 }

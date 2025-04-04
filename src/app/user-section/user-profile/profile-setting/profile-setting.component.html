@@ -29,47 +29,47 @@
       </div>
   
       <!-- Profile Information Form -->
-      <form>
+      <form [formGroup]="profileForm">
         <div class="grid grid-cols-2 gap-4">
           <div>
             <label class="block text-gray-600 font-medium">Full Name</label>
-            <input type="text" [(ngModel)]="user.fullName" name="fullName" class="w-full border border-gray-400 rounded-lg p-2 focus:ring-2 focus:ring-teal-800 focus:border-teal-800" />
+            <input type="text" formControlName="fullName" [(ngModel)]="user.fullName" name="fullName" class="w-full border border-gray-400 rounded-lg p-2 focus:ring-2 focus:ring-teal-800 focus:border-teal-800" />
           </div>
           <div>
             <label class="block text-gray-600 font-medium">Email Address</label>
-            <input type="email" [(ngModel)]="user.email" name="email" class="w-full border border-gray-400 rounded-lg p-2 focus:ring-2 focus:ring-teal-800 focus:border-teal-800" />
+            <input formControlName="email" type="email" [(ngModel)]="user.email" name="email" class="w-full border border-gray-400 rounded-lg p-2 focus:ring-2 focus:ring-teal-800 focus:border-teal-800" />
           </div>
            <div>
             <label class="block text-gray-600 font-medium">Phone Number</label>
-            <input type="number" name="phoneNumber" [(ngModel)]="user.phoneNumber" class="w-full border border-gray-400 rounded-lg p-2 focus:ring-2 focus:ring-teal-800 focus:border-teal-800" />
+            <input formControlName="phoneNumber" type="number" name="phoneNumber" [(ngModel)]="user.phoneNumber" class="w-full border border-gray-400 rounded-lg p-2 focus:ring-2 focus:ring-teal-800 focus:border-teal-800" />
           </div>
           <div>
             <label class="block text-gray-600 font-medium">Identification Number</label>
-            <input type="number" [(ngModel)]="user.nationalId" name="nationalId" class="w-full border border-gray-400 rounded-lg p-2 focus:ring-2 focus:ring-teal-800 focus:border-teal-800" />
+            <input formControlName="nationalId" type="number" [(ngModel)]="user.nationalId" name="nationalId" class="w-full border border-gray-400 rounded-lg p-2 focus:ring-2 focus:ring-teal-800 focus:border-teal-800" />
           </div>
           <div>
             <label class="block text-gray-600 font-medium">Password</label>
-            <input type="password" name="password" class="w-full border border-gray-400 rounded-lg p-2 focus:ring-2 focus:ring-teal-800 focus:border-teal-800" />
+            <input formControlName="password" [(ngModel)]="user.password" type="password" name="password" class="w-full border border-gray-400 rounded-lg p-2 focus:ring-2 focus:ring-teal-800 focus:border-teal-800" />
           </div>
           <div>
             <label class="block text-gray-600 font-medium">Role</label>
-            <input type="text" [(ngModel)]="user.userType" name="userType" class="w-full border border-gray-400 rounded-lg p-2 focus:ring-2 focus:ring-teal-800 focus:border-teal-800" disabled />
+            <input formControlName="userType" type="text" [(ngModel)]="user.userType" name="userType" class="w-full border border-gray-400 rounded-lg p-2 focus:ring-2 focus:ring-teal-800 focus:border-teal-800"/>
           </div>
         </div>
   
         <!-- Address -->
         <div class="mt-6 grid grid-cols-2 gap-4">
           <div>
-            <label class="block text-gray-700 font-medium">Location: {{user.location.county}}</label>
-            <select [(ngModel)]="user.location.locationId" name="locationId"
+            <label class="block text-gray-700 font-medium">Location</label>
+            <select  name="locationId"
                     class="w-full bg-white border border-gray-400 rounded-lg p-2 focus:ring-2 focus:ring-teal-800 focus:border-teal-800" required>
               <option value="" disabled selected>Select Location</option>
-              <option *ngFor="let location of locations" [value]="location.locationId">{{ location.county }}</option>
+              <option *ngFor="let location of locations" [value]="location.locationId" [selected]="location.locationId === user.location.locationId">{{ location.county }}</option>
             </select>
           </div>
           <div>
             <label class="block text-gray-600 font-medium">SubCounty</label>
-            <input type="text" name="locationId" [(ngModel)]="user.location.subCounty" class="w-full bg-white border border-gray-400 rounded-lg p-2 focus:ring-2 focus:ring-teal-800 focus:border-teal-800" />
+            <input formControlName="locationId" type="text" name="locationId" [(ngModel)]="user.location.subCounty" class="w-full bg-white border border-gray-400 rounded-lg p-2 focus:ring-2 focus:ring-teal-800 focus:border-teal-800" />
         </div>
         </div>
 
@@ -78,7 +78,7 @@
           <button type="button" class="bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-gray-600 transition">
             <i class="pi pi-times mr-2"></i> Cancel
           </button>
-          <button type="submit" onsubmit="updateUser()" class="bg-[#134e4a] text-white py-2 px-4 rounded-md hover:bg-[#134e4a] transition">
+          <button type="submit" (click)="updateUser()" class="bg-[#134e4a] text-white py-2 px-4 rounded-md hover:bg-[#134e4a] transition">
             <i class="pi pi-check mr-2"></i> Save Changes
           </button>
         </div>

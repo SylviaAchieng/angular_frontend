@@ -43,6 +43,12 @@ import { ChatComponent } from './components/admin/admin-dashboard/chat/chat.comp
 import { AllProjectsSectionComponent } from './pages/all-projects-section/all-projects-section.component';
 import { TermsComponent } from './about-us/terms/terms.component';
 import { PrivacyComponent } from './about-us/privacy/privacy.component';
+import { PublicNotificationsComponent } from './public-servant/public-servant/public-notifications/public-notifications.component';
+import { EmailConfirmationComponent } from './components/email-confirmation/email-confirmation.component';
+import { UserNotificationsComponent } from './user-section/user-profile/user-notifications/user-notifications.component';
+import { adminGuard } from './components/auth/guards/admin.guard';
+import { publicServantGuard } from './components/auth/guards/public-servant.guard';
+import { authGuard } from './components/auth/guards/auth.guard';
 
 
 
@@ -70,9 +76,10 @@ export const routes: Routes = [
     {path: 'govocal-projects', component: AllProjectsSectionComponent},
     {path: 'terms-and-conditions', component: TermsComponent},
     {path: 'privacy-policy', component: PrivacyComponent},
+    {path: 'email-confirmation', component: EmailConfirmationComponent},
 
     
-    { path: 'admin-dashboard', component: AdminDashboardComponent, children: [
+    { path: 'admin-dashboard', component: AdminDashboardComponent, canActivate: [adminGuard], children: [
         { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
         { path: 'dashboard', component: DashboardComponent },
         { path: 'events', component: EventsComponent },
@@ -85,22 +92,28 @@ export const routes: Routes = [
         {path:'message', component: ChatComponent},
     ]},
 
-    { path: 'public-servant', component: PublicServantComponent, children: [
+    { path: 'public-servant', component: PublicServantComponent, canActivate:[publicServantGuard], children: [
         { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
         { path: 'dashboard', component: PublicServantDashboardComponent },
         { path: 'events', component: AllEventsComponent },
         {path: 'projects', component: AllProjectsComponent},
         {path: 'issues', component:AllIssuesComponent},
         {path:'settings', component: SettingsComponent},
-        {path:'notifications', component:NotificationComponent},
+        {path:'notifications', component:PublicNotificationsComponent},
         {path:'proposals', component: DiscussionsComponent},
     ]},
 
-    { path: 'profile', component: UserProfileComponent , children: [
+    { path: 'profile', component: UserProfileComponent , canActivate: [authGuard], children: [
         { path: '', redirectTo: 'user-profile', pathMatch: 'full' },
         { path: 'user-profile', component: UserDashboardComponent },
         { path: 'profile-settings', component: ProfileSettingComponent },
         {path:'report-issue', component: ReportIssueComponent},
-        {path:'privacy-policy', component: SupportComponent}
+        {path:'privacy-policy', component: SupportComponent},
+        {path:'user-notifications', component: UserNotificationsComponent}
     ]},
+
+    // path: 'admin-dashboard', 
+    //     component: AdminDashboardComponent, 
+    //     canActivate: [adminGuard],
+    //     children: [
 ];

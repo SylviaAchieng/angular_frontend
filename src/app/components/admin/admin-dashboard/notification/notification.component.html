@@ -1,6 +1,6 @@
 <div class="p-6 bg-white shadow-md rounded-lg">
   <h2 class="text-xl font-semibold">List Notification</h2>
-  <p class="text-gray-500">{{ notifications.length }} Notification</p>
+  <p class="text-gray-500">{{ pendingNotificationsCount}} Notification</p>
 
   <!-- Tabs -->
   <div class="flex space-x-6 mt-4 border-b">
@@ -42,13 +42,13 @@
       <div class="flex items-start space-x-4">
         <span 
           class="h-3 w-3 rounded-full"
-          [class.bg-green-500]="!notification.isRead"
-          [class.bg-gray-400]="notification.isRead"></span>
+          [class.bg-green-500]="!notification.status"
+          [class.bg-gray-400]="notification.status"></span>
         
         <div>
-          <p class="font-medium">{{ notification.title }}</p>
-          <p class="text-sm text-gray-600">{{ notification.message }}</p>
-          <span class="text-xs text-gray-400">{{ notification.time }}</span>
+          <p (click)="getNotificationById(notification?.notificationId)" class="font-medium cursor-pointer text-teal-800">{{ notification.description }}</p>
+          <p class="text-sm text-gray-600">{{ notification.type }}</p>
+          <span class="text-xs text-gray-400">{{ notification.sentAt }}</span>
         </div>
       </div>
 
@@ -56,7 +56,7 @@
         <button (click)="toggleFavorite(notification)">
           <span [class.text-yellow-500]="notification.isFavorite">⭐</span>
         </button>
-        <button (click)="deleteNotification(notification.id)" class="text-red-500">🗑</button>
+        <button (click)="deleteNotification(notification.notificationId)" class="text-red-500">🗑</button>
       </div>
     </div>
   </div>

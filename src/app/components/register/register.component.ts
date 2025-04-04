@@ -30,7 +30,7 @@ export class RegisterComponent {
     nationalId: new FormControl('', [Validators.required]),
     email: new FormControl('',[Validators.required, Validators.email]),
     userType: new FormControl('', [Validators.required]),
-    password: new FormControl('',[Validators.required, Validators.minLength(8)]),
+    password: new FormControl('',[Validators.required, Validators.minLength(8), Validators.pattern(/^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)]),
     locationId: new FormControl(null, [Validators.required]),
     department: new FormControl(''),
     position: new FormControl('')
