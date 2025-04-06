@@ -26,7 +26,7 @@
           </div>
           <div>
             <label class="text-sm font-medium">description:</label>
-            <input type="text" [(ngModel)]="newDiscussion.description" class="border rounded p-2 w-full" />
+            <textarea type="text" [(ngModel)]="newDiscussion.description" class="border rounded p-2 w-full" ></textarea>
           </div>
         </div>
         <div class="flex justify-end mt-4 gap-4">
@@ -114,7 +114,7 @@
                   <i class="pi pi-users mr-2"></i>
                   <div>
                     <label class="text-sm font-medium">Started By</label>
-                    <input type="text" [(ngModel)]="selectedDiscussion.user.fullName" class="border rounded p-2 w-full" />
+                    <textarea type="text" [(ngModel)]="selectedDiscussion.user.fullName" class="border rounded p-2 w-full"></textarea>
                   </div>
                 </div>
                 <div class="mb-4 flex items-center">

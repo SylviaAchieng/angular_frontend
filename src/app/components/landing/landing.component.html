@@ -16,13 +16,13 @@ class="relative bg-gray-700 bg-center bg-cover bg-no-repeat bg-blend-multiply h-
   <div class="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-x-4 sm:space-y-0">
     <button
       class="inline-flex items-center justify-center border border-white rounded-lg bg-[#092b29] px-5 py-3 text-center text-base font-medium text-white hover:bg-teal-800 focus:ring-4"
-      (click)="onGetInvolved()"
+      (click)="onGetInvolved()" [routerLink]="['/register']"
     >
       {{ heroPrimaryButton }}
     </button>
     <button
       class="inline-flex items-center justify-center rounded-lg border border-white px-5 py-3 text-center text-base font-medium text-white hover:bg-gray-100 hover:text-gray-900 focus:ring-4 focus:ring-gray-400"
-      (click)="onLearnMore()"
+      (click)="onLearnMore()" [routerLink]="['/communication']"
     >
       {{ heroSecondaryButton }}
     </button>

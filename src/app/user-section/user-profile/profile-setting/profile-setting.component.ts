@@ -113,7 +113,9 @@ export class ProfileSettingComponent {
   }
 
   getUserIdFromLocalStorage1(): IdType | null {
-    return localStorage.getItem('userId');
+    // return localStorage.getItem('userId');
+    const userId = localStorage.getItem('userId');
+    return userId ? Number(userId) : null;
     
   }
   
@@ -125,7 +127,20 @@ export class ProfileSettingComponent {
     if (userId) {
       this.authService.getUserProfile(userId).subscribe((response) => {
         console.log("Users received:", response);
-        this.user = response._embedded || [];
+        const user = response._embedded || [];
+
+        this.user = user;
+
+      // Populate form
+      this.profileForm.patchValue({
+        fullName: user.fullName,
+        nationalId: user.nationalId,
+        email: user.email,
+        userType: user.userType,
+        password: user.password,
+        locationId: user.location?.locationId,
+        phoneNumber: user.phoneNumber
+      });
       });
   
       // Subscribe to authSubject to update component state dynamically
@@ -138,66 +153,39 @@ export class ProfileSettingComponent {
     }
   }
   
-
-  // updateUser() {
-  //   const userId = this.getUserIdFromLocalStorage1();
-  //   console.log("user id:", userId)
-    
-  //   if (!userId) {
-  //     this.toastr.warning('User ID not found. Please log in again.', 'Warning');
-  //     return;
-  //   }
   
-  //   // if (!this.users || !this.users.userId) {
-  //   //   this.toastr.info('Invalid user data. Please try again.', 'Info');
-  //   //   return;
-  //   // }
-
-  //   const updatedUserData = { ...this.users };
+  updateUser() {
+    const userId = this.getUserIdFromLocalStorage1();  // Make sure this is a primitive value (string or number)
+    console.log("user id:", userId);  // Check the userId value here to ensure it's correct.
+    console.log("register", this.profileForm.value);
   
-  //   console.log("updatedUserData", updatedUserData)
-  //   this.authService.updateUser(updatedUserData, userId).subscribe({
-  //     next: (updatedUser) => {
-  //       console.log('User updated successfully:', updatedUser);
-  //       this.users = { ...updatedUser };
+    const updatedUser: User = {
+      userId: userId, 
+      fullName: this.profileForm.get('fullName')?.value,
+      nationalId: this.profileForm.get('nationalId')?.value,
+      email: this.profileForm.get('email')?.value,
+      password: this.profileForm.get('password')?.value,
+      location: { locationId: this.profileForm.get('locationId')?.value },
+      userType: this.profileForm.get('userType')?.value,
+      phoneNumber: this.profileForm.get('phoneNumber')?.value,
+    };
+    console.log("updated user", updatedUser);
   
-  //       this.toastr.success('User updated successfully!', 'Success');
-  //       this.loadUser();
-  //     },
-  //     error: (error) => {
-  //       console.error('Error updating user:', error);
-  //       this.toastr.error('Failed to update user. Please try again.', 'Error');
-  //     }
-  //   });
-  // }
-
-
-  updateUser(){
-    const userId = this.getUserIdFromLocalStorage1();
-    console.log("user id:", userId)
-      console.log("register", this.profileForm.value)
-      const updatedUser: User = {
-        fullName: this.profileForm.get('fullName')?.value,
-        nationalId: this.profileForm.get('nationalId')?.value,
-        email: this.profileForm.get('email')?.value,
-        password: this.profileForm.get('password')?.value,
-        location: {locationId: this.profileForm.get('locationId')?.value},
-        userType: this.profileForm.get('userType')?.value,
-        phoneNumber: this.profileForm.get('phoneNumber')?.value,
-      }
-      console.log("new user", updatedUser);
-      this.authService.updateUser(updatedUser, userId).subscribe({
-        next:(response)=>{
+    if (userId) {
+      this.authService.updateUser(userId, updatedUser).subscribe({
+        next: (response) => {
           this.toastr.success('User updated successfully!', 'Success');
           this.loadUser();
         },
-      error: (err) => {
-        console.error("update failed", err);
-        this.toastr.error("update failed. Please try again.", 'Error');
-      }
+        error: (err) => {
+          console.error("update failed", err);
+          this.toastr.error("update failed. Please try again.", 'Error');
+        }
       });
+    } else {
+      console.warn("User ID not found in localStorage.");
     }
+  }
   
-
 
 }

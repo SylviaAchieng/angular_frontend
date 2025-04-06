@@ -254,38 +254,64 @@ export class ProjectsComponent {
   }
 
 
+  newReceipt: string | null = null;
+
+  // Modify the onReceiptUpload method
+  onReceiptUpload(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        // Store the base64 string (without data URL prefix)
+        this.newReceipt = e.target.result.split(',')[1];
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+  
+  // Add method to clear receipt
+  clearReceipt() {
+    this.selectedProject.base64Encoded = null;
+    this.newReceipt = null;
+  }
 
   updateProject() {
     if (!this.selectedProject || !this.selectedProject.projectId) {
       this.toastr.info('Please select a project to update.', 'Info');
       return;
     }
-    const imageData = this.selectedProject.base64EncodedImage.startsWith("data:image/")
-      ? this.selectedProject.base64EncodedImage.split(",")[1]
-      : this.selectedProject.base64EncodedImage;
-
-    const receipt = this.selectedProject.base64Encoded.startsWith("data:image/")
-      ? this.selectedProject.base64Encoded.split(",")[1]
-      : this.selectedProject.base64Encoded;
-
-    const updatedProjectData = {
+  
+    // Update the receipt if a new one was selected
+    if (this.newReceipt) {
+      this.selectedProject.base64Encoded = this.newReceipt;
+      this.newReceipt = null;
+    }
+  
+    // Prepare the project data
+    const projectData = {
       ...this.selectedProject,
-      base64EncodedImage: imageData,
-      base64Encoded: receipt
+      base64EncodedImage: this.selectedProject.base64EncodedImage?.startsWith("data:image/")
+        ? this.selectedProject.base64EncodedImage.split(",")[1]
+        : this.selectedProject.base64EncodedImage,
+      base64Encoded: this.selectedProject.base64Encoded
     };
-    this.projectService.updateProject(updatedProjectData).subscribe({
+  
+    this.projectService.updateProject(projectData).subscribe({
       next: (updatedProject) => {
-        console.log('Project updated successfully:', updatedProject);
-        this.projects = this.projects.map((project: any) =>
-          project.projectId === updatedProject.projectId ? updatedProject : project
-        );
-
         this.toastr.success("Project updated successfully!", "Success");
-        this.getAllProjects();
+        // Update the local project with the response
+        this.selectedProject = {
+          ...updatedProject,
+          base64EncodedImage: updatedProject.base64EncodedImage?.startsWith("data:image/")
+            ? updatedProject.base64EncodedImage
+            : `data:image/jpeg;base64,${updatedProject.base64EncodedImage}`,
+          base64Encoded: updatedProject.base64Encoded
+        };
+        this.getAllProjects(); // Refresh the list
       },
       error: (error) => {
         console.error('Error updating project:', error);
-        this.toastr.error("Failed to create a project. Please try again.", "Error");
+        this.toastr.error("Failed to update project. Please try again.", "Error");
       }
     });
   }

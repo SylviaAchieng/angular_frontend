@@ -8,7 +8,7 @@ export interface Location {
   }
   export type IdType = string | number;
   export interface User {
-    userId?: IdType;
+    userId?: IdType | null;
     fullName?: string | null;
     email?: string | null;
     password ?: string | null;

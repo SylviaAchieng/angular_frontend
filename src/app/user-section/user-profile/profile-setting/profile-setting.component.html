@@ -61,16 +61,16 @@
         <div class="mt-6 grid grid-cols-2 gap-4">
           <div>
             <label class="block text-gray-700 font-medium">Location</label>
-            <select  name="locationId"
+            <select formControlName="locationId" name="locationId"
                     class="w-full bg-white border border-gray-400 rounded-lg p-2 focus:ring-2 focus:ring-teal-800 focus:border-teal-800" required>
               <option value="" disabled selected>Select Location</option>
-              <option *ngFor="let location of locations" [value]="location.locationId" [selected]="location.locationId === user.location.locationId">{{ location.county }}</option>
+              <option *ngFor="let location of locations" [value]="location.locationId">{{ location.county }}</option>
             </select>
           </div>
-          <div>
+          <!-- <div>
             <label class="block text-gray-600 font-medium">SubCounty</label>
             <input formControlName="locationId" type="text" name="locationId" [(ngModel)]="user.location.subCounty" class="w-full bg-white border border-gray-400 rounded-lg p-2 focus:ring-2 focus:ring-teal-800 focus:border-teal-800" />
-        </div>
+        </div> -->
         </div>
 
         <!-- Action Buttons -->

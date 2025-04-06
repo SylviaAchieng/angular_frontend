@@ -35,7 +35,7 @@ export class DiscussionsComponent {
           newDiscussion = {
             title: '',
             category: '',
-            startedBy: {fullName: ''},
+            user: {fullName: ''},
             description: '',
           };
     
@@ -55,6 +55,8 @@ export class DiscussionsComponent {
              this.getAllDiscussions();
            }
   
+      
+
            loadDiscussionDetails(): void {
             const discussionId = this.route.snapshot.paramMap.get('id');
             const userId = localStorage.getItem('userId'); // Retrieve userId from localStorage
@@ -95,6 +97,14 @@ export class DiscussionsComponent {
             this.discussionService.createDiscussion(data).subscribe({
               next:(response)=>{
                 this.toastr.success("Discussion created successfully!", "Success");
+
+                // Reset the form
+        this.newDiscussion = {  
+          title: '',
+          description: '',
+          user: { fullName: '' },
+          category: '',
+        };
               },
             error: (err) => {
               console.error("failed", err);
