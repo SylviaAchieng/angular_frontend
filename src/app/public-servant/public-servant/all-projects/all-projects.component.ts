@@ -30,6 +30,7 @@ export class AllProjectsComponent {
       itemsPerPage: number=5;
       isDeleted: boolean=false;
       locations: any[] = [];
+      newReceipt: string | null = null;
   
       isProjectFormVisible = false;
   
@@ -192,8 +193,6 @@ export class AllProjectsComponent {
         }
       });
     }
-    
-    newReceipt: string | null = null;
 
   // Modify the onReceiptUpload method
   onReceiptUpload(event: any) {

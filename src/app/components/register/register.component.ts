@@ -73,6 +73,7 @@ export class RegisterComponent {
     this.authService.register(newUser).subscribe({
       next:(response)=>{
         localStorage.setItem('token', response.token);
+        //localStorage.setItem('user', JSON.stringify(newUser)); 
         console.log("Registration successful", response);
         const userId = response.userId;
         this.authService.getUserProfile(userId).subscribe();
